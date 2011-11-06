@@ -683,7 +683,7 @@ function video_embed_field_requirements($phase){
       $instances = field_read_instances(array('field_name' => $field_name));
       
       foreach($instances as $key => $instance){
-        if (!isset($instance['settings']['playbacksettings'])) {
+        if (!isset($instance['settings']['playback_settings'])) {
           $errors[] = $instance['field_name'] . ' on ' . $instance['entity_type'] . ' type ' . $instance['bundle'];
         }
       }
@@ -705,5 +705,5 @@ function video_embed_field_requirements($phase){
 
 //used to array filter in video_embed_field_requirements
 function _video_embed_field_array_filter($item) {
-  return (isset($item['type']) && $item['type'] == 'video_embed_field');
+  return (isset($item['type']) && $item['type'] == 'video_embed_field' && !$item['deleted']);
 }
