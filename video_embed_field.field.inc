@@ -13,7 +13,9 @@ function video_embed_field_field_info() {
     'video_embed_field' => array(
       'label' => 'Video Embed',
       'description' => 'Embed videos from youtube or vimeo',
-      'settings' => array(),
+      'settings' => array(
+        'uri_scheme' => variable_get('file_default_scheme', 'public'),
+      ),
       'instance_settings' => array(
         'description_field' => 0,
         'description_length' => 128,
@@ -22,6 +24,29 @@ function video_embed_field_field_info() {
       'default_formatter' => 'video_embed_field',
     ),
   );
+}
+
+/**
+ * Implements hook_field_settings_form().
+ */
+function video_embed_field_field_settings_form($field, $instance, $has_data) {
+  $defaults = field_info_field_settings($field['type']);
+  $settings = array_merge($defaults, $field['settings']);
+
+  $scheme_options = array();
+  foreach (file_get_stream_wrappers(STREAM_WRAPPERS_WRITE_VISIBLE) as $scheme => $stream_wrapper) {
+    $scheme_options[$scheme] = $stream_wrapper['name'];
+  }
+  $form['uri_scheme'] = array(
+    '#type' => 'radios',
+    '#title' => t('Upload destination'),
+    '#options' => $scheme_options,
+    '#default_value' => $settings['uri_scheme'],
+    '#description' => t('Select where the final files should be stored. Private file storage has significantly more overhead than public files, but allows restricted access to files within this field.'),
+    '#disabled' => $has_data,
+  );
+
+  return $form;
 }
 
 /**
@@ -155,23 +180,11 @@ function video_embed_field_field_presave($entity_type, $entity, $field, $instanc
     // Try to load thumbnail URL
     $info = video_embed_field_thumbnail_url($item['video_url']);  
     if (isset($info['url']) && $info['url']) {
-      $thumb_url = $info['url'];
-      $file_system = variable_get('file_default_scheme', 'public');
-      $local_path = $file_system . '://video_embed_field_thumbnails/' . $info['handler'] . '/' . $info['id'] . '.jpg';
+      $local_path = $field['settings']['uri_scheme'] . '://video_embed_field_thumbnails/' . $info['handler'] . '/' . $info['id'] . '.jpg';
 
-      $dirname = drupal_dirname($local_path);
-      file_prepare_directory($dirname, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+      $file = system_retrieve_file($info['url'], $local_path, TRUE);
 
-      $response = drupal_http_request($thumb_url);
-      if (!isset($response->error)) {
-        file_save_data($response->data, $local_path, TRUE);
-      }
-      else {
-        @copy($thumb_url, $local_path);
-      }
-
-
-      $items[$delta]['thumbnail_path'] = $local_path;
+      $items[$delta]['thumbnail_path'] = isset($file->uri) ? $file->uri : $info['url'];
     } //couldn't get the thumbnail for whatever reason
     else {
       $items[$delta]['thumbnail_path'] = '';

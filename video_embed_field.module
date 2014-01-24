@@ -568,3 +568,62 @@ function _video_embed_field_hash($video_url, $video_style) {
   return md5('vef' . $video_url . $video_style);
 }
 
+/**
+ * Implements hook_file_download().
+ */
+function video_embed_field_file_download($uri) {
+  global $user;
+
+  // Get the file record based on the URI. If not in the database just return.
+  $files = file_load_multiple(array(), array('uri' => $uri));
+  if (count($files)) {
+    foreach ($files as $item) {
+      // Since some database servers sometimes use a case-insensitive comparison
+      // by default, double check that the filename is an exact match.
+      if ($item->uri === $uri) {
+        $file = $item;
+        break;
+      }
+    }
+  }
+  if (!isset($file)) {
+    return;
+  }
+
+  $references = video_embed_field_get_file_references($file);
+
+  // Stop processing if there are no references in order to avoid returning
+  // headers for files controlled by other modules. Make an exception for
+  // temporary files where the host entity has not yet been saved (for example,
+  // an image preview on a node/add form) in which case, allow download by the
+  // file's owner.
+  if (empty($references) && ($file->status == FILE_STATUS_PERMANENT || $file->uid != $user->uid)) {
+    return;
+  }
+
+
+  if (($file->uid == $user->uid && user_access('download own private files'))
+    || user_access('download all private files')) {
+    // Access is granted.
+    $headers = file_get_content_headers($file);
+    return $headers;
+  }
+}
+
+function video_embed_field_get_file_references($file) {
+  $field_type = 'video_embed_field';
+  $fields = field_info_fields();
+
+  foreach ($fields as $field_name => $file_field) {
+    if ((empty($field_type) || $file_field['type'] == $field_type) && !isset($references[$field_name])) {
+      // Get each time this file is used within a field.
+      $query = new EntityFieldQuery();
+      $query
+        ->fieldCondition($file_field, 'thumbnail_path', $file->uri)
+        ->age(FIELD_LOAD_CURRENT);
+      $references[$field_name] = $query->execute();
+    }
+  }
+
+  return isset($field) ? $references[$field['field_name']] : array_filter($references);
+}
