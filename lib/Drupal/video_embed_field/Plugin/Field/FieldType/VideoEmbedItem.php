@@ -108,13 +108,7 @@ class VideoEmbedItem extends ConfigFieldItemBase {
    */
   public function preSave() {
     // Retrieve the thumbnail.
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validate() {
-    // Validate it here.
+    $a = 3;
   }
 
 }
