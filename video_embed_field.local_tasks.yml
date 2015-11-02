@@ -1,9 +1,0 @@
-video_embed.style_edit:
-  title: 'Edit'
-  route_name: video_embed.style_edit
-  base_route: video_embed.style_edit
-
-video_embed.style_list:
-  title: List
-  route_name: video_embed.style_list
-  base_route: video_embed.style_list

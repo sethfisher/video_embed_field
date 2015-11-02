@@ -1,5 +1,0 @@
-video_embed_style_add_action:
-  route_name: video_embed.style_add
-  title: 'Add video embed style'
-  appears_on:
-    - video_embed.style_list
