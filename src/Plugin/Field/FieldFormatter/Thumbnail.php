@@ -52,15 +52,13 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
     $element = [];
     foreach ($items as $delta => $item) {
       $provider = $this->providerManager->loadProviderFromInput($item->value);
-
       $url = FALSE;
       if ($this->getSetting('link_image_to') == static::LINK_CONTENT) {
         $url = $items->getEntity()->urlInfo();
       }
       elseif ($this->getSetting('link_image_to') == static::LINK_PROVIDER) {
-        $url = Url::fromUserInput($item->value);
+        $url = Url::fromUri($item->value);
       }
-
       $element[$delta] = $provider->renderThumbnail($this->getSetting('image_style'), $url);
     }
     return $element;
@@ -91,6 +89,7 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
       '#title' => $this->t('Link image to'),
       '#type' => 'select',
       '#empty_option' => $this->t('- None -'),
+      '#default_value' => $this->getSetting('link_image_to'),
       '#options' => [
         static::LINK_CONTENT => $this->t('Content'),
         static::LINK_PROVIDER => $this->t('Provider URL'),
