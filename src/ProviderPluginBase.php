@@ -6,6 +6,7 @@
  */
 
 namespace Drupal\video_embed_field;
+
 use Drupal\image\Entity\ImageStyle;
 
 /**
