@@ -107,11 +107,11 @@ class EmbedFieldTest extends FieldUnitTestBase {
         ],
         [
           '#type' => 'link',
-          '#url' => 'entity.entity_test.canonical',
-          '#text' => [
+          '#title' => [
             '#theme' => 'image',
             '#uri' => 'public://video_thumbnails/80896303.jpg',
-          ]
+          ],
+          '#url' => 'entity.entity_test.canonical',
         ],
       ],
       'Linked Thumbnail: Provider' => [
@@ -122,11 +122,11 @@ class EmbedFieldTest extends FieldUnitTestBase {
         ],
         [
           '#type' => 'link',
-          '#url' => 'https://vimeo.com/80896303',
-          '#text' => [
+          '#title' => [
             '#theme' => 'image',
             '#uri' => 'public://video_thumbnails/80896303.jpg',
-          ]
+          ],
+          '#url' => 'https://vimeo.com/80896303',
         ],
       ],
     ];
