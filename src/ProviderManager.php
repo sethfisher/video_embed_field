@@ -41,13 +41,13 @@ class ProviderManager extends DefaultPluginManager implements ProviderManagerInt
   public function loadDefinitionsFromOptionList($options) {
     $definitions = [];
     // When no options are selected, all plugins are applicable.
-    if (array_sum(array_values($options)) == 0 || empty($options)) {
+    if (count(array_keys($options, '0')) == count($options) || empty($options)) {
       return $this->getDefinitions();
     }
     else {
       foreach ($options as $provider_id => $enabled) {
         if ($enabled) {
-          $definitions[] = $this->getDefinition($provider_id);
+          $definitions[$provider_id] = $this->getDefinition($provider_id);
         }
       }
     }
