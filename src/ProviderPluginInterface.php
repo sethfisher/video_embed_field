@@ -26,13 +26,15 @@ interface ProviderPluginInterface {
   /**
    * Render a thumbnail.
    *
-   * @param string $quality
+   * @param string $image_style
    *   The quality of the thumbnail to render.
+   * @param string $link_url
+   *   Where the thumbnail should be linked to.
    *
    * @return array
    *   A renderable array of a thumbnail.
    */
-  public function renderThumbnail($quality);
+  public function renderThumbnail($image_style, $link_url);
 
   /**
    * Get the URL of the remote thumbnail.
