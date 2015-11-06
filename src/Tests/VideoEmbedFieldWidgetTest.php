@@ -45,24 +45,24 @@ class VideoEmbedFieldWidgetTest extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array(
+  public static $modules = [
     'video_embed_field',
     'field_ui',
     'node',
-  );
+  ];
 
   /**
    * Permissions to grant admin user.
    *
    * @var array
    */
-  protected $permissions = array(
+  protected $permissions = [
     'access content',
     'administer content types',
     'administer node fields',
     'administer node form display',
     'bypass node access',
-  );
+  ];
 
   /**
    * {@inheritdoc}
@@ -113,15 +113,15 @@ class VideoEmbedFieldWidgetTest extends WebTestBase {
     $this->drupalPostForm(NULL, [
       $this->fieldName . '[0][value]' => $valid_input,
     ], t('Save'));
-    $this->assertRaw(t('@type %title has been created.', array(
+    $this->assertRaw(t('@type %title has been created.', [
       '@type' => $this->contentTypeName,
       '%title' => $node_title
-    )));
+    ]));
 
     // Load the saved node and assert the valid value was saved into the field.
     $nodes = \Drupal::entityManager()
       ->getStorage('node')
-      ->loadByProperties(array('title' => $node_title));
+      ->loadByProperties(['title' => $node_title]);
     $node = array_shift($nodes);
     $this->assertEqual($node->{$this->fieldName}[0]->value, $valid_input);
   }

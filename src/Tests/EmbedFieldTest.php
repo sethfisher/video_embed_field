@@ -164,16 +164,16 @@ class EmbedFieldTest extends FieldUnitTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    entity_create('field_storage_config', array(
+    entity_create('field_storage_config', [
       'field_name' => 'field_test',
       'entity_type' => 'entity_test',
       'type' => 'video_embed_field',
-    ))->save();
-    entity_create('field_config', array(
+    ])->save();
+    entity_create('field_config', [
       'entity_type' => 'entity_test',
       'field_name' => 'field_test',
       'bundle' => 'entity_test',
-    ))->save();
+    ])->save();
   }
 
 }
