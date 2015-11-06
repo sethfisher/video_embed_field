@@ -7,7 +7,9 @@
 
 namespace Drupal\video_embed_field\Tests;
 
+use Drupal\Core\Url;
 use Drupal\field\Tests\FieldUnitTestBase;
+use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
 
 /**
  * Test the embed field is functioning.
@@ -33,7 +35,7 @@ class EmbedFieldTest extends FieldUnitTestBase {
         'https://www.youtube.com/watch?v=fdbFVWupSsw',
         [
           'type' => 'video_embed_field_thumbnail',
-          'settings' => ['size' => ''],
+          'settings' => [],
         ],
         [
           '#theme' => 'image',
@@ -67,7 +69,7 @@ class EmbedFieldTest extends FieldUnitTestBase {
         'https://vimeo.com/80896303',
         [
           'type' => 'video_embed_field_thumbnail',
-          'settings' => ['size' => ''],
+          'settings' => [],
         ],
         [
           '#theme' => 'image',
@@ -96,6 +98,37 @@ class EmbedFieldTest extends FieldUnitTestBase {
           ],
         ]
       ],
+      // Linked thumbnails.
+      'Linked Thumbnail: Content' => [
+        'https://vimeo.com/80896303',
+        [
+          'type' => 'video_embed_field_thumbnail',
+          'settings' => ['link_image_to' => Thumbnail::LINK_CONTENT],
+        ],
+        [
+          '#type' => 'link',
+          '#url' => 'entity.entity_test.canonical',
+          '#text' => [
+            '#theme' => 'image',
+            '#uri' => 'public://video_thumbnails/80896303.jpg',
+          ]
+        ],
+      ],
+      'Linked Thumbnail: Provider' => [
+        'https://vimeo.com/80896303',
+        [
+          'type' => 'video_embed_field_thumbnail',
+          'settings' => ['link_image_to' => Thumbnail::LINK_PROVIDER],
+        ],
+        [
+          '#type' => 'link',
+          '#url' => 'https://vimeo.com/80896303',
+          '#text' => [
+            '#theme' => 'image',
+            '#uri' => 'public://video_thumbnails/80896303.jpg',
+          ]
+        ],
+      ],
     ];
   }
 
@@ -109,6 +142,11 @@ class EmbedFieldTest extends FieldUnitTestBase {
     $entity->field_test->value = $url;
     $entity->save();
     $field = $entity->field_test->view($settings);
+    // Prevent circular references with comparing url objects.
+    if (isset($field[0]['#url']) && $field[0]['#url'] instanceof Url) {
+      $url = $field[0]['#url'];
+      $field[0]['#url'] = $url->isRouted() ? $url->getRouteName() : $url->getUri();
+    }
     $this->assertEqual($field[0], $expected_output);
   }
 
