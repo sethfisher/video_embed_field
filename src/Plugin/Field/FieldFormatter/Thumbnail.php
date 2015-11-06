@@ -11,6 +11,7 @@ use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Url;
 use Drupal\video_embed_field\ProviderManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -35,13 +36,32 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
   protected $providerManager;
 
   /**
+   * Class constant for linking to content.
+   */
+  const LINK_CONTENT = 'content';
+
+  /**
+   * Class constant for linking to the provider URL.
+   */
+  const LINK_PROVIDER = 'provider';
+
+  /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
     foreach ($items as $delta => $item) {
       $provider = $this->providerManager->loadProviderFromInput($item->value);
-      $element[$delta] = $provider->renderThumbnail($this->getSetting('image_style'));
+
+      $url = FALSE;
+      if ($this->getSetting('link_image_to') == static::LINK_CONTENT) {
+        $url = $items->getEntity()->urlInfo();
+      }
+      elseif ($this->getSetting('link_image_to') == static::LINK_PROVIDER) {
+        $url = Url::fromUserInput($item->value);
+      }
+
+      $element[$delta] = $provider->renderThumbnail($this->getSetting('image_style'), $url);
     }
     return $element;
   }
@@ -50,7 +70,10 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return ['image_style' => ''];
+    return [
+      'image_style' => '',
+      'link_image_to' => ''
+    ];
   }
 
   /**
@@ -58,11 +81,20 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $form['image_style'] = [
-      '#title' => t('Image Style'),
+      '#title' => $this->t('Image Style'),
       '#type' => 'select',
       '#default_value' => $this->getSetting('image_style'),
       '#required' => TRUE,
       '#options' => image_style_options(),
+    ];
+    $form['link_image_to'] = [
+      '#title' => $this->t('Link image to'),
+      '#type' => 'select',
+      '#empty_option' => $this->t('- None -'),
+      '#options' => [
+        static::LINK_CONTENT => $this->t('Content'),
+        static::LINK_PROVIDER => $this->t('Provider URL'),
+      ],
     ];
     return $form;
   }
@@ -71,7 +103,7 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary[] = t('Video thumbnail (@quality).', ['@quality' => $this->getSetting('image_style')]);
+    $summary[] = $this->t('Video thumbnail (@quality).', ['@quality' => $this->getSetting('image_style')]);
     return $summary;
   }
 

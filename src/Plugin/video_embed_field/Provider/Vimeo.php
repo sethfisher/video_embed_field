@@ -29,7 +29,7 @@ class Vimeo extends ProviderPluginBase {
         'height' => $height,
         'frameborder' => '0',
         'allowfullscreen' => 'allowfullscreen',
-        'src' => sprintf('https://player.vimeo.com/video/%s?autoplay=%d', $this->getId(), $autoplay),
+        'src' => sprintf('https://player.vimeo.com/video/%s?autoplay=%d', $this->getVideoId(), $autoplay),
       ],
     ];
   }
@@ -38,7 +38,7 @@ class Vimeo extends ProviderPluginBase {
    * {@inheritdoc}
    */
   public function getRemoteThumbnailUrl() {
-    $video_data = json_decode(file_get_contents('http://vimeo.com/api/v2/video/' . $this->getId() . '.json'));
+    $video_data = json_decode(file_get_contents('http://vimeo.com/api/v2/video/' . $this->getVideoId() . '.json'));
     return $video_data[0]->thumbnail_large;
   }
 

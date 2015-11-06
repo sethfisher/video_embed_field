@@ -5,6 +5,9 @@ field.formatter.settings.video_embed_field_thumbnail:
     image_style:
       type: string
       label: 'Image Style'
+    link_image_to:
+      type: string
+      label: 'Link image to'
 
 field.formatter.settings.video_embed_field_video:
   type: mapping

@@ -29,7 +29,7 @@ class YouTube extends ProviderPluginBase {
         'height' => $height,
         'frameborder' => '0',
         'allowfullscreen' => 'allowfullscreen',
-        'src' => sprintf('https://www.youtube.com/embed/%s?autoplay=%d', $this->getId(), $autoplay),
+        'src' => sprintf('https://www.youtube.com/embed/%s?autoplay=%d', $this->getVideoId(), $autoplay),
       ],
     ];
   }
@@ -38,7 +38,7 @@ class YouTube extends ProviderPluginBase {
    * {@inheritdoc}
    */
   public function getRemoteThumbnailUrl() {
-    return sprintf('http://img.youtube.com/vi/%s/hqdefault.jpg', $this->getId());
+    return sprintf('http://img.youtube.com/vi/%s/hqdefault.jpg', $this->getVideoId());
   }
 
   /**
