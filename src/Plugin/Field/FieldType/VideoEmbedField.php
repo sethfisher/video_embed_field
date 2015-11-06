@@ -11,6 +11,7 @@ use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
+use Drupal\Core\TypedData\TraversableTypedDataInterface;
 
 /**
  * Plugin implementation of the video_embed_field field type.
@@ -25,6 +26,13 @@ use Drupal\Core\TypedData\DataDefinition;
  * )
  */
 class VideoEmbedField extends FieldItemBase {
+
+  /**
+   * The embed provider plugin manager.
+   *
+   * @var \Drupal\video_embed_field\ProviderManagerInterface
+   */
+  protected $providerManager;
 
   /**
    * {@inheritdoc}
@@ -68,7 +76,7 @@ class VideoEmbedField extends FieldItemBase {
       '#description' => t('Restrict users from entering information from the following providers. If none are selected any video provider can be used.'),
       '#type' => 'checkboxes',
       '#default_value' => $this->getSetting('allowed_providers'),
-      '#options' => \Drupal::service('video_embed_field.provider_manager')->getProvidersOptionList(),
+      '#options' => $this->providerManager->getProvidersOptionList(),
     ];
     return $form;
   }
@@ -80,6 +88,22 @@ class VideoEmbedField extends FieldItemBase {
     return [
       'allowed_providers' => [],
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  function __construct($definition, $name = NULL, TraversableTypedDataInterface $parent = NULL, $provider_manager) {
+    parent::__construct($definition, $name, $parent);
+    $this->providerManager = $provider_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function createInstance($definition, $name = NULL, TraversableTypedDataInterface $parent = NULL) {
+    $provider_manager = \Drupal::service('video_embed_field.provider_manager');
+    return new static($definition, $name, $parent, $provider_manager);
   }
 
 }
