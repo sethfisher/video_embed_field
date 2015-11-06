@@ -10,7 +10,7 @@ namespace Drupal\Tests\video_embed_field\Unit;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * A base class for testing reference table formatter.
+ * Test that URL parsing for various providers is functioning.
  *
  * @group video_embed_field
  */
