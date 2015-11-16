@@ -18,7 +18,7 @@ use Drupal\Core\TypedData\TraversableTypedDataInterface;
  *
  * @FieldType(
  *   id = "video_embed_field",
- *   label = @Translation("Video"),
+ *   label = @Translation("Video Embed"),
  *   description = @Translation("Stores a video and then outputs some embed code."),
  *   category = @Translation("Media"),
  *   default_widget = "video_embed_field_textfield",
