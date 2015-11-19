@@ -7,13 +7,15 @@
 
 namespace Drupal\video_embed_field;
 
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
+use GuzzleHttp\ClientInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A base for the provider plugins.
  */
-abstract class ProviderPluginBase implements ProviderPluginInterface {
+abstract class ProviderPluginBase implements ProviderPluginInterface, ContainerFactoryPluginInterface {
 
   /**
    * The directory where thumbnails are stored.
@@ -37,19 +39,29 @@ abstract class ProviderPluginBase implements ProviderPluginInterface {
   protected $input;
 
   /**
+   * An http client.
+   *
+   * @var \GuzzleHttp\ClientInterface
+   */
+  protected $httpClient;
+
+  /**
    * Create a plugin with the given input.
    *
    * @param string $configuration
    *   The configuration of the plugin.
+   * @param \GuzzleHttp\ClientInterface $http_client
+   *    An HTTP client.
    *
    * @throws \Exception
    */
-  public function __construct($configuration) {
+  public function __construct($configuration, ClientInterface $http_client) {
     if (!static::isApplicable($configuration['input'])) {
       throw new \Exception('Tried to create a video provider plugin with invalid input.');
     }
     $this->input = $configuration['input'];
     $this->videoId = $this->getIdFromInput($configuration['input']);
+    $this->httpClient = $http_client;
   }
 
   /**
@@ -96,7 +108,8 @@ abstract class ProviderPluginBase implements ProviderPluginInterface {
     $local_uri = $this->getLocalThumbnailUri();
     if (!file_exists($local_uri)) {
       file_prepare_directory($this->thumbsDirectory, FILE_CREATE_DIRECTORY);
-      copy($this->getRemoteThumbnailUrl(), $local_uri);
+      $thumbnail = $this->httpClient->request('GET', $this->getRemoteThumbnailUrl());
+      file_unmanaged_save_data((string) $thumbnail->getBody(), $local_uri);
     }
   }
 
@@ -105,6 +118,13 @@ abstract class ProviderPluginBase implements ProviderPluginInterface {
    */
   public function getLocalThumbnailUri() {
     return $this->thumbsDirectory . '/' . $this->getVideoId() . '.jpg';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static($configuration, $container->get('http_client'));
   }
 
 }
