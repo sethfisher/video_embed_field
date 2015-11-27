@@ -46,12 +46,8 @@ class Vimeo extends ProviderPluginBase {
    * {@inheritdoc}
    */
   public static function getIdFromInput($input) {
-    $url_components = parse_url($input);
-    if (isset($url_components['host']) && $url_components['host'] !== 'vimeo.com' && $url_components['host'] !== 'www.vimeo.com') {
-      return FALSE;
-    }
-    $video_id = ltrim($url_components['path'], '/');
-    return is_numeric($video_id) ? $video_id : FALSE;
+    preg_match('/https?:\/\/(www\.)?vimeo.com\/(?<id>[0-9]*)/', $input, $matches);
+    return isset($matches['id']) ? $matches['id'] : FALSE;
   }
 
 }

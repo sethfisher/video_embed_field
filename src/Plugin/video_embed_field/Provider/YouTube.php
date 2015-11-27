@@ -45,12 +45,8 @@ class YouTube extends ProviderPluginBase {
    * {@inheritdoc}
    */
   public static function getIdFromInput($input) {
-    $url_components = parse_url($input);
-    if (!isset($url_components['query']) || ($url_components['host'] !== 'www.youtube.com' && $url_components['host'] !== 'youtube.com')) {
-      return FALSE;
-    }
-    parse_str($url_components['query'], $query_params);
-    return isset($query_params['v']) ? $query_params['v'] : FALSE;
+    preg_match('/https?:\/\/(www\.)?youtube.com\/watch\?v=(?<id>[0-9A-Za-z]*)/', $input, $matches);
+    return isset($matches['id']) ? $matches['id'] : FALSE;
   }
 
 }
