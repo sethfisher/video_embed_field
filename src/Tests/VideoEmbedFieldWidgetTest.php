@@ -93,7 +93,7 @@ class VideoEmbedFieldWidgetTest extends WebTestBase {
   /**
    * Test the input widget.
    */
-  function testEntityReferenceDefaultWidget() {
+  function testVideoEmbedFieldDefaultWidget() {
     entity_get_form_display('node', $this->contentTypeName, 'default')
       ->setComponent($this->fieldName, ['type' => 'video_embed_field_textfield',])
       ->save();
