@@ -129,6 +129,35 @@ class EmbedFieldTest extends FieldUnitTestBase {
           '#url' => 'https://vimeo.com/80896303',
         ],
       ],
+      // Colorbox modals.
+      'Colorbox Modal: Linked Image & Autoplay' => [
+        'https://vimeo.com/80896303',
+        [
+          'type' => 'video_embed_field_colorbox',
+          'settings' => [
+            'link_image_to' => Thumbnail::LINK_PROVIDER,
+            'autoplay' => TRUE,
+            'width' => 500,
+            'height' => 500,
+          ],
+        ],
+        [
+          '#type' => 'container',
+          '#attributes' => [
+            'data-video-embed-field-modal' => '<iframe width="500" height="500" frameborder="0" allowfullscreen="allowfullscreen" src="https://player.vimeo.com/video/80896303?autoplay=1"></iframe>',
+            'class' => ['video-embed-field-launch-modal'],
+          ],
+          '#attached' => ['library' => ['video_embed_field/colorbox']],
+          'children' => [
+            '#type' => 'link',
+            '#title' => [
+              '#theme' => 'image',
+              '#uri' => 'public://video_thumbnails/80896303.jpg',
+            ],
+            '#url' => 'https://vimeo.com/80896303',
+          ],
+        ],
+      ],
     ];
   }
 
@@ -141,13 +170,16 @@ class EmbedFieldTest extends FieldUnitTestBase {
     $entity = entity_create('entity_test');
     $entity->field_test->value = $url;
     $entity->save();
-    $field = $entity->field_test->view($settings);
-    // Prevent circular references with comparing url objects.
-    if (isset($field[0]['#url']) && $field[0]['#url'] instanceof Url) {
-      $url = $field[0]['#url'];
-      $field[0]['#url'] = $url->isRouted() ? $url->getRouteName() : $url->getUri();
-    }
-    $this->assertEqual($field[0], $expected_output);
+    $field = $entity->field_test->view($settings)[0];
+    // Prevent circular references with comparing field output that
+    // contains url objects.
+    array_walk_recursive($field, function (&$value) {
+      if ($value instanceof Url) {
+        $value = $value->isRouted() ? $value->getRouteName() : $value->getUri();
+      }
+      $value = trim($value);
+    });
+    $this->assertEqual($field, $expected_output);
   }
 
   /**
@@ -174,6 +206,9 @@ class EmbedFieldTest extends FieldUnitTestBase {
       'field_name' => 'field_test',
       'bundle' => 'entity_test',
     ])->save();
+    // Fake colorbox being enabled for the purposes of testing.
+    $module_handler = \Drupal::moduleHandler();
+    $module_handler->addModule('colorbox', NULL);
   }
 
 }
