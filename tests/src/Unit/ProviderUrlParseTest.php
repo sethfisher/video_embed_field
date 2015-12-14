@@ -49,6 +49,11 @@ class ProviderUrlParseTest extends UnitTestCase {
         'https://youtube.com/watch?v=fdbFVWupSsw',
         'fdbFVWupSsw',
       ],
+      'YouTube: Special Characters' => [
+        'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTube',
+        'https://youtube.com/watch?v=fdbFV_Wup-Ssw',
+        'fdbFV_Wup-Ssw',
+      ],
       // Youtube failing cases.
       'YouTube: Non-youtube domain with ?v param' => [
         'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTube',
