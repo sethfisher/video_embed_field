@@ -75,6 +75,16 @@ abstract class ProviderPluginBase implements ProviderPluginInterface, ContainerF
   }
 
   /**
+   * Get the input which caused this plugin to be selected.
+   *
+   * @return string
+   *   The raw input from the user.
+   */
+  protected function getInput() {
+    return $this->input;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function isApplicable($input) {

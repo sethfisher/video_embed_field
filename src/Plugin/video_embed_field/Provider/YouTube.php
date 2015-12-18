@@ -29,9 +29,17 @@ class YouTube extends ProviderPluginBase {
         'height' => $height,
         'frameborder' => '0',
         'allowfullscreen' => 'allowfullscreen',
-        'src' => sprintf('https://www.youtube.com/embed/%s?autoplay=%d', $this->getVideoId(), $autoplay),
+        'src' => sprintf('https://www.youtube.com/embed/%s?autoplay=%d&start=%d', $this->getVideoId(), $autoplay, $this->getTimeIndex()),
       ],
     ];
+  }
+
+  /**
+   * Get the time index for when the given video starts.
+   */
+  protected function getTimeIndex() {
+    preg_match('/[&\?]t=(?<timeindex>\d*)/', $this->getInput(), $matches);
+    return isset($matches['timeindex']) ? $matches['timeindex'] : 0;
   }
 
   /**
@@ -45,7 +53,7 @@ class YouTube extends ProviderPluginBase {
    * {@inheritdoc}
    */
   public static function getIdFromInput($input) {
-    preg_match('/https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)(?<id>[0-9A-Za-z_-]*)/', $input, $matches);
+    preg_match('/^https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)(?<id>[0-9A-Za-z_-]*)/', $input, $matches);
     return isset($matches['id']) ? $matches['id'] : FALSE;
   }
 

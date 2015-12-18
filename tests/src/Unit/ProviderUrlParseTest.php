@@ -22,7 +22,7 @@ class ProviderUrlParseTest extends UnitTestCase {
    * Test URL parsing works as expected.
    */
   public function testUrlParsing($provider, $url, $expected) {
-    $this->assertEquals($provider::getIdFromInput($url), $expected);
+    $this->assertEquals($expected, $provider::getIdFromInput($url));
   }
 
   /**
@@ -57,6 +57,16 @@ class ProviderUrlParseTest extends UnitTestCase {
       'YouTube: Short URL' => [
         'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTube',
         'https://youtu.be/fdbFVWupSsw',
+        'fdbFVWupSsw',
+      ],
+      'YouTube: Added Query String' => [
+        'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTube',
+        'https://youtube.com/watch?v=fdbFVWupSsw&some_param=value&t=150',
+        'fdbFVWupSsw',
+      ],
+      'YouTube: Short URL Added Query String' => [
+        'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTube',
+        'https://youtu.be/fdbFVWupSsw?some_param=other&another=something&t=55',
         'fdbFVWupSsw',
       ],
       // Youtube failing cases.

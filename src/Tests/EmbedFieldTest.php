@@ -60,7 +60,29 @@ class EmbedFieldTest extends FieldUnitTestBase {
             'height' => '100%',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
-            'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1',
+            'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1&start=0',
+          ],
+        ],
+      ],
+      'YouTube: Time-index Embed Code' => [
+        'https://www.youtube.com/watch?v=fdbFVWupSsw&t=100',
+        [
+          'type' => 'video_embed_field_video',
+          'settings' => [
+            'width' => '100%',
+            'height' => '100%',
+            'autoplay' => TRUE,
+          ],
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'iframe',
+          '#attributes' => [
+            'width' => '100%',
+            'height' => '100%',
+            'frameborder' => '0',
+            'allowfullscreen' => 'allowfullscreen',
+            'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1&start=100',
           ],
         ],
       ],
