@@ -16,6 +16,9 @@ field.formatter.settings.video_embed_field_video:
     autoplay:
       type: boolean
       label: 'Autoplay'
+    responsive:
+      type: boolean
+      label: 'Responsive'
     width:
       type: string
       label: 'Width'

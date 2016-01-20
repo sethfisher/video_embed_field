@@ -180,6 +180,35 @@ class EmbedFieldTest extends FieldUnitTestBase {
           ],
         ],
       ],
+      'Video: Responsive' => [
+        'https://vimeo.com/80896303',
+        [
+          'type' => 'video_embed_field_video',
+          'settings' => [
+            'width' => '100px',
+            'height' => '100px',
+            'autoplay' => TRUE,
+            'responsive' => TRUE,
+          ],
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'iframe',
+          '#attributes' => [
+            'width' => '100px',
+            'height' => '100px',
+            'frameborder' => '0',
+            'allowfullscreen' => 'allowfullscreen',
+            'src' => 'https://player.vimeo.com/video/80896303?autoplay=1',
+          ],
+        ],
+        [
+          'class' => ['video-embed-field-responsive-video'],
+        ],
+        [
+          'library' => ['video_embed_field/responsive-video'],
+        ],
+      ],
     ];
   }
 
@@ -188,20 +217,27 @@ class EmbedFieldTest extends FieldUnitTestBase {
    *
    * Test the embed field.
    */
-  public function assertEmbedField($url, $settings, $expected_output) {
+  public function assertEmbedField($url, $settings, $expected_field_item_output, $field_attributes = NULL, $field_attachments = NULL) {
     $entity = entity_create('entity_test');
     $entity->field_test->value = $url;
     $entity->save();
-    $field = $entity->field_test->view($settings)[0];
+    $field_output = $entity->field_test->view($settings);
+    $field_item_output = $field_output[0];
     // Prevent circular references with comparing field output that
     // contains url objects.
-    array_walk_recursive($field, function (&$value) {
+    array_walk_recursive($field_item_output, function (&$value) {
       if ($value instanceof Url) {
         $value = $value->isRouted() ? $value->getRouteName() : $value->getUri();
       }
       $value = trim($value);
     });
-    $this->assertEqual($field, $expected_output);
+    if ($field_attributes !== NULL) {
+      $this->assertEqual($field_output['#attributes'], $field_attributes);
+    }
+    if ($field_attachments !== NULL) {
+      $this->assertEqual($field_output['#attached'], $field_attachments);
+    }
+    $this->assertEqual($field_item_output, $expected_field_item_output);
   }
 
   /**
@@ -209,7 +245,13 @@ class EmbedFieldTest extends FieldUnitTestBase {
    */
   public function testEmbedField() {
     foreach ($this->renderedFieldTestCases() as $test_case) {
-      $this->assertEmbedField($test_case[0], $test_case[1], $test_case[2]);
+      $this->assertEmbedField(
+        $test_case[0],
+        $test_case[1],
+        $test_case[2],
+        isset($test_case[3]) ? $test_case[3] : NULL,
+        isset($test_case[4]) ? $test_case[4] : NULL
+      );
     }
   }
 

@@ -39,10 +39,15 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
-    $settings = $this->getSettings();
     foreach ($items as $delta => $item) {
       $provider = $this->providerManager->loadProviderFromInput($item->value);
-      $element[$delta] = $provider->renderEmbedCode($settings['width'], $settings['height'], $settings['autoplay']);
+      $element[$delta] = $provider->renderEmbedCode($this->getSetting('width'), $this->getSetting('height'), $this->getSetting('autoplay'));
+    }
+    // Attach a library and attributes to the field renderable array in the case
+    // of responsive videos.
+    if ($this->getSetting('responsive')) {
+      $element['#attached']['library'][] = 'video_embed_field/responsive-video';
+      $element['#attributes']['class'][] = 'video-embed-field-responsive-video';
     }
     return $element;
   }
@@ -52,6 +57,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
    */
   public static function defaultSettings() {
     return [
+      'responsive' => FALSE,
       'width' => '854',
       'height' => '480',
       'autoplay' => TRUE,
@@ -67,17 +73,32 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
       '#type' => 'checkbox',
       '#default_value' => $this->getSetting('autoplay'),
     ];
+    $form['responsive'] = [
+      '#title' => t('Responsive Video'),
+      '#type' => 'checkbox',
+      '#description' => $this->t("Make the video fill the width of it's container, adjusting to the size of the user's screen."),
+      '#default_value' => $this->getSetting('responsive'),
+    ];
+    $responsive_checked_state = [
+      'visible' => [
+        [
+          ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][responsive]"]' => ['checked' => FALSE],
+        ]
+      ],
+    ];
     $form['width'] = [
       '#title' => t('Width'),
       '#type' => 'textfield',
       '#default_value' => $this->getSetting('width'),
       '#required' => TRUE,
+      '#states' => $responsive_checked_state,
     ];
     $form['height'] = [
       '#title' => t('Height'),
       '#type' => 'textfield',
       '#default_value' => $this->getSetting('height'),
       '#required' => TRUE,
+      '#states' => $responsive_checked_state,
     ];
     return $form;
   }
@@ -89,7 +110,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
     $summary[] = t('Embedded Video (@widthx@height@autoplay).', [
       '@width' => $this->getSetting('width'),
       '@height' => $this->getSetting('height'),
-      '@autoplay' => $this->getSetting('autoplay') ? t(', autoplaying') : '' ,
+      '@autoplay' => $this->getSetting('autoplay') ? t(', autoplaying') : '',
     ]);
     return $summary;
   }
