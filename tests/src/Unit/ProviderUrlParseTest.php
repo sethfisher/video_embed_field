@@ -101,15 +101,20 @@ class ProviderUrlParseTest extends UnitTestCase {
         'http://www.vimeo.com/138627894',
         '138627894',
       ],
+      'Vimeo: Channel URL' => [
+        'Drupal\video_embed_field\Plugin\video_embed_field\Provider\Vimeo',
+        'https://vimeo.com/channels/staffpicks/138627894',
+        '138627894',
+      ],
       // Vimeo failing cases.
       'Vimeo: Malformed String' => [
         'Drupal\video_embed_field\Plugin\video_embed_field\Provider\Vimeo',
         $this->randomMachineName(),
         FALSE,
       ],
-      'Vimeo: Non numeric page' => [
+      'Vimeo: Non numeric channel page' => [
         'Drupal\video_embed_field\Plugin\video_embed_field\Provider\Vimeo',
-        'https://vimeo.com/channels/staffpicks/143313674',
+        'https://vimeo.com/channels/staffpicks/some-page',
         FALSE,
       ],
     ];
