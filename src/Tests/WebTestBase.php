@@ -2,22 +2,21 @@
 
 /**
  * @file
- * Contains \Drupal\video_embed_field\Tests\VideoEmbedFieldWidgetTest.
+ * Contains \Drupal\video_embed_field\Tests\VideoEmbedFieldWebTestBase.
  */
 
 namespace Drupal\video_embed_field\Tests;
 
-use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\simpletest\WebTestBase;
+use Drupal\simpletest\WebTestBase as CoreWebTestBase;
 
 /**
  * Test the video embed field widget.
  *
  * @group video_embed_field
  */
-class VideoEmbedFieldWidgetTest extends WebTestBase {
+abstract class WebTestBase extends CoreWebTestBase {
 
   /**
    * A user with permission to administer content types, node fields, etc.
@@ -39,6 +38,20 @@ class VideoEmbedFieldWidgetTest extends WebTestBase {
    * @var string
    */
   protected $contentTypeName;
+
+  /**
+   * The entity display.
+   *
+   * @var \Drupal\Core\Entity\Display\EntityViewDisplayInterface
+   */
+  protected $entityDisplay;
+
+  /**
+   * The form display.
+   *
+   * @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface
+   */
+  protected $entityFormDisplay;
 
   /**
    * Modules to install.
@@ -88,42 +101,9 @@ class VideoEmbedFieldWidgetTest extends WebTestBase {
       'settings' => [],
     ])->save();
     $this->fieldName = $this->fieldName;
-  }
-
-  /**
-   * Test the input widget.
-   */
-  function testVideoEmbedFieldDefaultWidget() {
-    entity_get_form_display('node', $this->contentTypeName, 'default')
-      ->setComponent($this->fieldName, ['type' => 'video_embed_field_textfield',])
-      ->save();
-
-    $this->drupalLogin($this->adminUser);
-    $node_title = $this->randomMachineName();
-
-    // Test an invalid input.
-    $this->drupalPostForm(Url::fromRoute('node.add', ['node_type' => $this->contentTypeName]), [
-      'title[0][value]' => $node_title,
-      $this->fieldName . '[0][value]' => 'Some useless value.',
-    ], t('Save'));
-    $this->assertRaw(t('Could not find a video provider to handle the given URL.'));
-
-    // Test a valid input.
-    $valid_input = 'https://vimeo.com/80896303';
-    $this->drupalPostForm(NULL, [
-      $this->fieldName . '[0][value]' => $valid_input,
-    ], t('Save'));
-    $this->assertRaw(t('@type %title has been created.', [
-      '@type' => $this->contentTypeName,
-      '%title' => $node_title
-    ]));
-
-    // Load the saved node and assert the valid value was saved into the field.
-    $nodes = \Drupal::entityManager()
-      ->getStorage('node')
-      ->loadByProperties(['title' => $node_title]);
-    $node = array_shift($nodes);
-    $this->assertEqual($node->{$this->fieldName}[0]->value, $valid_input);
+    $this->entityDisplay = entity_get_display('node', $this->contentTypeName, 'default');
+    $this->entityFormDisplay = entity_get_form_display('node', $this->contentTypeName, 'default');
+    $this->resetAll();
   }
 
 }

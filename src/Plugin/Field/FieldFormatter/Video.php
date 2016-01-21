@@ -11,6 +11,7 @@ use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\video_embed_field\ProviderManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -35,13 +36,22 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
   protected $providerManager;
 
   /**
+   * The logged in user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
     foreach ($items as $delta => $item) {
       $provider = $this->providerManager->loadProviderFromInput($item->value);
-      $element[$delta] = $provider->renderEmbedCode($this->getSetting('width'), $this->getSetting('height'), $this->getSetting('autoplay'));
+      $autoplay = $this->currentUser->hasPermission('never autoplay videos') ? FALSE : $this->getSetting('autoplay');
+      $element[$delta] = $provider->renderEmbedCode($this->getSetting('width'), $this->getSetting('height'), $autoplay);
+      $element[$delta]['#cache']['contexts'][] = 'user.permissions';
     }
     // Attach a library and attributes to the field renderable array in the case
     // of responsive videos.
@@ -134,10 +144,13 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
    *   Third party settings.
    * @param \Drupal\video_embed_field\ProviderManagerInterface $provider_manager
    *   The video embed provider manager.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The logged in user.
    */
-  public function __construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, ProviderManagerInterface $provider_manager) {
+  public function __construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, ProviderManagerInterface $provider_manager, AccountInterface $current_user) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
     $this->providerManager = $provider_manager;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -152,7 +165,8 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
       $configuration['label'],
       $configuration['view_mode'],
       $configuration['third_party_settings'],
-      $container->get('video_embed_field.provider_manager')
+      $container->get('video_embed_field.provider_manager'),
+      $container->get('current_user')
     );
   }
 

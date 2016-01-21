@@ -16,7 +16,7 @@ use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
  *
  * @group video_embed_field
  */
-class EmbedFieldTest extends FieldUnitTestBase {
+class FieldOutputTest extends FieldUnitTestBase {
 
   /**
    * Modules to enable.
@@ -62,6 +62,11 @@ class EmbedFieldTest extends FieldUnitTestBase {
             'allowfullscreen' => 'allowfullscreen',
             'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1&start=0',
           ],
+          '#cache' => [
+            'contexts' => [
+              'user.permissions',
+            ],
+          ],
         ],
       ],
       'YouTube: Time-index Embed Code' => [
@@ -83,6 +88,11 @@ class EmbedFieldTest extends FieldUnitTestBase {
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
             'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1&start=100',
+          ],
+          '#cache' => [
+            'contexts' => [
+              'user.permissions',
+            ],
           ],
         ],
       ],
@@ -117,6 +127,11 @@ class EmbedFieldTest extends FieldUnitTestBase {
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
             'src' => 'https://player.vimeo.com/video/80896303?autoplay=1',
+          ],
+          '#cache' => [
+            'contexts' => [
+              'user.permissions',
+            ],
           ],
         ]
       ],
@@ -200,6 +215,11 @@ class EmbedFieldTest extends FieldUnitTestBase {
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
             'src' => 'https://player.vimeo.com/video/80896303?autoplay=1',
+          ],
+          '#cache' => [
+            'contexts' => [
+              'user.permissions',
+            ],
           ],
         ],
         [
