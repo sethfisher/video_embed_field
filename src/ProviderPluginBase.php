@@ -10,6 +10,7 @@ namespace Drupal\video_embed_field;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\image\Entity\ImageStyle;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -118,8 +119,11 @@ abstract class ProviderPluginBase implements ProviderPluginInterface, ContainerF
     $local_uri = $this->getLocalThumbnailUri();
     if (!file_exists($local_uri)) {
       file_prepare_directory($this->thumbsDirectory, FILE_CREATE_DIRECTORY);
-      $thumbnail = $this->httpClient->request('GET', $this->getRemoteThumbnailUrl());
-      file_unmanaged_save_data((string) $thumbnail->getBody(), $local_uri);
+      try {
+        $thumbnail = $this->httpClient->request('GET', $this->getRemoteThumbnailUrl());
+        file_unmanaged_save_data((string) $thumbnail->getBody(), $local_uri);
+      } catch(ClientException $e) {
+      }
     }
   }
 
