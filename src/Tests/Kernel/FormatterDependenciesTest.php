@@ -2,16 +2,13 @@
 
 /**
  * @file
- * Contains \Drupal\video_embed_field\Tests\FormatterDependenciesTest.
+ * Contains \Drupal\video_embed_field\Tests\Kernel\FormatterDependenciesTest.
  */
 
-namespace Drupal\video_embed_field\Tests;
+namespace Drupal\video_embed_field\Tests\Kernel;
 
-use Drupal\Core\Entity\Entity\EntityViewDisplay;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\video_embed_field\Tests\KernelTestBase;
 
 /**
  * Test the configuration dependencies are created correctly.
@@ -42,63 +39,17 @@ class FormatterDependenciesTest extends KernelTestBase {
   protected $entityTypeManager;
 
   /**
-   * The field name used in the test.
-   *
-   * @var string
-   */
-  protected $fieldName;
-
-  /**
-   * Modules to install.
-   *
-   * @var array
-   */
-  public static $modules = [
-    'video_embed_field',
-    'field_ui',
-    'field',
-    'entity_test',
-    'user',
-    'system',
-    'image',
-  ];
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
-    // Entity display and field.
-    $this->fieldName = strtolower($this->randomMachineName());
-    EntityViewDisplay::create([
-      'targetEntityType' => 'entity_test',
-      'bundle' => 'entity_test',
-      'mode' => 'default',
-    ])->save();
-    $field_storage = FieldStorageConfig::create([
-      'field_name' => $this->fieldName,
-      'entity_type' => 'entity_test',
-      'type' => 'video_embed_field',
-      'settings' => [
-        'allowed_providers' => [],
-      ],
-    ]);
-    $field_storage->save();
-    FieldConfig::create([
-      'field_storage' => $field_storage,
-      'bundle' => 'entity_test',
-      'settings' => [],
-    ])->save();
 
-    // Image styles.
     $this->style = ImageStyle::create(array('name' => 'style_foo', 'label' => $this->randomString()));
     $this->style->save();
     $this->replacementStyle = ImageStyle::create(array('name' => 'style_bar', 'label' => $this->randomString()));
     $this->replacementStyle->save();
-    $this->entityTypeManager = \Drupal::entityTypeManager();
 
-    // Fake colorbox being enabled for the purposes of Dtesting.
-    \Drupal::moduleHandler()->addModule('colorbox', NULL);
+    $this->entityTypeManager = \Drupal::entityTypeManager();
   }
 
   /**

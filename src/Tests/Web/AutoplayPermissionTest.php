@@ -2,10 +2,12 @@
 
 /**
  * @file
- * Contains \Drupal\video_embed_field\Tests\AutoplayPermissionTest.
+ * Contains \Drupal\video_embed_field\Tests\Web\AutoplayPermissionTest.
  */
 
-namespace Drupal\video_embed_field\Tests;
+namespace Drupal\video_embed_field\Tests\Web;
+
+use Drupal\video_embed_field\Tests\WebTestBase;
 
 /**
  * Test the autoplay permission works.

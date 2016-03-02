@@ -2,41 +2,22 @@
 
 /**
  * @file
- * Contains \Drupal\video_embed_field\Tests\FieldOutputTest.
+ * Contains \Drupal\video_embed_field\Tests\Kernel\FieldOutputTest.
  */
 
-namespace Drupal\video_embed_field\Tests;
+namespace Drupal\video_embed_field\Tests\Kernel;
 
 use Drupal\Core\Url;
 use Drupal\entity_test\Entity\EntityTest;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
+use Drupal\video_embed_field\Tests\KernelTestBase;
 
 /**
- * Test the embed field is functioning.
+ * Test the embed field formatters are functioning.
  *
  * @group video_embed_field
  */
 class FieldOutputTest extends KernelTestBase {
-
-  /**
-   * Modules to enable.
-   *
-   * @var array
-   */
-  public static $modules = [
-    'user',
-    'system',
-    'field',
-    'text',
-    'entity_test',
-    'field_test',
-    'video_embed_field',
-    'image'
-  ];
-
 
   /**
    * The test cases.
@@ -277,10 +258,10 @@ class FieldOutputTest extends KernelTestBase {
    */
   protected function getPreparedFieldOutput($url, $settings) {
     $entity = EntityTest::create();
-    $entity->field_test->value = $url;
+    $entity->{$this->fieldName}->value = $url;
     $entity->save();
 
-    $field_output = $entity->field_test->view($settings);
+    $field_output = $entity->{$this->fieldName}->view($settings);
 
     // Prepare the field output to make it easier to compare our test data
     // values against.
@@ -296,32 +277,6 @@ class FieldOutputTest extends KernelTestBase {
     });
 
     return $field_output;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-
-    $this->installEntitySchema('entity_test');
-
-    FieldStorageConfig::create([
-      'field_name' => 'field_test',
-      'entity_type' => 'entity_test',
-      'type' => 'video_embed_field',
-    ])->save();
-    FieldConfig::create([
-      'entity_type' => 'entity_test',
-      'field_name' => 'field_test',
-      'bundle' => 'entity_test',
-    ])->save();
-
-    // Fake colorbox being enabled for the purposes of testing.
-    \Drupal::moduleHandler()->addModule('colorbox', NULL);
-
-    // Use a HTTP mock which won't attempt to download anything.
-    \Drupal::getContainer()->set('http_client', new MockHttpClient());
   }
 
 }

@@ -2,12 +2,13 @@
 
 /**
  * @file
- * Contains \Drupal\video_embed_field\Tests\VideoEmbedFieldWidgetTest.
+ * Contains \Drupal\video_embed_field\Tests\Web\VideoEmbedFieldWidgetTest.
  */
 
-namespace Drupal\video_embed_field\Tests;
+namespace Drupal\video_embed_field\Tests\Web;
 
 use Drupal\Core\Url;
+use Drupal\video_embed_field\Tests\WebTestBase;
 
 /**
  * Test the video embed field widget.

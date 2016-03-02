@@ -13,8 +13,6 @@ use Drupal\simpletest\WebTestBase as CoreWebTestBase;
 
 /**
  * Test the video embed field widget.
- *
- * @group video_embed_field
  */
 abstract class WebTestBase extends CoreWebTestBase {
 
