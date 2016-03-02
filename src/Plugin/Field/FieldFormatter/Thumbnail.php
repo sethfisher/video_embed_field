@@ -12,6 +12,8 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\image\ImageStyleStorageInterface;
 use Drupal\video_embed_field\ProviderManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -34,6 +36,13 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
    * @var \Drupal\video_embed_field\ProviderManagerInterface
    */
   protected $providerManager;
+
+  /**
+   * The image style entity storage.
+   *
+   * @var \Drupal\image\ImageStyleStorageInterface
+   */
+  protected $imageStyleStorage;
 
   /**
    * Class constant for linking to content.
@@ -126,9 +135,10 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
    * @param \Drupal\video_embed_field\ProviderManagerInterface $provider_manager
    *   The video embed provider manager.
    */
-  public function __construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, ProviderManagerInterface $provider_manager) {
+  public function __construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, ProviderManagerInterface $provider_manager, ImageStyleStorageInterface $image_style_storage) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
     $this->providerManager = $provider_manager;
+    $this->imageStyleStorage = $image_style_storage;
   }
 
   /**
@@ -143,8 +153,42 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
       $configuration['label'],
       $configuration['view_mode'],
       $configuration['third_party_settings'],
-      $container->get('video_embed_field.provider_manager')
+      $container->get('video_embed_field.provider_manager'),
+      $container->get('entity.manager')->getStorage('image_style')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    $dependencies = parent::calculateDependencies();
+    $style_id = $this->getSetting('image_style');
+    if ($style_id && $style = ImageStyle::load($style_id)) {
+      $dependencies[$style->getConfigDependencyKey()][] = $style->getConfigDependencyName();
+    }
+    return $dependencies;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function onDependencyRemoval(array $dependencies) {
+    $changed = parent::onDependencyRemoval($dependencies);
+    $style_id = $this->getSetting('image_style');
+    if ($style_id && $style = ImageStyle::load($style_id)) {
+      if (!empty($dependencies[$style->getConfigDependencyKey()][$style->getConfigDependencyName()])) {
+        $replacement_id = $this->imageStyleStorage->getReplacementId($style_id);
+        // If a valid replacement has been provided in the storage, replace the
+        // image style with the replacement and signal that the formatter plugin
+        // settings were updated.
+        if ($replacement_id && ImageStyle::load($replacement_id)) {
+          $this->setSetting('image_style', $replacement_id);
+          $changed = TRUE;
+        }
+      }
+    }
+    return $changed;
   }
 
 }

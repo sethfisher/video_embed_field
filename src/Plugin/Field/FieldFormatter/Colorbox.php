@@ -100,6 +100,24 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
   /**
    * {@inheritdoc}
    */
+  public function calculateDependencies() {
+    return parent::calculateDependencies() + $this->thumbnailFormatter->calculateDependencies() + $this->videoFormatter->calculateDependencies();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function onDependencyRemoval(array $dependencies) {
+    $parent = parent::onDependencyRemoval($dependencies);
+    $thumbnail = $this->thumbnailFormatter->onDependencyRemoval($dependencies);
+    $video = $this->videoFormatter->onDependencyRemoval($dependencies);
+    $this->setSetting('image_style', $this->thumbnailFormatter->getSetting('image_style'));
+    return $parent || $thumbnail || $video;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function isApplicable(FieldDefinitionInterface $field_definition) {
     return \Drupal::moduleHandler()->moduleExists('colorbox');
   }
