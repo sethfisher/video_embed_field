@@ -89,15 +89,16 @@ class FormatterDependenciesTest extends KernelTestBase {
       'bundle' => 'entity_test',
       'settings' => [],
     ])->save();
+
     // Image styles.
     $this->style = ImageStyle::create(array('name' => 'style_foo', 'label' => $this->randomString()));
     $this->style->save();
     $this->replacementStyle = ImageStyle::create(array('name' => 'style_bar', 'label' => $this->randomString()));
     $this->replacementStyle->save();
     $this->entityTypeManager = \Drupal::entityTypeManager();
+
     // Fake colorbox being enabled for the purposes of Dtesting.
-    $module_handler = \Drupal::moduleHandler();
-    $module_handler->addModule('colorbox', NULL);
+    \Drupal::moduleHandler()->addModule('colorbox', NULL);
   }
 
   /**

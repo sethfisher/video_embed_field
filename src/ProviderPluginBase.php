@@ -122,7 +122,7 @@ abstract class ProviderPluginBase implements ProviderPluginInterface, ContainerF
       try {
         $thumbnail = $this->httpClient->request('GET', $this->getRemoteThumbnailUrl());
         file_unmanaged_save_data((string) $thumbnail->getBody(), $local_uri);
-      } catch(ClientException $e) {
+      } catch(\Exception $e) {
       }
     }
   }

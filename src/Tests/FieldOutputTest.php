@@ -2,13 +2,16 @@
 
 /**
  * @file
- * Contains \Drupal\video_embed_field\Tests\EmbedFieldTest.
+ * Contains \Drupal\video_embed_field\Tests\FieldOutputTest.
  */
 
 namespace Drupal\video_embed_field\Tests;
 
 use Drupal\Core\Url;
-use Drupal\field\Tests\FieldUnitTestBase;
+use Drupal\entity_test\Entity\EntityTest;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\KernelTests\KernelTestBase;
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
 
 /**
@@ -16,21 +19,30 @@ use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
  *
  * @group video_embed_field
  */
-class FieldOutputTest extends FieldUnitTestBase {
+class FieldOutputTest extends KernelTestBase {
 
   /**
    * Modules to enable.
    *
    * @var array
    */
-  public static $modules = ['video_embed_field', 'image'];
+  public static $modules = [
+    'user',
+    'system',
+    'field',
+    'text',
+    'entity_test',
+    'field_test',
+    'video_embed_field',
+    'image'
+  ];
+
 
   /**
    * The test cases.
    */
   public function renderedFieldTestCases() {
     return [
-      // YouTube field tests.
       'YouTube: Thumbnail' => [
         'https://www.youtube.com/watch?v=fdbFVWupSsw',
         [
@@ -96,7 +108,6 @@ class FieldOutputTest extends FieldUnitTestBase {
           ],
         ],
       ],
-      // Vimeo field tests.
       'Vimeo: Thumbnail' => [
         'https://vimeo.com/80896303',
         [
@@ -135,7 +146,6 @@ class FieldOutputTest extends FieldUnitTestBase {
           ],
         ]
       ],
-      // Linked thumbnails.
       'Linked Thumbnail: Content' => [
         'https://vimeo.com/80896303',
         [
@@ -166,7 +176,6 @@ class FieldOutputTest extends FieldUnitTestBase {
           '#url' => 'https://vimeo.com/80896303',
         ],
       ],
-      // Colorbox modals.
       'Colorbox Modal: Linked Image & Autoplay' => [
         'https://vimeo.com/80896303',
         [
@@ -233,46 +242,60 @@ class FieldOutputTest extends FieldUnitTestBase {
   }
 
   /**
-   * @dataProvider fieldRenderedValues
+   * @dataProvider renderedFieldTestCases
    *
    * Test the embed field.
    */
-  public function assertEmbedField($url, $settings, $expected_field_item_output, $field_attributes = NULL, $field_attachments = NULL) {
-    $entity = entity_create('entity_test');
-    $entity->field_test->value = $url;
-    $entity->save();
-    $field_output = $entity->field_test->view($settings);
-    $field_item_output = $field_output[0];
-    // Prevent circular references with comparing field output that
-    // contains url objects.
-    array_walk_recursive($field_item_output, function (&$value) {
-      if ($value instanceof Url) {
-        $value = $value->isRouted() ? $value->getRouteName() : $value->getUri();
-      }
-      $value = trim($value);
-    });
-    if ($field_attributes !== NULL) {
-      $this->assertEqual($field_output['#attributes'], $field_attributes);
+  public function testEmbedField($url, $settings, $expected_field_item_output, $field_attributes = NULL, $field_attachments = NULL) {
+
+    $field_output = $this->getPreparedFieldOutput($url, $settings);
+
+    // Assert the specific field output at delta 1 matches the expected test
+    // data.
+    $this->assertEquals($field_output[0], $expected_field_item_output);
+
+    // Allow us to assert subsets of the whole field output, instead of having
+    // to use the verbose field renderable array in our test data.
+    if ($field_attributes) {
+      $this->assertEquals($field_output['#attributes'], $field_attributes);
     }
-    if ($field_attachments !== NULL) {
-      $this->assertEqual($field_output['#attached'], $field_attachments);
+    if ($field_attachments) {
+      $this->assertEquals($field_output['#attached'], $field_attachments);
     }
-    $this->assertEqual($field_item_output, $expected_field_item_output);
   }
 
   /**
-   * Test the embed fields are working.
+   * Get and prepare the output of a field.
+   *
+   * @param string $url
+   *   The video URL.
+   * @param array $settings
+   *   An array of formatter settings.
+   *
+   * @return array
+   *   The rendered prepared field output.
    */
-  public function testEmbedField() {
-    foreach ($this->renderedFieldTestCases() as $test_case) {
-      $this->assertEmbedField(
-        $test_case[0],
-        $test_case[1],
-        $test_case[2],
-        isset($test_case[3]) ? $test_case[3] : NULL,
-        isset($test_case[4]) ? $test_case[4] : NULL
-      );
-    }
+  protected function getPreparedFieldOutput($url, $settings) {
+    $entity = EntityTest::create();
+    $entity->field_test->value = $url;
+    $entity->save();
+
+    $field_output = $entity->field_test->view($settings);
+
+    // Prepare the field output to make it easier to compare our test data
+    // values against.
+    array_walk_recursive($field_output[0], function (&$value) {
+      // Prevent circular references with comparing field output that
+      // contains url objects.
+      if ($value instanceof Url) {
+        $value = $value->isRouted() ? $value->getRouteName() : $value->getUri();
+      }
+      // Trim to prevent stray whitespace for the colorbox formatters with
+      // early rendering.
+      $value = trim($value);
+    });
+
+    return $field_output;
   }
 
   /**
@@ -280,19 +303,25 @@ class FieldOutputTest extends FieldUnitTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    entity_create('field_storage_config', [
+
+    $this->installEntitySchema('entity_test');
+
+    FieldStorageConfig::create([
       'field_name' => 'field_test',
       'entity_type' => 'entity_test',
       'type' => 'video_embed_field',
     ])->save();
-    entity_create('field_config', [
+    FieldConfig::create([
       'entity_type' => 'entity_test',
       'field_name' => 'field_test',
       'bundle' => 'entity_test',
     ])->save();
+
     // Fake colorbox being enabled for the purposes of testing.
-    $module_handler = \Drupal::moduleHandler();
-    $module_handler->addModule('colorbox', NULL);
+    \Drupal::moduleHandler()->addModule('colorbox', NULL);
+
+    // Use a HTTP mock which won't attempt to download anything.
+    \Drupal::getContainer()->set('http_client', new MockHttpClient());
   }
 
 }
