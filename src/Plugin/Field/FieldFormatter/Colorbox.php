@@ -44,6 +44,13 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
   protected $videoFormatter;
 
   /**
+   * Allow us to attach colorbox settings to our element.
+   *
+   * @var \Drupal\colorbox\ElementAttachmentInterface
+   */
+  protected $colorboxAttachment;
+
+  /**
    * The renderer.
    *
    * @var \Drupal\Core\Render\RendererInterface
@@ -70,6 +77,7 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
         'children' => $thumbnails[$delta],
       ];
     }
+    $this->colorboxAttachment->attach($element);
     return $element;
   }
 
@@ -145,12 +153,15 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
    *   The field formatter for thumbnails.
    * @param \Drupal\Core\Field\FormatterInterface $video_formatter
    *   The field formatter for videos.
+   * @param \Drupal\colorbox\ElementAttachmentInterface $colorbox_attachment
+   *   The field formatter for videos.
    */
-  public function __construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, RendererInterface $renderer, FormatterInterface $thumbnail_formatter, FormatterInterface $video_formatter) {
+  public function __construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, RendererInterface $renderer, FormatterInterface $thumbnail_formatter, FormatterInterface $video_formatter, $colorbox_attachment) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
     $this->thumbnailFormatter = $thumbnail_formatter;
     $this->videoFormatter = $video_formatter;
     $this->renderer = $renderer;
+    $this->colorboxAttachment = $colorbox_attachment;
   }
 
   /**
@@ -168,7 +179,8 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
       $configuration['third_party_settings'],
       $container->get('renderer'),
       $formatter_manager->createInstance('video_embed_field_thumbnail', $configuration),
-      $formatter_manager->createInstance('video_embed_field_video', $configuration)
+      $formatter_manager->createInstance('video_embed_field_video', $configuration),
+      $container->get('colorbox.attachment')
     );
   }
 

@@ -72,10 +72,14 @@ abstract class KernelTestBase extends CoreKernelTestBase {
     ])->save();
 
     // Fake colorbox being enabled for the purposes of testing.
-    \Drupal::moduleHandler()->addModule('colorbox', NULL);
+    $this->container->get('module_handler')->addModule('colorbox', NULL);
 
     // Use a HTTP mock which won't attempt to download anything.
-    \Drupal::getContainer()->set('http_client', new MockHttpClient());
+    $this->container->set('http_client', new MockHttpClient());
+
+    // Shim in a service required from the colorbox module.
+    $colorbox_mock = $this->getMockBuilder('ColorboxAttachment')->setMethods(['attach'])->getMock();
+    $this->container->set('colorbox.attachment', $colorbox_mock);
   }
 
 }
