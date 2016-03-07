@@ -22,7 +22,7 @@ use Drupal\Core\TypedData\TraversableTypedDataInterface;
  *   description = @Translation("Stores a video and then outputs some embed code."),
  *   category = @Translation("Media"),
  *   default_widget = "video_embed_field_textfield",
- *   default_formatter = "video_embed_field_thumbnail"
+ *   default_formatter = "video_embed_field_video"
  * )
  */
 class VideoEmbedField extends FieldItemBase {
