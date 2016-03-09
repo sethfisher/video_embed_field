@@ -39,7 +39,7 @@ class ProviderUrlParseTest extends UnitTestCase {
         'https://www.youtube.com/watch?v=fdbFVWupSsw',
         'fdbFVWupSsw',
       ],
-      'YouTubue: Non HTTPS' => [
+      'YouTube: Non HTTPS' => [
         'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTube',
         'http://www.youtube.com/watch?v=fdbFVWupSsw',
         'fdbFVWupSsw',
