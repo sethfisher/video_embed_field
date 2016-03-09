@@ -81,6 +81,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
     $form['autoplay'] = [
       '#title' => t('Autoplay'),
       '#type' => 'checkbox',
+      '#description' => $this->t('Autoplay the videos for users without the "never autoplay videos" permission. Roles with this permission will bypass this setting.'),
       '#default_value' => $this->getSetting('autoplay'),
     ];
     $form['responsive'] = [
