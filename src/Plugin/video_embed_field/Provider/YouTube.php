@@ -29,7 +29,7 @@ class YouTube extends ProviderPluginBase {
         'height' => $height,
         'frameborder' => '0',
         'allowfullscreen' => 'allowfullscreen',
-        'src' => sprintf('https://www.youtube.com/embed/%s?autoplay=%d&start=%d', $this->getVideoId(), $autoplay, $this->getTimeIndex()),
+        'src' => sprintf('https://www.youtube.com/embed/%s?autoplay=%d&start=%d&rel=0', $this->getVideoId(), $autoplay, $this->getTimeIndex()),
       ],
     ];
   }

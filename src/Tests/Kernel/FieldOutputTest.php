@@ -53,7 +53,7 @@ class FieldOutputTest extends KernelTestBase {
             'height' => '100%',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
-            'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1&start=0',
+            'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1&start=0&rel=0',
           ],
           '#cache' => [
             'contexts' => [
@@ -80,7 +80,7 @@ class FieldOutputTest extends KernelTestBase {
             'height' => '100%',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
-            'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1&start=100',
+            'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1&start=100&rel=0',
           ],
           '#cache' => [
             'contexts' => [
