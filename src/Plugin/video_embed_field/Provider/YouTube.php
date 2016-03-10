@@ -22,14 +22,19 @@ class YouTube extends ProviderPluginBase {
    */
   public function renderEmbedCode($width, $height, $autoplay) {
     return [
-      '#type' => 'html_tag',
-      '#tag' => 'iframe',
+      '#type' => 'video_embed_iframe',
+      '#provider' => 'youtube',
+      '#url' => sprintf('https://www.youtube.com/embed/%s', $this->getVideoId()),
+      '#query' => [
+        'autoplay' => $autoplay,
+        'start' => $this->getTimeIndex(),
+        'rel' => '0',
+      ],
       '#attributes' => [
         'width' => $width,
         'height' => $height,
         'frameborder' => '0',
         'allowfullscreen' => 'allowfullscreen',
-        'src' => sprintf('https://www.youtube.com/embed/%s?autoplay=%d&start=%d&rel=0', $this->getVideoId(), $autoplay, $this->getTimeIndex()),
       ],
     ];
   }

@@ -46,14 +46,19 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'html_tag',
-          '#tag' => 'iframe',
+          '#type' => 'video_embed_iframe',
+          '#provider' => 'youtube',
+          '#url' => 'https://www.youtube.com/embed/fdbFVWupSsw',
+          '#query' => [
+            'autoplay' => '1',
+            'start' => '0',
+            'rel' => '0',
+          ],
           '#attributes' => [
             'width' => '100%',
             'height' => '100%',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
-            'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1&start=0&rel=0',
           ],
           '#cache' => [
             'contexts' => [
@@ -73,14 +78,19 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'html_tag',
-          '#tag' => 'iframe',
+          '#type' => 'video_embed_iframe',
+          '#provider' => 'youtube',
+          '#url' => 'https://www.youtube.com/embed/fdbFVWupSsw',
+          '#query' => [
+            'autoplay' => '1',
+            'start' => '100',
+            'rel' => '0',
+          ],
           '#attributes' => [
             'width' => '100%',
             'height' => '100%',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
-            'src' => 'https://www.youtube.com/embed/fdbFVWupSsw?autoplay=1&start=100&rel=0',
           ],
           '#cache' => [
             'contexts' => [
@@ -233,15 +243,15 @@ class FieldOutputTest extends KernelTestBase {
 
     // Assert the specific field output at delta 1 matches the expected test
     // data.
-    $this->assertEquals($field_output[0], $expected_field_item_output);
+    $this->assertEquals($expected_field_item_output, $field_output[0]);
 
     // Allow us to assert subsets of the whole field output, instead of having
     // to use the verbose field renderable array in our test data.
     if ($field_attributes) {
-      $this->assertEquals($field_output['#attributes'], $field_attributes);
+      $this->assertEquals($field_attributes, $field_output['#attributes']);
     }
     if ($field_attachments) {
-      $this->assertEquals($field_output['#attached'], $field_attachments);
+      $this->assertEquals($field_attachments, $field_output['#attached']);
     }
   }
 
