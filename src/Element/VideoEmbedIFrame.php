@@ -46,9 +46,6 @@ class VideoEmbedIFrame extends RenderElement {
   public static function preRenderInlineFrameEmbed($element) {
     $element['#theme'] .= !empty($element['#provider']) ? '__' . $element['#provider'] : '';
 
-    if (is_array($element['#query'])) {
-      $element['#query'] = new HttpQueryString($element['#query']);
-    }
     if (is_array($element['#attributes'])) {
       $element['#attributes'] = new Attribute($element['#attributes']);
     }

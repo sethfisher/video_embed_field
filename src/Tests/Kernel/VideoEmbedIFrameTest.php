@@ -79,6 +79,17 @@ class VideoEmbedIFrameTest extends KernelTestBase {
         ],
         '<iframe width="100"></iframe>',
       ],
+      'XSS Testing' => [
+        [
+          '#type' => 'video_embed_iframe',
+          '#attributes' => [
+            'xss' => '">',
+          ],
+          '#query' => ['xss' => '">'],
+          '#url' => '">',
+        ],
+        '<iframe xss="&quot;&gt;" src="&quot;&gt;?xss=%22%3E"></iframe>',
+      ],
     ];
   }
 
