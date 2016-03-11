@@ -22,14 +22,17 @@ class Vimeo extends ProviderPluginBase {
    */
   public function renderEmbedCode($width, $height, $autoplay) {
     return [
-      '#type' => 'html_tag',
-      '#tag' => 'iframe',
+      '#type' => 'video_embed_iframe',
+      '#provider' => 'vimeo',
+      '#url' => sprintf('https://player.vimeo.com/video/%s', $this->getVideoId()),
+      '#query' => [
+        'autoplay' => $autoplay,
+      ],
       '#attributes' => [
         'width' => $width,
         'height' => $height,
         'frameborder' => '0',
         'allowfullscreen' => 'allowfullscreen',
-        'src' => sprintf('https://player.vimeo.com/video/%s?autoplay=%d', $this->getVideoId(), $autoplay),
       ],
     ];
   }

@@ -121,21 +121,24 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'html_tag',
-          '#tag' => 'iframe',
+          '#type' => 'video_embed_iframe',
+          '#provider' => 'vimeo',
+          '#url' => 'https://player.vimeo.com/video/80896303',
+          '#query' => [
+            'autoplay' => '1',
+          ],
           '#attributes' => [
             'width' => '100%',
             'height' => '100%',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
-            'src' => 'https://player.vimeo.com/video/80896303?autoplay=1',
           ],
           '#cache' => [
             'contexts' => [
               'user.permissions',
             ],
           ],
-        ]
+        ],
       ],
       'Linked Thumbnail: Content' => [
         'https://vimeo.com/80896303',
@@ -207,14 +210,17 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'html_tag',
-          '#tag' => 'iframe',
+          '#type' => 'video_embed_iframe',
+          '#provider' => 'vimeo',
+          '#url' => 'https://player.vimeo.com/video/80896303',
+          '#query' => [
+            'autoplay' => '1',
+          ],
           '#attributes' => [
             'width' => '100px',
             'height' => '100px',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
-            'src' => 'https://player.vimeo.com/video/80896303?autoplay=1',
           ],
           '#cache' => [
             'contexts' => [
