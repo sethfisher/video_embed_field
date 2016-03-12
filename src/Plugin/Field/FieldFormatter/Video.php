@@ -118,9 +118,9 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary[] = t('Embedded Video (@widthx@height@autoplay).', [
-      '@width' => $this->getSetting('width'),
-      '@height' => $this->getSetting('height'),
+    $dimensions = $this->getSetting('responsive') ? $this->t('Responsive') : $this->t('@widthx@height', ['@width' => $this->getSetting('width'), '@height' => $this->getSetting('height')]);
+    $summary[] = t('Embedded Video (@dimensions@autoplay).', [
+      '@dimensions' => $dimensions,
       '@autoplay' => $this->getSetting('autoplay') ? t(', autoplaying') : '',
     ]);
     return $summary;
