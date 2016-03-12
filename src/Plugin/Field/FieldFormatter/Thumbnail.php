@@ -91,7 +91,7 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
       '#title' => $this->t('Image Style'),
       '#type' => 'select',
       '#default_value' => $this->getSetting('image_style'),
-      '#required' => TRUE,
+      '#required' => FALSE,
       '#options' => image_style_options(),
     ];
     $form['link_image_to'] = [
@@ -111,7 +111,14 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary[] = $this->t('Video thumbnail (@quality).', ['@quality' => $this->getSetting('image_style')]);
+    $linked = '';
+    if (!empty($this->getSetting('link_image_to'))) {
+      $linked = $this->getSetting('link_image_to') == static::LINK_CONTENT ? $this->t(', linked to content') : $this->t(', linked to provider');
+    }
+    $summary[] = $this->t('Video thumbnail (@style@linked).', [
+      '@style' => $this->getSetting('image_style') ? $this->getSetting('image_style') : $this->t('no image style'),
+      '@linked' => $linked,
+    ]);
     return $summary;
   }
 
