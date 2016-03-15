@@ -102,12 +102,4 @@ class VideoEmbedIFrameTest extends KernelTestBase {
     $this->assertEquals($markup, trim($this->container->get('renderer')->renderRoot($renderable)));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-
-  }
-
 }

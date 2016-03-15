@@ -32,14 +32,14 @@ class WidgetTest extends WebTestBase {
     $this->drupalPostForm(Url::fromRoute('node.add', ['node_type' => $this->contentTypeName]), [
       'title[0][value]' => $node_title,
       $this->fieldName . '[0][value]' => 'Some useless value.',
-    ], t('Save'));
+    ], t('Save and publish'));
     $this->assertRaw(t('Could not find a video provider to handle the given URL.'));
 
     // Test a valid input.
     $valid_input = 'https://vimeo.com/80896303';
     $this->drupalPostForm(NULL, [
       $this->fieldName . '[0][value]' => $valid_input,
-    ], t('Save'));
+    ], t('Save and publish'));
     $this->assertRaw(t('@type %title has been created.', [
       '@type' => $this->contentTypeName,
       '%title' => $node_title

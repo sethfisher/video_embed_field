@@ -1,0 +1,9 @@
+name: Video Embed WYSIWYG
+type: module
+description: 'Integrates embedded videos into the Drupal WYSIWYG editor.'
+package: Field types
+core: 8.x
+dependencies:
+  - field
+  - ckeditor
+  - video_embed_field

@@ -90,10 +90,12 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
       '#description' => $this->t("Make the video fill the width of it's container, adjusting to the size of the user's screen."),
       '#default_value' => $this->getSetting('responsive'),
     ];
+    // Loosely match the name attribute so forms which don't have a field
+    // formatter structure (such as the WYSIWYG settings form) are also matched.
     $responsive_checked_state = [
       'visible' => [
         [
-          ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][responsive]"]' => ['checked' => FALSE],
+          ':input[name*="responsive"]' => ['checked' => FALSE],
         ]
       ],
     ];
@@ -102,6 +104,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
       '#type' => 'textfield',
       '#default_value' => $this->getSetting('width'),
       '#required' => TRUE,
+      '#size' => 20,
       '#states' => $responsive_checked_state,
     ];
     $form['height'] = [
@@ -109,6 +112,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
       '#type' => 'textfield',
       '#default_value' => $this->getSetting('height'),
       '#required' => TRUE,
+      '#size' => 20,
       '#states' => $responsive_checked_state,
     ];
     return $form;

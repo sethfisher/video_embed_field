@@ -63,19 +63,6 @@ abstract class WebTestBase extends CoreWebTestBase {
   ];
 
   /**
-   * Permissions to grant admin user.
-   *
-   * @var array
-   */
-  protected $permissions = [
-    'access content',
-    'administer content types',
-    'administer node fields',
-    'administer node form display',
-    'bypass node access',
-  ];
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
@@ -83,7 +70,7 @@ abstract class WebTestBase extends CoreWebTestBase {
     $this->fieldName = strtolower($this->randomMachineName());
     $this->contentTypeName = strtolower($this->randomMachineName());
     $this->drupalCreateContentType(['type' => $this->contentTypeName]);
-    $this->adminUser = $this->drupalCreateUser($this->permissions);
+    $this->adminUser = $this->drupalCreateUser(array_keys($this->container->get('user.permissions')->getPermissions()));
     $field_storage = FieldStorageConfig::create([
       'field_name' => $this->fieldName,
       'entity_type' => 'node',

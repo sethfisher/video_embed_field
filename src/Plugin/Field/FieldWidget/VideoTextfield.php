@@ -58,8 +58,18 @@ class VideoTextfield extends WidgetBase {
     $provider_manager = \Drupal::service('video_embed_field.provider_manager');
     $enabled_providers = $provider_manager->loadDefinitionsFromOptionList($element['#allowed_providers']);
     if (!$provider_manager->filterApplicableDefinitions($enabled_providers, $value)) {
-      $form_state->setError($element, t('Could not find a video provider to handle the given URL.'));
+      $form_state->setError($element, static::getProviderErrorMessage());
     }
+  }
+
+  /**
+   * Get the error message indicating a provider could not be found.
+   *
+   * @return string
+   *   The provider error message.
+   */
+  public static function getProviderErrorMessage() {
+    return t('Could not find a video provider to handle the given URL.');
   }
 
 }
