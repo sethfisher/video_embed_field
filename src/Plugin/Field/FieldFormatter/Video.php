@@ -67,7 +67,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
    */
   public static function defaultSettings() {
     return [
-      'responsive' => FALSE,
+      'responsive' => TRUE,
       'width' => '854',
       'height' => '480',
       'autoplay' => TRUE,

@@ -83,12 +83,12 @@ class EmbedDialogTest extends WebTestBase {
     $this->assertAjax('editorDialogSave', function ($command) {
       $this->assertEqual($command['values']['video_url'], 'https://www.youtube.com/watch?v=iaf3Sl2r3jE&t=1553s');
       $this->assertEqual($command['values']['settings'], [
-        'responsive' => 0,
+        'responsive' => 1,
         'width' => '854',
         'height' => '480',
         'autoplay' => 1,
       ]);
-      $this->assertEqual($command['values']['settings_summary'], ['Embedded Video (854x480, autoplaying).']);
+      $this->assertEqual($command['values']['settings_summary'], ['Embedded Video (Responsive, autoplaying).']);
     });
 
     // Assert the modal close command is sent.
