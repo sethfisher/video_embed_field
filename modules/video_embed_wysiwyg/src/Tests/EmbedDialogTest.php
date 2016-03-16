@@ -18,7 +18,7 @@ class EmbedDialogTest extends WebTestBase {
 
   /**
    * Modules to install.
-   *Video
+   *
    * @var array
    */
   public static $modules = [
@@ -49,10 +49,14 @@ class EmbedDialogTest extends WebTestBase {
     $this->assertResponse(403);
 
     // Enable the filter.
-    $this->drupalGet('admin/config/content/formats/manage/plain_text');
+    $this->drupalPostForm('admin/config/content/formats/manage/plain_text', [
+      'editor[editor]' => 'ckeditor',
+    ], t('Save configuration'));
+    $this->drupalPostAjaxForm(NULL, [], 'editor_configure');
     $this->drupalPostForm(NULL, [
-      'filters[video_embed_wysiwyg][status]' => '1',
-    ], 'Save configuration');
+      'filters[video_embed_wysiwyg][status]' => TRUE,
+      'editor[settings][toolbar][button_groups]' => '[[{"name":"Group","items":["video_embed"]}]]',
+    ], t('Save configuration'));
 
     // Visit the modal again.
     $this->drupalGet('video-embed-wysiwyg/dialog/plain_text');
