@@ -32,9 +32,11 @@ class TextFormatConfigurationTest extends WebTestBase {
   ];
 
   /**
-   * Test the format configuration.
+   * {@inheritdoc}
    */
-  public function testFormatConfiguration() {
+  protected function setUp() {
+    parent::setUp();
+
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/config/content/formats/manage/plain_text');
 
@@ -44,7 +46,12 @@ class TextFormatConfigurationTest extends WebTestBase {
     ], t('Save configuration'));
     $this->drupalPostAjaxForm(NULL, [], 'editor_configure');
     $this->drupalPostForm(NULL, [], t('Save configuration'));
+  }
 
+  /**
+   * Test both the input filter and button need to be enabled together.
+   */
+  public function ntestFormatConfiguration() {
     // Save the settings with the filter enabled, but with no button.
     $this->drupalPostForm('admin/config/content/formats/manage/plain_text', [
       'filters[video_embed_wysiwyg][status]' => TRUE,
@@ -63,6 +70,36 @@ class TextFormatConfigurationTest extends WebTestBase {
       'editor[settings][toolbar][button_groups]' => '[[{"name":"Group","items":["video_embed"]}]]',
     ], 'Save configuration');
     $this->assertText('The text format Plain text has been updated.');
+  }
+
+  /**
+   * Test the dialog defaults can be set and work correctly.
+   */
+  public function testDialogDefaultValues() {
+    $this->drupalGet('admin/config/content/formats/manage/plain_text');
+
+    // Assert all the form fields that appear on the modal, appear as
+    // configurable defaults.
+    $this->assertText('Autoplay');
+    $this->assertText('Responsive Video');
+    $this->assertText('Width');
+    $this->assertText('Height');
+
+    $this->drupalPostForm(NULL, [
+      'filters[video_embed_wysiwyg][status]' => TRUE,
+      'editor[settings][toolbar][button_groups]' => '[[{"name":"Group","items":["video_embed"]}]]',
+      'editor[settings][plugins][video_embed][defaults][children][width]' => '123',
+      'editor[settings][plugins][video_embed][defaults][children][height]' => '456',
+      'editor[settings][plugins][video_embed][defaults][children][responsive]' => FALSE,
+      'editor[settings][plugins][video_embed][defaults][children][autoplay]' => FALSE,
+    ], 'Save configuration');
+
+    // Ensure the configured defaults show up on the modal window.
+    $this->drupalGet('video-embed-wysiwyg/dialog/plain_text');
+    $this->assertFieldByXPath('//input[@name="width"]', '123');
+    $this->assertFieldByXPath('//input[@name="height"]', '456');
+    $this->assertFieldByXPath('//input[@name="autoplay"]', FALSE);
+    $this->assertFieldByXPath('//input[@name="responsive"]', FALSE);
   }
 
 }

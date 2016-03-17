@@ -9,7 +9,12 @@
 namespace Drupal\video_embed_wysiwyg\Plugin\CKEditorPlugin;
 
 use Drupal\ckeditor\CKEditorPluginBase;
+use Drupal\ckeditor\CKEditorPluginConfigurableInterface;
+use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Form\FormState;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\Entity\Editor;
+use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Video;
 
 /**
  * @CKEditorPlugin(
@@ -17,7 +22,7 @@ use Drupal\editor\Entity\Editor;
  *   label = @Translation("Video Embed WYSIWYG")
  * )
  */
-class VideoEmbedWysiwyg extends CKEditorPluginBase {
+class VideoEmbedWysiwyg extends CKEditorPluginBase implements CKEditorPluginConfigurableInterface {
 
   /**
    * {@inheritdoc}
@@ -38,8 +43,27 @@ class VideoEmbedWysiwyg extends CKEditorPluginBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getConfig(Editor $editor) {
-    return [];
+    $editor_settings = $editor->getSettings();
+    $plugin_settings =  NestedArray::getValue($editor_settings, ['plugins', 'video_embed', 'defaults', 'children']);
+    return $plugin_settings ?: [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state, Editor $editor) {
+    $settings = $this->getConfig($editor);
+    $form['defaults'] = [
+      '#title' => $this->t('Default Settings'),
+      '#type' => 'fieldset',
+      '#tree' => TRUE,
+      'children' => Video::mockInstance($settings)->settingsForm([], new FormState()),
+    ];
+    return $form;
   }
 
 }

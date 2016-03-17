@@ -12,6 +12,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\video_embed_field\ProviderManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -173,6 +174,32 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
       $container->get('video_embed_field.provider_manager'),
       $container->get('current_user')
     );
+  }
+
+  /**
+   * Get an instance of the Video field formatter plugin.
+   *
+   * This is useful because there is a lot of overlap to the configuration and
+   * display of a video in a WYSIWYG and configuring a field formatter. We
+   * get an instance of the plugin with our own WYSIWYG settings shimmed in,
+   * as well as a fake field_definition because one in this context doesn't
+   * exist. This allows us to reuse aspects such as the form and settings
+   * summary for the WYSIWYG integration.
+   *
+   * @param array $settings
+   *   The settings to pass to the plugin.
+   *
+   * @return static
+   *   The formatter plugin.
+   */
+  public static function mockInstance($settings) {
+    return \Drupal::service('plugin.manager.field.formatter')->createInstance('video_embed_field_video', [
+      'settings' => !empty($settings) ? $settings : [],
+      'third_party_settings' => [],
+      'field_definition' => new FieldConfig(['field_name' => 'mock', 'entity_type' => 'mock', 'bundle' => 'mock']),
+      'label' => '',
+      'view_mode' => '',
+    ]);
   }
 
 }
