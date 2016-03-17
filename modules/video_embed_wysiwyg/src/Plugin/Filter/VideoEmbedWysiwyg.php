@@ -8,7 +8,7 @@
 namespace Drupal\video_embed_wysiwyg\Plugin\Filter;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Video;
@@ -43,6 +43,13 @@ class VideoEmbedWysiwyg extends FilterBase implements ContainerFactoryPluginInte
   protected $renderer;
 
   /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
@@ -64,7 +71,8 @@ class VideoEmbedWysiwyg extends FilterBase implements ContainerFactoryPluginInte
           continue;
         }
 
-        $embed_code = $provider->renderEmbedCode($embed_data['settings']['width'], $embed_data['settings']['height'], $embed_data['settings']['autoplay']);
+        $autoplay = $this->currentUser->hasPermission('never autoplay videos') ? FALSE : $embed_data['settings']['autoplay'];
+        $embed_code = $provider->renderEmbedCode($embed_data['settings']['width'], $embed_data['settings']['height'], $autoplay);
 
         // Add the container to make the video responsive if it's been
         //configured as such. This usually is attached to field output in the
@@ -88,6 +96,7 @@ class VideoEmbedWysiwyg extends FilterBase implements ContainerFactoryPluginInte
     // Add the required responsive video library and update the response text.
     $response->setProcessedText($text);
     $response->addAttachments(['library' => ['video_embed_field/responsive-video']]);
+    $response->setCacheContexts(['user.permissions']);
 
     return $response;
   }
@@ -123,18 +132,21 @@ class VideoEmbedWysiwyg extends FilterBase implements ContainerFactoryPluginInte
    *   The video provider manager.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ProviderManagerInterface $provider_manager, RendererInterface $renderer) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ProviderManagerInterface $provider_manager, RendererInterface $renderer, AccountProxyInterface $current_user) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->providerManager = $provider_manager;
     $this->renderer = $renderer;
+    $this->currentUser = $current_user;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static($configuration, $plugin_id, $plugin_definition, $container->get('video_embed_field.provider_manager'), $container->get('renderer'));
+    return new static($configuration, $plugin_id, $plugin_definition, $container->get('video_embed_field.provider_manager'), $container->get('renderer'), $container->get('current_user'));
   }
 
 }
