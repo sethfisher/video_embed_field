@@ -47,16 +47,17 @@ class VideoEmbedWysiwyg extends CKEditorPluginBase implements CKEditorPluginConf
    * {@inheritdoc}
    */
   public function getConfig(Editor $editor) {
-    $editor_settings = $editor->getSettings();
-    $plugin_settings =  NestedArray::getValue($editor_settings, ['plugins', 'video_embed', 'defaults', 'children']);
-    return $plugin_settings ?: [];
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state, Editor $editor) {
-    $settings = $this->getConfig($editor);
+    $editor_settings = $editor->getSettings();
+    $plugin_settings =  NestedArray::getValue($editor_settings, ['plugins', 'video_embed', 'defaults', 'children']);
+    $settings = $plugin_settings ?: [];
+
     $form['defaults'] = [
       '#title' => $this->t('Default Settings'),
       '#type' => 'fieldset',
