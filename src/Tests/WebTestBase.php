@@ -60,6 +60,7 @@ abstract class WebTestBase extends CoreWebTestBase {
     'video_embed_field',
     'field_ui',
     'node',
+    'image',
   ];
 
   /**
@@ -85,7 +86,6 @@ abstract class WebTestBase extends CoreWebTestBase {
       'bundle' => $this->contentTypeName,
       'settings' => [],
     ])->save();
-    $this->fieldName = $this->fieldName;
     $this->entityDisplay = entity_get_display('node', $this->contentTypeName, 'default');
     $this->entityFormDisplay = entity_get_form_display('node', $this->contentTypeName, 'default');
     $this->resetAll();

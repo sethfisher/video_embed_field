@@ -87,14 +87,15 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    $form['image_style'] = [
+    $element = parent::settingsForm($form, $form_state);
+    $element['image_style'] = [
       '#title' => $this->t('Image Style'),
       '#type' => 'select',
       '#default_value' => $this->getSetting('image_style'),
       '#required' => FALSE,
       '#options' => image_style_options(),
     ];
-    $form['link_image_to'] = [
+    $element['link_image_to'] = [
       '#title' => $this->t('Link image to'),
       '#type' => 'select',
       '#empty_option' => $this->t('- None -'),
@@ -104,7 +105,7 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
         static::LINK_PROVIDER => $this->t('Provider URL'),
       ],
     ];
-    return $form;
+    return $element;
   }
 
   /**

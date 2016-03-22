@@ -79,13 +79,14 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    $form['autoplay'] = [
+    $elements = parent::settingsForm($form, $form_state);
+    $elements['autoplay'] = [
       '#title' => t('Autoplay'),
       '#type' => 'checkbox',
       '#description' => $this->t('Autoplay the videos for users without the "never autoplay videos" permission. Roles with this permission will bypass this setting.'),
       '#default_value' => $this->getSetting('autoplay'),
     ];
-    $form['responsive'] = [
+    $elements['responsive'] = [
       '#title' => t('Responsive Video'),
       '#type' => 'checkbox',
       '#description' => $this->t("Make the video fill the width of it's container, adjusting to the size of the user's screen."),
@@ -100,7 +101,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
         ]
       ],
     ];
-    $form['width'] = [
+    $elements['width'] = [
       '#title' => t('Width'),
       '#type' => 'textfield',
       '#default_value' => $this->getSetting('width'),
@@ -108,7 +109,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
       '#size' => 20,
       '#states' => $responsive_checked_state,
     ];
-    $form['height'] = [
+    $elements['height'] = [
       '#title' => t('Height'),
       '#type' => 'textfield',
       '#default_value' => $this->getSetting('height'),
@@ -116,7 +117,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
       '#size' => 20,
       '#states' => $responsive_checked_state,
     ];
-    return $form;
+    return $elements;
   }
 
   /**
