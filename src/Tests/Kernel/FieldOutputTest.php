@@ -43,6 +43,7 @@ class FieldOutputTest extends KernelTestBase {
             'width' => '100%',
             'height' => '100%',
             'autoplay' => TRUE,
+            'responsive' => FALSE,
           ],
         ],
         [
@@ -75,6 +76,7 @@ class FieldOutputTest extends KernelTestBase {
             'width' => '100%',
             'height' => '100%',
             'autoplay' => TRUE,
+            'responsive' => FALSE,
           ],
         ],
         [
@@ -118,6 +120,7 @@ class FieldOutputTest extends KernelTestBase {
             'width' => '100%',
             'height' => '100%',
             'autoplay' => TRUE,
+            'responsive' => FALSE,
           ],
         ],
         [
@@ -179,6 +182,7 @@ class FieldOutputTest extends KernelTestBase {
             'autoplay' => TRUE,
             'width' => 500,
             'height' => 500,
+            'responsive' => FALSE,
           ],
         ],
         [
@@ -210,29 +214,32 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'video_embed_iframe',
-          '#provider' => 'vimeo',
-          '#url' => 'https://player.vimeo.com/video/80896303',
-          '#query' => [
-            'autoplay' => '1',
+          '#type' => 'container',
+          '#attached' => [
+            'library' => ['video_embed_field/responsive-video'],
           ],
           '#attributes' => [
-            'width' => '100px',
-            'height' => '100px',
-            'frameborder' => '0',
-            'allowfullscreen' => 'allowfullscreen',
+            'class' => ['video-embed-field-responsive-video'],
           ],
-          '#cache' => [
-            'contexts' => [
-              'user.permissions',
+          'children' => [
+            '#type' => 'video_embed_iframe',
+            '#provider' => 'vimeo',
+            '#url' => 'https://player.vimeo.com/video/80896303',
+            '#query' => [
+              'autoplay' => '1',
+            ],
+            '#attributes' => [
+              'width' => '100px',
+              'height' => '100px',
+              'frameborder' => '0',
+              'allowfullscreen' => 'allowfullscreen',
+            ],
+            '#cache' => [
+              'contexts' => [
+                'user.permissions',
+              ],
             ],
           ],
-        ],
-        [
-          'class' => ['video-embed-field-responsive-video'],
-        ],
-        [
-          'library' => ['video_embed_field/responsive-video'],
         ],
       ],
       'YouTube Playlist' => [
@@ -274,22 +281,13 @@ class FieldOutputTest extends KernelTestBase {
    *
    * Test the embed field.
    */
-  public function testEmbedField($url, $settings, $expected_field_item_output, $field_attributes = NULL, $field_attachments = NULL) {
+  public function testEmbedField($url, $settings, $expected_field_item_output) {
 
     $field_output = $this->getPreparedFieldOutput($url, $settings);
 
     // Assert the specific field output at delta 1 matches the expected test
     // data.
     $this->assertEquals($expected_field_item_output, $field_output[0]);
-
-    // Allow us to assert subsets of the whole field output, instead of having
-    // to use the verbose field renderable array in our test data.
-    if ($field_attributes) {
-      $this->assertEquals($field_attributes, $field_output['#attributes']);
-    }
-    if ($field_attachments) {
-      $this->assertEquals($field_attachments, $field_output['#attached']);
-    }
   }
 
   /**
