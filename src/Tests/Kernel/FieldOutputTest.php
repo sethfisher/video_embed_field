@@ -257,9 +257,9 @@ class FieldOutputTest extends KernelTestBase {
           '#type' => 'video_embed_iframe',
           '#provider' => 'youtube_playlist',
           '#url' => 'https://www.youtube.com/embed/videoseries',
-          '#query' => Array(
+          '#query' => [
             'list' => 'PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB'
-          ),
+          ],
           '#attributes' => [
             'width' => '100%',
             'height' => '100%',

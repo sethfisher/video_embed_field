@@ -44,9 +44,9 @@ class FormatterDependenciesTest extends KernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->style = ImageStyle::create(array('name' => 'style_foo', 'label' => $this->randomString()));
+    $this->style = ImageStyle::create(['name' => 'style_foo', 'label' => $this->randomString()]);
     $this->style->save();
-    $this->replacementStyle = ImageStyle::create(array('name' => 'style_bar', 'label' => $this->randomString()));
+    $this->replacementStyle = ImageStyle::create(['name' => 'style_bar', 'label' => $this->randomString()]);
     $this->replacementStyle->save();
 
     $this->entityTypeManager = \Drupal::entityTypeManager();
