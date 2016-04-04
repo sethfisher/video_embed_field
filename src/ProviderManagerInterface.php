@@ -54,4 +54,14 @@ interface ProviderManagerInterface {
    */
   public function loadProviderFromInput($input);
 
+  /**
+   * Load a plugin definition from an input.
+   *
+   * @param string $input
+   *   An input string.
+   * @return array
+   *   A plugin definition.
+   */
+  public function loadDefinitionFromInput($input);
+
 }
