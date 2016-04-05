@@ -67,7 +67,7 @@ class UpgradePathTest extends WebTestBase {
 
     // Install video_embed_field.
     $this->drupalPostForm('admin/modules', [
-      'modules[Field types][video_embed_media][enable]' => '1',
+      'modules[Video Embed Field][video_embed_media][enable]' => '1',
     ], 'Install');
 
     $this->assertUpgradeComplete();

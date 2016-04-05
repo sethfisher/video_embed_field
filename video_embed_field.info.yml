@@ -1,7 +1,7 @@
 name: Video Embed Field
 type: module
-description: 'A field type for storing videos.'
-package: Field types
+description: 'A field type for displaying videos from 3rd party providers such as YouTube and Vimeo.'
+package: Video Embed Field
 core: 8.x
 dependencies:
   - field
