@@ -51,7 +51,7 @@ class TextFormatConfigurationTest extends WebTestBase {
   /**
    * Test both the input filter and button need to be enabled together.
    */
-  public function ntestFormatConfiguration() {
+  public function testFormatConfiguration() {
     // Save the settings with the filter enabled, but with no button.
     $this->drupalPostForm('admin/config/content/formats/manage/plain_text', [
       'filters[video_embed_wysiwyg][status]' => TRUE,
