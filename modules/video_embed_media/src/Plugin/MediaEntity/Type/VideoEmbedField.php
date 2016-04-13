@@ -42,6 +42,13 @@ class VideoEmbedField extends MediaTypeBase {
   protected $providerManager;
 
   /**
+   * The media settings.
+   *
+   * @var \Drupal\Core\Config\Config
+   */
+  protected $mediaSettings;
+
+  /**
    * {@inheritdoc}
    */
   public function thumbnail(MediaInterface $media) {
@@ -177,9 +184,17 @@ class VideoEmbedField extends MediaTypeBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, Config $config, ProviderManagerInterface $provider_manager) {
+  public function getDefaultThumbnail() {
+    return $this->mediaSettings->get('icon_base') . '/video.png';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, Config $config, ProviderManagerInterface $provider_manager, Config $media_settings) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $entity_field_manager, $config);
     $this->providerManager = $provider_manager;
+    $this->mediaSettings = $media_settings;
   }
 
   /**
@@ -193,7 +208,8 @@ class VideoEmbedField extends MediaTypeBase {
       $container->get('entity_type.manager'),
       $container->get('entity_field.manager'),
       $container->get('config.factory')->get('media_entity.settings'),
-      $container->get('video_embed_field.provider_manager')
+      $container->get('video_embed_field.provider_manager'),
+      $container->get('config.factory')->get('media_entity.settings')
     );
   }
 

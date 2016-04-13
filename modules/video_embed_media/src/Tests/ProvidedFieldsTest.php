@@ -28,6 +28,7 @@ class ProvidedFieldsTest extends KernelTestBase {
     'video_embed_media',
     'media_entity',
     'file',
+    'views',
   ];
 
   /**
@@ -76,6 +77,15 @@ class ProvidedFieldsTest extends KernelTestBase {
   }
 
   /**
+   * Test the default thumbnail.
+   */
+  public function testDefaultThumbnail() {
+    $this->assertEquals('public://media-icons/generic/video.png', $this->mediaVideoPlugin->getDefaultThumbnail());
+  }
+
+  /**
+   * Test the fields provided by the integration.
+   *
    * @dataProvider providedFieldsTestCases
    */
   public function testProvidedFields($input, $field, $expected) {
@@ -92,6 +102,7 @@ class ProvidedFieldsTest extends KernelTestBase {
    */
   public function setup() {
     parent::setup();
+    $this->installConfig(['media_entity']);
     $this->mediaVideoPlugin = $this->container->get('plugin.manager.media_entity.type')->createInstance('video_embed_field', []);
     $bundle = MediaBundle::create([
       'id' => 'video',
