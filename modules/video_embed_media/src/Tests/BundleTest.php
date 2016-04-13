@@ -17,13 +17,6 @@ use Drupal\video_embed_field\Tests\WebTestBase;
 class BundleTest extends WebTestBase {
 
   /**
-   * Disable strict checking for media_entity.
-   *
-   * @var bool
-   */
-  protected $strictConfigSchema = FALSE;
-
-  /**
    * Modules to install.
    *
    * @var array

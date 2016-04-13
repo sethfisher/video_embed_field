@@ -56,3 +56,5 @@ field.field_settings.video_embed_field:
     allowed_providers:
       type: sequence
       label: 'Allowed Providers'
+      sequence:
+        type: string
