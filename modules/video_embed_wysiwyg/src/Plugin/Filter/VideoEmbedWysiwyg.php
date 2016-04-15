@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_wysiwyg\Plugin\Filter\VideoEmbedWysiwyg.
- */
-
 namespace Drupal\video_embed_wysiwyg\Plugin\Filter;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -75,7 +70,7 @@ class VideoEmbedWysiwyg extends FilterBase implements ContainerFactoryPluginInte
         $embed_code = $provider->renderEmbedCode($embed_data['settings']['width'], $embed_data['settings']['height'], $autoplay);
 
         // Add the container to make the video responsive if it's been
-        //configured as such. This usually is attached to field output in the
+        // configured as such. This usually is attached to field output in the
         // case of a formatter, but a custom container must be used where one is
         // not present.
         if ($embed_data['settings']['responsive']) {

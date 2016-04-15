@@ -1,15 +1,12 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Plugin\video_embed_field\Provider\Youtube.
- */
-
 namespace Drupal\video_embed_field\Plugin\video_embed_field\Provider;
 
 use Drupal\video_embed_field\ProviderPluginBase;
 
 /**
+ * A YouTube playlist video provider.
+ *
  * @VideoEmbedProvider(
  *   id = "youtube_playlist",
  *   title = @Translation("YouTube Playlist")
@@ -54,9 +51,9 @@ class YouTubePlaylist extends ProviderPluginBase {
   /**
    * Get a component from the URL.
    *
-   * @param $input
+   * @param string $input
    *   The input URL.
-   * @param $component
+   * @param string $component
    *   The component from the regex to get.
    *
    * @return string

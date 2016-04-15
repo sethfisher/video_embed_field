@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Plugin\Field\FieldFormatter\Colorbox.
- */
-
 namespace Drupal\video_embed_field\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -69,7 +64,7 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
         '#type' => 'container',
         '#attributes' => [
           'data-video-embed-field-modal' => (string) $this->renderer->renderRoot($videos[$delta]),
-          'class' => ['video-embed-field-launch-modal']
+          'class' => ['video-embed-field-launch-modal'],
         ],
         '#attached' => [
           'library' => ['video_embed_field/colorbox'],
@@ -153,10 +148,10 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
    *   The field formatter for thumbnails.
    * @param \Drupal\Core\Field\FormatterInterface $video_formatter
    *   The field formatter for videos.
-   * @param \Drupal\colorbox\ElementAttachmentInterface $colorbox_attachment
-   *   The field formatter for videos.
+   * @param \Drupal\colorbox\ElementAttachmentInterface|null $colorbox_attachment
+   *   The colorbox attachment if colorbox is enabled.
    */
-  public function __construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, RendererInterface $renderer, FormatterInterface $thumbnail_formatter, FormatterInterface $video_formatter, $colorbox_attachment) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, $settings, $label, $view_mode, $third_party_settings, RendererInterface $renderer, FormatterInterface $thumbnail_formatter, FormatterInterface $video_formatter, $colorbox_attachment) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
     $this->thumbnailFormatter = $thumbnail_formatter;
     $this->videoFormatter = $video_formatter;

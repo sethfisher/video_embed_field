@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Tests\Web\FormatterConfigurationTest.
- */
-
 namespace Drupal\video_embed_field\Tests\Web;
 
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
-use Drupal\video_embed_field\ProviderPluginInterface;
 use Drupal\video_embed_field\Tests\WebTestBase;
 
 /**

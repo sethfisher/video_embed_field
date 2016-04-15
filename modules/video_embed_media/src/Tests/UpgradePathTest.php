@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_media\Tests\UpgradePathTest.
- */
-
 namespace Drupal\video_embed_media\Tests;
 
 use Drupal\video_embed_field\Tests\WebTestBase;

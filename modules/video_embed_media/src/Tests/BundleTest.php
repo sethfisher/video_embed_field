@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_media\Tests\BundleTest.
- */
-
 namespace Drupal\video_embed_media\Tests;
 
 use Drupal\video_embed_field\Tests\WebTestBase;
@@ -36,7 +31,7 @@ class BundleTest extends WebTestBase {
   public function testMediaBundleCreation() {
     $this->drupalLogin($this->adminUser);
 
-    // Create a new media bundle
+    // Create a new media bundle.
     $this->drupalGet('admin/structure/media/add');
     $this->drupalPostForm(NULL, [
       'label' => 'Video Bundle',

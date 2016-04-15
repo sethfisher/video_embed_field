@@ -1,12 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Plugin\Field\FieldFormatter\Video.
- */
-
 namespace Drupal\video_embed_field\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -55,7 +51,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
       $element[$delta] = $provider->renderEmbedCode($this->getSetting('width'), $this->getSetting('height'), $autoplay);
       $element[$delta]['#cache']['contexts'][] = 'user.permissions';
 
-      // For responsive videos, wrap each field item in it's own container
+      // For responsive videos, wrap each field item in it's own container.
       if ($this->getSetting('responsive')) {
         $element[$delta] = [
           '#type' => 'container',
@@ -103,7 +99,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
       'visible' => [
         [
           ':input[name*="responsive"]' => ['checked' => FALSE],
-        ]
+        ],
       ],
     ];
     $elements['width'] = [
@@ -159,7 +155,7 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The logged in user.
    */
-  public function __construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, ProviderManagerInterface $provider_manager, AccountInterface $current_user) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, $settings, $label, $view_mode, $third_party_settings, ProviderManagerInterface $provider_manager, AccountInterface $current_user) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
     $this->providerManager = $provider_manager;
     $this->currentUser = $current_user;
@@ -202,7 +198,11 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
     return \Drupal::service('plugin.manager.field.formatter')->createInstance('video_embed_field_video', [
       'settings' => !empty($settings) ? $settings : [],
       'third_party_settings' => [],
-      'field_definition' => new FieldConfig(['field_name' => 'mock', 'entity_type' => 'mock', 'bundle' => 'mock']),
+      'field_definition' => new FieldConfig([
+        'field_name' => 'mock',
+        'entity_type' => 'mock',
+        'bundle' => 'mock',
+      ]),
       'label' => '',
       'view_mode' => '',
     ]);

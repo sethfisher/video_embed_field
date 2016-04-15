@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Plugin\Field\FieldWidget\VideoTextfield.
- */
-
 namespace Drupal\video_embed_field\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldItemListInterface;
@@ -28,17 +23,17 @@ class VideoTextfield extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $element['value'] =  $element + [
-        '#type' => 'textfield',
-        '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
-        '#size' => 60,
-        '#maxlength' => $this->getFieldSetting('max_length'),
-        '#attributes' => ['class' => ['js-text-full', 'text-full']],
-        '#allowed_providers' => $this->getFieldSetting('allowed_providers'),
-        '#element_validate' => [
+    $element['value'] = $element + [
+      '#type' => 'textfield',
+      '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
+      '#size' => 60,
+      '#maxlength' => $this->getFieldSetting('max_length'),
+      '#attributes' => ['class' => ['js-text-full', 'text-full']],
+      '#allowed_providers' => $this->getFieldSetting('allowed_providers'),
+      '#element_validate' => [
           [get_class($this), 'validateFormElement'],
-        ],
-      ];
+      ],
+    ];
     return $element;
   }
 

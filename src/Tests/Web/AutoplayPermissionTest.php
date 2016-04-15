@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Tests\Web\AutoplayPermissionTest.
- */
-
 namespace Drupal\video_embed_field\Tests\Web;
 
 use Drupal\video_embed_field\Tests\WebTestBase;
@@ -19,11 +14,11 @@ class AutoplayPermissionTest extends WebTestBase {
   /**
    * Test the autoplay permission works.
    */
-  function testVideoEmbedFieldDefaultWidget() {
+  public function testVideoEmbedFieldDefaultWidget() {
     $node = $this->drupalCreateNode([
       'type' => $this->contentTypeName,
       $this->fieldName => [
-        ['value' => 'https://vimeo.com/80896303']
+        ['value' => 'https://vimeo.com/80896303'],
       ],
     ]);
     $this->entityDisplay->setComponent($this->fieldName, [

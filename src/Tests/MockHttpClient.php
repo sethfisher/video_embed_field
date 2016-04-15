@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\video_embed_field\Tests\MockHttpClient.
- */
-
 namespace Drupal\video_embed_field\Tests;
 
 use GuzzleHttp\ClientInterface;
@@ -54,4 +49,5 @@ class MockHttpClient implements ClientInterface {
   public function getConfig($option = NULL) {
     throw new \Exception(static::EXCEPTION_MESSAGE);
   }
+
 }

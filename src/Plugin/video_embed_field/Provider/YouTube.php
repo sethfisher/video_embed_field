@@ -1,15 +1,12 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Plugin\video_embed_field\Provider\Youtube.
- */
-
 namespace Drupal\video_embed_field\Plugin\video_embed_field\Provider;
 
 use Drupal\video_embed_field\ProviderPluginBase;
 
 /**
+ * A YouTube provider plugin.
+ *
  * @VideoEmbedProvider(
  *   id = "youtube",
  *   title = @Translation("YouTube")

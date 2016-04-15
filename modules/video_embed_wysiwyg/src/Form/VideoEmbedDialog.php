@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_wysiwyg\Form\VideoEmbedDialog.
- */
-
 namespace Drupal\video_embed_wysiwyg\Form;
 
 use Drupal\Component\Utility\NestedArray;
@@ -22,8 +17,8 @@ use Drupal\image\Entity\ImageStyle;
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Video;
 use Drupal\video_embed_field\Plugin\Field\FieldWidget\VideoTextfield;
 use Drupal\video_embed_field\ProviderManager;
+use Drupal\video_embed_field\ProviderPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zend\Stdlib\ArrayUtils;
 
 /**
  * A class for a video embed dialog.
@@ -66,7 +61,12 @@ class VideoEmbedDialog extends FormBase {
     $settings = $this->getUserInput($form_state, 'settings');
     if (empty($settings) && $editor = Editor::load($filter_format->id())) {
       $editor_settings = $editor->getSettings();
-      $plugin_settings =  NestedArray::getValue($editor_settings, ['plugins', 'video_embed', 'defaults', 'children']);
+      $plugin_settings = NestedArray::getValue($editor_settings, [
+        'plugins',
+        'video_embed',
+        'defaults',
+        'children',
+      ]);
       $settings = $plugin_settings ? $plugin_settings : [];
     }
 
@@ -117,7 +117,7 @@ class VideoEmbedDialog extends FormBase {
    * @return array
    *   An array of values sent to the client for use in the WYSIWYG.
    */
-  protected function getClientValues(FormStateInterface $form_state, $provider) {
+  protected function getClientValues(FormStateInterface $form_state, ProviderPluginInterface $provider) {
     // @todo Render the thumbnail to download it from the remote. Consider
     // making the download method public. https://www.drupal.org/node/2687077
     $provider->renderThumbnail(FALSE, FALSE);
@@ -133,7 +133,7 @@ class VideoEmbedDialog extends FormBase {
       'preview_thumbnail' => ImageStyle::load('video_embed_wysiwyg_preview')->buildUrl($provider->getLocalThumbnailUri()),
       'video_url' => $form_state->getValue('video_url'),
       'settings' => $video_formatter_settings,
-      'settings_summary' =>  Video::mockInstance($video_formatter_settings)->settingsSummary(),
+      'settings_summary' => Video::mockInstance($video_formatter_settings)->settingsSummary(),
     ];
   }
 

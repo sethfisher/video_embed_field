@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\Tests\video_embed_field\Unit\ProviderUrlParseTest.
- */
-
 namespace Drupal\Tests\video_embed_field\Unit;
 
 use Drupal\Tests\UnitTestCase;
@@ -17,9 +12,9 @@ use Drupal\Tests\UnitTestCase;
 class ProviderUrlParseTest extends UnitTestCase {
 
   /**
-   * @dataProvider urlsWithExpectedIds
-   *
    * Test URL parsing works as expected.
+   *
+   * @dataProvider urlsWithExpectedIds
    */
   public function testUrlParsing($provider, $url, $expected) {
     $this->assertEquals($expected, $provider::getIdFromInput($url));
@@ -171,4 +166,5 @@ class ProviderUrlParseTest extends UnitTestCase {
       ],
     ];
   }
+
 }

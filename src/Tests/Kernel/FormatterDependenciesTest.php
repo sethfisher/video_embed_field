@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Tests\Kernel\FormatterDependenciesTest.
- */
-
 namespace Drupal\video_embed_field\Tests\Kernel;
 
 use Drupal\image\Entity\ImageStyle;

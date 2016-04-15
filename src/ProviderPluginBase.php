@@ -1,16 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\video_embed_field\ProviderPluginBase
- */
-
 namespace Drupal\video_embed_field;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\image\Entity\ImageStyle;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -122,7 +116,8 @@ abstract class ProviderPluginBase implements ProviderPluginInterface, ContainerF
       try {
         $thumbnail = $this->httpClient->request('GET', $this->getRemoteThumbnailUrl());
         file_unmanaged_save_data((string) $thumbnail->getBody(), $local_uri);
-      } catch(\Exception $e) {
+      }
+      catch (\Exception $e) {
       }
     }
   }

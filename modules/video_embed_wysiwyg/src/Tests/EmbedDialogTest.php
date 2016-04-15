@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_wysiwyg\Tests\EmbedDialogTest.
- */
-
 namespace Drupal\video_embed_wysiwyg\Tests;
 
 use Drupal\video_embed_field\Tests\WebTestBase;
@@ -74,7 +69,7 @@ class EmbedDialogTest extends WebTestBase {
 
     // Submit the form with an invalid video URL.
     $this->drupalPostAjaxForm(NULL, [
-      'video_url' => 'http://example.com/'
+      'video_url' => 'http://example.com/',
     ], 'op');
     $this->assertText('Could not find a video provider to handle the given URL.');
     $this->assertRaw('http://example.com/');
@@ -98,7 +93,7 @@ class EmbedDialogTest extends WebTestBase {
 
     // Submit a valid URL.
     $this->drupalPostAjaxForm(NULL, [
-      'video_url' => 'https://www.youtube.com/watch?v=iaf3Sl2r3jE&t=1553s'
+      'video_url' => 'https://www.youtube.com/watch?v=iaf3Sl2r3jE&t=1553s',
     ], 'op');
   }
 

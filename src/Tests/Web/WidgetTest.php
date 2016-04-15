@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Tests\Web\VideoEmbedFieldWidgetTest.
- */
-
 namespace Drupal\video_embed_field\Tests\Web;
 
 use Drupal\Core\Url;
@@ -20,7 +15,7 @@ class WidgetTest extends WebTestBase {
   /**
    * Test the input widget.
    */
-  function testVideoEmbedFieldDefaultWidget() {
+  public function testVideoEmbedFieldDefaultWidget() {
     $this->entityFormDisplay
       ->setComponent($this->fieldName, ['type' => 'video_embed_field_textfield'])
       ->save();
@@ -42,7 +37,7 @@ class WidgetTest extends WebTestBase {
     ], t('Save and publish'));
     $this->assertRaw(t('@type %title has been created.', [
       '@type' => $this->contentTypeName,
-      '%title' => $node_title
+      '%title' => $node_title,
     ]));
 
     // Load the saved node and assert the valid value was saved into the field.

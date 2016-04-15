@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\ProviderManager.
- */
-
 namespace Drupal\video_embed_field;
 
 use Drupal\Component\Plugin\Mapper\MapperInterface;

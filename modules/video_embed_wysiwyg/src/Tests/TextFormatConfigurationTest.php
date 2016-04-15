@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_wysiwyg\Tests\TextFormatConfigurationTest.
- */
-
 namespace Drupal\video_embed_wysiwyg\Tests;
 
 use Drupal\video_embed_field\Tests\WebTestBase;

@@ -1,17 +1,16 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Tests\StripWhitespaceTrait.
- */
-
 namespace Drupal\video_embed_field\Tests;
 
+/**
+ * Strip whitespace.
+ */
 trait StripWhitespaceTrait {
+
   /**
    * Remove HTML whitespace from a string.
    *
-   * @param $string
+   * @param string $string
    *   The input string.
    *
    * @return string
@@ -22,4 +21,5 @@ trait StripWhitespaceTrait {
     $no_whitespace = str_replace("\n", '', $no_whitespace);
     return $no_whitespace;
   }
+
 }

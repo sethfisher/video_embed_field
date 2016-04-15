@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_media\UpgradeManager.
- */
-
 namespace Drupal\video_embed_media;
 
 /**

@@ -1,3 +1,8 @@
+/**
+ * @file
+ * The JavaScript file for the wysiwyg integration.
+ */
+
 (function ($) {
 
   /**

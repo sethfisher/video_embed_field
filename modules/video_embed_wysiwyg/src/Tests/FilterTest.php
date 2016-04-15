@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_wysiwyg\Tests\FilterTest.
- */
-
 namespace Drupal\video_embed_wysiwyg\Tests;
 
 use Drupal\filter\Entity\FilterFormat;
@@ -49,7 +44,7 @@ class FilterTest extends KernelTestBase {
    * Test cases for the video filter test.
    *
    * @return array
-   *  An array of test cases and FALSE when no change is expected.
+   *   An array of test cases and FALSE when no change is expected.
    */
   public function videoFilterTestCases() {
     return [

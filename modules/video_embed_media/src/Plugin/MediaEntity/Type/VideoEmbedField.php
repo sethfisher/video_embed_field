@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_media\Plugin\MediaEntity\Type\VideoEmbedField.
- */
-
 namespace Drupal\video_embed_media\Plugin\MediaEntity\Type;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -97,10 +92,13 @@ class VideoEmbedField extends MediaTypeBase {
     switch ($name) {
       case 'id':
         return $provider->getIdFromInput($url);
+
       case 'source':
         return $definition['id'];
+
       case 'source_name':
         return $definition['id'];
+
       case 'image_local':
       case 'image_local_uri':
         return $this->thumbnail($media);
@@ -152,7 +150,8 @@ class VideoEmbedField extends MediaTypeBase {
   /**
    * The function that is invoked during the insert of media bundles.
    *
-   * @param $media_bundle_id
+   * @param string $media_bundle_id
+   *   The ID of the media bundle.
    */
   public static function createVideoEmbedField($media_bundle_id) {
     if (!$storage = FieldStorageConfig::loadByName('media', static::VIDEO_EMBED_FIELD_DEFAULT_NAME)) {

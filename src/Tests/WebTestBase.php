@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Tests\VideoEmbedFieldWebTestBase.
- */
-
 namespace Drupal\video_embed_field\Tests;
 
 use Drupal\field\Entity\FieldConfig;
@@ -24,7 +19,7 @@ abstract class WebTestBase extends CoreWebTestBase {
   protected $adminUser;
 
   /**
-   * The field name
+   * The field name.
    *
    * @var string
    */

@@ -1,15 +1,12 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Plugin\video_embed_field\Provider\Vimeo.
- */
-
 namespace Drupal\video_embed_field\Plugin\video_embed_field\Provider;
 
 use Drupal\video_embed_field\ProviderPluginBase;
 
 /**
+ * A Vimeo provider plugin.
+ *
  * @VideoEmbedProvider(
  *   id = "vimeo",
  *   title = @Translation("Vimeo")

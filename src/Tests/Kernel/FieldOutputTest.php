@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Tests\Kernel\FieldOutputTest.
- */
-
 namespace Drupal\video_embed_field\Tests\Kernel;
 
 use Drupal\Core\Url;
@@ -258,7 +253,7 @@ class FieldOutputTest extends KernelTestBase {
           '#provider' => 'youtube_playlist',
           '#url' => 'https://www.youtube.com/embed/videoseries',
           '#query' => [
-            'list' => 'PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB'
+            'list' => 'PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB',
           ],
           '#attributes' => [
             'width' => '100%',
@@ -277,9 +272,9 @@ class FieldOutputTest extends KernelTestBase {
   }
 
   /**
-   * @dataProvider renderedFieldTestCases
-   *
    * Test the embed field.
+   *
+   * @dataProvider renderedFieldTestCases
    */
   public function testEmbedField($url, $settings, $expected_field_item_output) {
 

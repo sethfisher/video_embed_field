@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_media\ProvidedFieldsTest.
- */
-
 namespace Drupal\video_embed_media\Tests;
 
 use Drupal\media_entity\Entity\Media;

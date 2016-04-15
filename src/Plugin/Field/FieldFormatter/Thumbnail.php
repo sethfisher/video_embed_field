@@ -1,13 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail.
- */
-
 namespace Drupal\video_embed_field\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -79,7 +75,7 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
   public static function defaultSettings() {
     return [
       'image_style' => '',
-      'link_image_to' => ''
+      'link_image_to' => '',
     ];
   }
 
@@ -143,7 +139,7 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
    * @param \Drupal\video_embed_field\ProviderManagerInterface $provider_manager
    *   The video embed provider manager.
    */
-  public function __construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, ProviderManagerInterface $provider_manager, EntityStorageInterface $image_style_storage) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, $settings, $label, $view_mode, $third_party_settings, ProviderManagerInterface $provider_manager, EntityStorageInterface $image_style_storage) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
     $this->providerManager = $provider_manager;
     $this->imageStyleStorage = $image_style_storage;

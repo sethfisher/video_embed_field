@@ -1,13 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_media\UpgradeManager.
- */
-
 namespace Drupal\video_embed_media;
+
 use Drupal\Core\Entity\Query\QueryFactory;
-use Drupal\Core\Entity\Query\QueryFactoryInterface;
 use Drupal\media_entity\Entity\Media;
 use Drupal\media_entity\Entity\MediaBundle;
 use Drupal\video_embed_media\Plugin\MediaEntity\Type\VideoEmbedField;
@@ -77,9 +72,7 @@ class UpgradeManager implements UpgradeManagerInterface {
     // Copy the existing media bundle field value to the new field value.
     $existing_url_field = $media_entity->{$type_configuration['source_field']}->getValue();
     $existing_url = isset($existing_url_field[0]['uri']) ? $existing_url_field[0]['uri'] : $existing_url_field[0]['value'];
-    $media_entity->{VideoEmbedField::VIDEO_EMBED_FIELD_DEFAULT_NAME} = [[
-      'value' => $existing_url
-    ]];
+    $media_entity->{VideoEmbedField::VIDEO_EMBED_FIELD_DEFAULT_NAME} = [['value' => $existing_url]];
     $media_entity->save();
   }
 

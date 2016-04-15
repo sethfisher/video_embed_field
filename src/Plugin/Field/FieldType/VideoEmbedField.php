@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\video_embed_field\Plugin\Field\FieldType\VideoEmbedField.
- */
-
 namespace Drupal\video_embed_field\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
@@ -93,7 +88,7 @@ class VideoEmbedField extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  function __construct($definition, $name = NULL, TraversableTypedDataInterface $parent = NULL, $provider_manager) {
+  public function __construct($definition, $name = NULL, TraversableTypedDataInterface $parent = NULL, $provider_manager = NULL) {
     parent::__construct($definition, $name, $parent);
     $this->providerManager = $provider_manager;
   }
