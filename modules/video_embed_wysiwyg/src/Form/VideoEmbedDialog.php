@@ -118,10 +118,6 @@ class VideoEmbedDialog extends FormBase {
    *   An array of values sent to the client for use in the WYSIWYG.
    */
   protected function getClientValues(FormStateInterface $form_state, ProviderPluginInterface $provider) {
-    // @todo Render the thumbnail to download it from the remote. Consider
-    // making the download method public. https://www.drupal.org/node/2687077
-    $provider->renderThumbnail(FALSE, FALSE);
-
     // All settings from the field formatter exist in the form and are relevant
     // for the rendering of the video.
     $video_formatter_settings = Video::defaultSettings();
@@ -129,8 +125,10 @@ class VideoEmbedDialog extends FormBase {
       $video_formatter_settings[$key] = $form_state->getValue($key);
     }
 
+    $provider->downloadThumbnail();
+    $thumbnail_uri = $provider->getLocalThumbnailUri();
     return [
-      'preview_thumbnail' => ImageStyle::load('video_embed_wysiwyg_preview')->buildUrl($provider->getLocalThumbnailUri()),
+      'preview_thumbnail' => ImageStyle::load('video_embed_wysiwyg_preview')->buildUrl($thumbnail_uri),
       'video_url' => $form_state->getValue('video_url'),
       'settings' => $video_formatter_settings,
       'settings_summary' => Video::mockInstance($video_formatter_settings)->settingsSummary(),

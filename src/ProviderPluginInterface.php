@@ -48,10 +48,19 @@ interface ProviderPluginInterface {
   /**
    * Get the URL to the local thumbnail.
    *
+   * This method does not gartunee that the file will exist, only that it will
+   * be the location of the thumbnail after the download thumbnail method has
+   * been called.
+   *
    * @return string
    *   The URI for the local thumbnail.
    */
   public function getLocalThumbnailUri();
+
+  /**
+   * Download the remote thumbnail URL to the local thumbnail URI.
+   */
+  public function downloadThumbnail();
 
   /**
    * Render embed code.

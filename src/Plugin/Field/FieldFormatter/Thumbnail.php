@@ -64,6 +64,7 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
       elseif ($this->getSetting('link_image_to') == static::LINK_PROVIDER) {
         $url = Url::fromUri($item->value);
       }
+      $provider->downloadThumbnail();
       $element[$delta] = $provider->renderThumbnail($this->getSetting('image_style'), $url);
     }
     return $element;

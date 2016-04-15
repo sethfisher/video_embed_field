@@ -91,7 +91,6 @@ abstract class ProviderPluginBase implements ProviderPluginInterface, ContainerF
    * {@inheritdoc}
    */
   public function renderThumbnail($image_style, $link_url) {
-    $this->downloadThumbnail();
     $output = [
       '#theme' => 'image',
       '#uri' => !empty($image_style) ? ImageStyle::load($image_style)->buildUrl($this->getLocalThumbnailUri()) : $this->getLocalThumbnailUri(),
@@ -107,9 +106,9 @@ abstract class ProviderPluginBase implements ProviderPluginInterface, ContainerF
   }
 
   /**
-   * Download the remote thumbnail to the local file system.
+   * {@inheritdoc}
    */
-  protected function downloadThumbnail() {
+  public function downloadThumbnail() {
     $local_uri = $this->getLocalThumbnailUri();
     if (!file_exists($local_uri)) {
       file_prepare_directory($this->thumbsDirectory, FILE_CREATE_DIRECTORY);

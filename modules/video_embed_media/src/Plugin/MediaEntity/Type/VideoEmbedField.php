@@ -48,8 +48,7 @@ class VideoEmbedField extends MediaTypeBase {
    */
   public function thumbnail(MediaInterface $media) {
     $provider = $this->loadProvider($media);
-    // @todo, https://www.drupal.org/node/2687077
-    $provider->renderThumbnail(NULL, NULL);
+    $provider->downloadThumbnail();
     return $provider->getLocalThumbnailUri();
   }
 
