@@ -126,9 +126,10 @@ class VideoEmbedDialog extends FormBase {
     }
 
     $provider->downloadThumbnail();
-    $thumbnail_uri = $provider->getLocalThumbnailUri();
+    $thumbnail_preview = ImageStyle::load('video_embed_wysiwyg_preview')->buildUrl($provider->getLocalThumbnailUri());
+    $thumbnail_preview_parts = parse_url($thumbnail_preview);
     return [
-      'preview_thumbnail' => ImageStyle::load('video_embed_wysiwyg_preview')->buildUrl($thumbnail_uri),
+      'preview_thumbnail' => $thumbnail_preview_parts['path'] . (!empty($thumbnail_preview_parts['query']) ? '?' : '') . $thumbnail_preview_parts['query'],
       'video_url' => $form_state->getValue('video_url'),
       'settings' => $video_formatter_settings,
       'settings_summary' => Video::mockInstance($video_formatter_settings)->settingsSummary(),

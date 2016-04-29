@@ -59,7 +59,7 @@ class Thumbnail extends FormatterBase implements ContainerFactoryPluginInterface
       $provider = $this->providerManager->loadProviderFromInput($item->value);
       $url = FALSE;
       if ($this->getSetting('link_image_to') == static::LINK_CONTENT) {
-        $url = $items->getEntity()->urlInfo();
+        $url = $items->getEntity()->toUrl();
       }
       elseif ($this->getSetting('link_image_to') == static::LINK_PROVIDER) {
         $url = Url::fromUri($item->value);

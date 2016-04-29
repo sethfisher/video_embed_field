@@ -98,11 +98,15 @@ class EmbedDialogTest extends JavascriptTestBase {
     // Submit a valid URL.
     $this->find('input[name="video_url"]')->setValue('https://www.youtube.com/watch?v=iaf3Sl2r3jE&t=1553s');
     $this->find('button.form-submit')->click();
+    // Wait for AJAX as well as a minimum wait time for the WYSIWYG to properly
+    // render the video.
     $this->wait();
+    $this->getSession()->wait(500);
 
     // View the source of the ckeditor and find the output.
     $this->find('.cke_button__source_label')->click();
-    $this->assertEquals('<p>{"preview_thumbnail":"' . $this->baseUrl . '/' . $this->publicFilesDirectory . '/styles/video_embed_wysiwyg_preview/public/video_thumbnails/iaf3Sl2r3jE.jpg","video_url":"https://www.youtube.com/watch?v=iaf3Sl2r3jE&amp;t=1553s","settings":{"responsive":1,"width":"854","height":"480","autoplay":1},"settings_summary":["Embedded Video (Responsive, autoplaying)."]}</p>', trim($this->getSession()->getPage()->find('css', '.cke_source')->getValue()));
+    $base_path = \Drupal::request()->getBasePath();
+    $this->assertEquals('<p>{"preview_thumbnail":"' . rtrim($base_path, '/') . '/' . $this->publicFilesDirectory . '/styles/video_embed_wysiwyg_preview/public/video_thumbnails/iaf3Sl2r3jE.jpg","video_url":"https://www.youtube.com/watch?v=iaf3Sl2r3jE&amp;t=1553s","settings":{"responsive":1,"width":"854","height":"480","autoplay":1},"settings_summary":["Embedded Video (Responsive, autoplaying)."]}</p>', trim($this->getSession()->getPage()->find('css', '.cke_source')->getValue()));
   }
 
   /**
