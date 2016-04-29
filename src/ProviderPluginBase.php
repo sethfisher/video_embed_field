@@ -45,7 +45,7 @@ abstract class ProviderPluginBase implements ProviderPluginInterface, ContainerF
    *
    * @param string $configuration
    *   The configuration of the plugin.
-   * @param \GuzzleHttp\ClientInterface $http_client
+   * @param \GuzzleHttp\Client $http_client
    *    An HTTP client.
    *
    * @throws \Exception

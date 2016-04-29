@@ -50,4 +50,11 @@ class MockHttpClient implements ClientInterface {
     throw new \Exception(static::EXCEPTION_MESSAGE);
   }
 
+  /**
+   * Patch up a magic method call.
+   */
+  public function head($url) {
+    throw new \Exception(static::EXCEPTION_MESSAGE);
+  }
+
 }

@@ -48,7 +48,16 @@ class YouTube extends ProviderPluginBase {
    * {@inheritdoc}
    */
   public function getRemoteThumbnailUrl() {
-    return sprintf('http://img.youtube.com/vi/%s/hqdefault.jpg', $this->getVideoId());
+    $url = 'http://img.youtube.com/vi/%s/%s.jpg';
+    $high_resolution = sprintf($url, $this->getVideoId(), 'maxresdefault');
+    $backup = sprintf($url, $this->getVideoId(), 'mqdefault');
+    try {
+      $this->httpClient->head($high_resolution);
+      return $high_resolution;
+    }
+    catch (\Exception $e) {
+      return $backup;
+    }
   }
 
   /**
