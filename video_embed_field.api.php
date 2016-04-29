@@ -36,3 +36,15 @@ function hook_preprocess_video_embed_iframe__youtube(&$variables) {
   // Remove the YouTube logo from youtube embeds.
   $variables['query']['modestbranding'] = '1';
 }
+
+/**
+ * Alter the video_embed_field plugin definitions.
+ *
+ * This hook allows you alter the plugin definitions managed by ProviderManager.
+ * This could be useful if you wish to remove a particular definition or perhaps
+ * replace one with your own implementation (as demonstrated).
+ */
+function hook_video_embed_field_provider_info_alter(&$definitions) {
+  // Replace the YouTube provider class with another implementation.
+  $definitions['youtube']['class'] = 'Drupal\my_module\CustomYouTubeProvider';
+}
