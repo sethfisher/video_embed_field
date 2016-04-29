@@ -1,21 +1,19 @@
 <?php
 
-namespace Drupal\video_embed_field\Tests\Web;
-
-use Drupal\video_embed_field\Tests\WebTestBase;
+namespace Drupal\Tests\video_embed_field\Functional;
 
 /**
  * Test the autoplay permission works.
  *
  * @group video_embed_field
  */
-class AutoplayPermissionTest extends WebTestBase {
+class AutoplayPermissionTest extends FunctionalTestBase {
 
   /**
    * Test the autoplay permission works.
    */
   public function testVideoEmbedFieldDefaultWidget() {
-    $node = $this->drupalCreateNode([
+    $node = $this->createNode([
       'type' => $this->contentTypeName,
       $this->fieldName => [
         ['value' => 'https://vimeo.com/80896303'],
@@ -27,7 +25,7 @@ class AutoplayPermissionTest extends WebTestBase {
         'autoplay' => TRUE,
       ],
     ])->save();
-    $bypass_autoplay_user = $this->createUser(['never autoplay videos']);
+    $bypass_autoplay_user = $this->drupalCreateUser(['never autoplay videos']);
     // Assert a user with the permission doesn't get autoplay.
     $this->drupalLogin($bypass_autoplay_user);
     $this->drupalGet('node/' . $node->id());

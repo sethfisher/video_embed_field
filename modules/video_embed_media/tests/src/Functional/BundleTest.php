@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\video_embed_media\Tests;
+namespace Drupal\Tests\video_embed_media\Functional;
 
-use Drupal\video_embed_field\Tests\WebTestBase;
+use Drupal\Tests\video_embed_field\Functional\FunctionalTestBase;
 
 /**
  * Test the video_embed_field media integration.
  *
  * @group video_embed_media
  */
-class BundleTest extends WebTestBase {
+class BundleTest extends FunctionalTestBase {
 
   /**
    * Modules to install.
@@ -33,11 +33,11 @@ class BundleTest extends WebTestBase {
 
     // Create a new media bundle.
     $this->drupalGet('admin/structure/media/add');
-    $this->drupalPostForm(NULL, [
+    $this->submitForm([
       'label' => 'Video Bundle',
       'id' => 'video_bundle',
       'type' => 'video_embed_field',
-    ], 'Save media bundle');
+    ], t('Save media bundle'));
     $this->assertText('The media bundle Video Bundle has been added.');
 
     // Ensure the video field is added to the media entity.
@@ -47,7 +47,7 @@ class BundleTest extends WebTestBase {
 
     // Add a media entity with the new field.
     $this->drupalGet('media/add/video_bundle');
-    $this->drupalPostForm(NULL, [
+    $this->submitForm([
       'name[0][value]' => 'Drupal video!',
       'field_media_video_embed_field[0][value]' => 'https://www.youtube.com/watch?v=XgYu7-DQjDQ',
     ], 'Save');
@@ -55,26 +55,28 @@ class BundleTest extends WebTestBase {
     $this->assertRaw('video_thumbnails/XgYu7-DQjDQ.jpg');
 
     // Add another field and change the configured media field.
-    $this->drupalPostForm('admin/structure/media/manage/video_bundle/fields/add-field', array(
+    $this->drupalGet('admin/structure/media/manage/video_bundle/fields/add-field');
+    $this->submitForm([
       'new_storage_type' => 'video_embed_field',
       'label' => 'New Video Field',
       'field_name' => 'new_video_field',
-    ), 'Save and continue');
-    $this->drupalPostForm(NULL, [], 'Save field settings');
-    $this->drupalPostForm(NULL, [], 'Save settings');
+    ], 'Save and continue');
+    $this->submitForm([], t('Save field settings'));
+    $this->submitForm([], t('Save settings'));
 
     // Update video source field.
-    $this->drupalPostForm('admin/structure/media/manage/video_bundle', [
+    $this->drupalGet('admin/structure/media/manage/video_bundle');
+    $this->submitForm([
       'type_configuration[video_embed_field][source_field]' => 'field_new_video_field',
-    ], 'Save media bundle');
+    ], t('Save media bundle'));
 
     // Create a video, populating both video URL fields.
     $this->drupalGet('media/add/video_bundle');
-    $this->drupalPostForm(NULL, [
+    $this->submitForm([
       'name[0][value]' => 'Another Video!',
       'field_media_video_embed_field[0][value]' => 'https://www.youtube.com/watch?v=XgYu7-DQjDQ',
       'field_new_video_field[0][value]' => 'https://www.youtube.com/watch?v=gnERPdAiuSo',
-    ], 'Save');
+    ], t('Save'));
 
     // We should see the newly configured video thumbnail, but not the original.
     $this->assertRaw('video_thumbnails/gnERPdAiuSo.jpg');

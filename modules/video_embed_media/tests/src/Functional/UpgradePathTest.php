@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\video_embed_media\Tests;
+namespace Drupal\Tests\video_embed_media\Functional;
 
-use Drupal\video_embed_field\Tests\WebTestBase;
+use Drupal\Tests\video_embed_field\Functional\FunctionalTestBase;
 
 /**
  * Test the upgrade path from media_entity_embedded_video.
  *
  * @group video_embed_media
  */
-class UpgradePathTest extends WebTestBase {
+class UpgradePathTest extends FunctionalTestBase {
 
   /**
    * Disable strict checking for media_entity_embeddable_video.
@@ -41,37 +41,42 @@ class UpgradePathTest extends WebTestBase {
 
     // Create a media_entity_embeddable_video bundle and field.
     $this->drupalGet('admin/structure/media/add');
-    $this->drupalPostForm(NULL, [
+    $this->submitForm([
       'label' => 'embeddable Video Bundle',
       'id' => 'embeddable_bundle',
       'type' => 'embeddable_video',
     ], 'Save media bundle');
     $this->assertText('The media bundle embeddable Video Bundle has been added.');
-    $this->drupalPostForm('admin/structure/media/manage/embeddable_bundle/fields/add-field', array(
+    $this->drupalGet('admin/structure/media/manage/embeddable_bundle/fields/add-field');
+    $this->submitForm([
       'new_storage_type' => 'string',
       'label' => 'Video Text Field',
       'field_name' => 'video_text_field',
-    ), 'Save and continue');
-    $this->drupalPostForm(NULL, [], 'Save field settings');
-    $this->drupalPostForm(NULL, [], 'Save settings');
-    $this->drupalPostForm('admin/structure/media/manage/embeddable_bundle', ['type_configuration[embeddable_video][source_field]' => 'field_video_text_field'], 'Save media bundle');
-    $this->drupalPostForm('media/add/embeddable_bundle', [
+    ], t('Save and continue'));
+    $this->submitForm([], t('Save field settings'));
+    $this->submitForm([], t('Save settings'));
+    $this->drupalGet('admin/structure/media/manage/embeddable_bundle');
+    $this->submitForm(['type_configuration[embeddable_video][source_field]' => 'field_video_text_field'], t('Save media bundle'));
+    $this->drupalGet('media/add/embeddable_bundle');
+    $this->submitForm([
       'field_video_text_field[0][value]' => 'https://www.youtube.com/watch?v=gnERPdAiuSo',
       'name[0][value]' => 'Test Media Entity',
-    ], 'Save');
+    ], t('Save'));
 
     // Install video_embed_field.
-    $this->drupalPostForm('admin/modules', [
+    $this->drupalGet('admin/modules');
+    $this->submitForm([
       'modules[Video Embed Field][video_embed_media][enable]' => '1',
-    ], 'Install');
+    ], t('Install'));
 
     $this->assertUpgradeComplete();
 
     // Uninstall the module and ensure everything is still okay.
-    $this->drupalPostForm('admin/modules/uninstall', [
+    $this->drupalGet('admin/modules/uninstall');
+    $this->submitForm([
       'uninstall[media_entity_embeddable_video]' => TRUE,
-    ], 'Uninstall');
-    $this->drupalPostForm(NULL, [], 'Uninstall');
+    ], t('Uninstall'));
+    $this->submitForm([], 'Uninstall');
 
     $this->assertUpgradeComplete();
   }
@@ -82,10 +87,10 @@ class UpgradePathTest extends WebTestBase {
   protected function assertUpgradeComplete() {
     // Ensure the new type is selected.
     $this->drupalGet('admin/structure/media/manage/embeddable_bundle');
-    $this->assertTrue(!empty($this->xpath('//option[@value="video_embed_field" and @selected="selected"]')), 'The media type was updated.');
+    $this->assertTrue(!empty($this->getSession()->getPage()->find('xpath', '//option[@value="video_embed_field" and @selected="selected"]')), 'The media type was updated.');
     // Ensure the media entity has updated values.
     $this->drupalGet('media/1/edit');
-    $this->assertFieldByName('field_video_text_field[0][value]', 'https://www.youtube.com/watch?v=gnERPdAiuSo', 'Field values were copied.');
+    $this->assertEquals($this->getSession()->getPage()->find('css', 'input[name="field_video_text_field[0][value]"]')->getValue(), 'https://www.youtube.com/watch?v=gnERPdAiuSo', 'Field values were copied.');
   }
 
 }

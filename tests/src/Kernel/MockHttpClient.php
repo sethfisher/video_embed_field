@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\video_embed_field\Tests;
+namespace Drupal\Tests\video_embed_field\Kernel;
 
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\RequestInterface;

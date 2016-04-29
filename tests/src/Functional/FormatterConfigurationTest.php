@@ -1,16 +1,15 @@
 <?php
 
-namespace Drupal\video_embed_field\Tests\Web;
+namespace Drupal\Tests\video_embed_field\Functional;
 
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
-use Drupal\video_embed_field\Tests\WebTestBase;
 
 /**
  * Tests the field formatter configuration forms.
  *
  * @group video_embed_field
  */
-class FormatterConfigurationTest extends WebTestBase {
+class FormatterConfigurationTest extends FunctionalTestBase {
 
   /**
    * The URL to the manage display interface.
@@ -65,11 +64,12 @@ class FormatterConfigurationTest extends WebTestBase {
    *   The field formatter ID to use.
    */
   protected function setFormatter($formatter) {
-    $this->drupalPostAjaxForm($this->manageDisplay, [
+    $this->drupalGet($this->manageDisplay);
+    $this->find('input[name="refresh_rows"]')->setValue($this->fieldName);
+    $this->submitForm([
       'fields[' . $this->fieldName . '][type]' => $formatter,
-      'refresh_rows' => $this->fieldName,
-    ], ['op' => t('Refresh')]);
-    $this->drupalPostForm(NULL, [], t('Save'));
+    ], t('Refresh'));
+    $this->submitForm([], t('Save'));
   }
 
   /**
@@ -84,9 +84,9 @@ class FormatterConfigurationTest extends WebTestBase {
       $edit["fields[{$this->fieldName}][settings_edit_form][settings][$key]"] = $value;
     }
     $this->drupalGet($this->manageDisplay);
-    $this->drupalPostAjaxForm(NULL, [], $this->fieldName . '_settings_edit');
-    $this->drupalPostAjaxForm(NULL, $edit, $this->fieldName . '_plugin_settings_update');
-    $this->drupalPostForm(NULL, [], t('Save'));
+    $this->find('input[name="' . $this->fieldName . '_settings_edit"]')->click();
+    $this->submitForm($edit, $this->fieldName . '_plugin_settings_update');
+    $this->submitForm([], t('Save'));
   }
 
 }

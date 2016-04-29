@@ -1,11 +1,10 @@
 <?php
 
-namespace Drupal\video_embed_field\Tests\Kernel;
+namespace Drupal\Tests\video_embed_field\Kernel;
 
 use Drupal\Core\Url;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
-use Drupal\video_embed_field\Tests\KernelTestBase;
 
 /**
  * Test the embed field formatters are functioning.

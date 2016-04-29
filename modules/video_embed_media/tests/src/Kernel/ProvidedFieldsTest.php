@@ -1,10 +1,10 @@
 <?php
 
-namespace Drupal\video_embed_media\Tests;
+namespace Drupal\Tests\video_embed_media\Kernel;
 
 use Drupal\media_entity\Entity\Media;
 use Drupal\media_entity\Entity\MediaBundle;
-use Drupal\video_embed_field\Tests\KernelTestBase;
+use Drupal\Tests\video_embed_field\Kernel\KernelTestBase;
 use Drupal\video_embed_media\Plugin\MediaEntity\Type\VideoEmbedField;
 
 /**

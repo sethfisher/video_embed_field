@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\video_embed_wysiwyg\Tests;
+namespace Drupal\Tests\video_embed_wysiwyg\Functional;
 
-use Drupal\video_embed_field\Tests\WebTestBase;
+use Drupal\Tests\video_embed_field\Functional\FunctionalTestBase;
 
 /**
  * Test the format configuration form.
  *
  * @group video_embed_wysiwyg
  */
-class TextFormatConfigurationTest extends WebTestBase {
+class TextFormatConfigurationTest extends FunctionalTestBase {
 
   /**
    * Modules to install.
@@ -36,11 +36,9 @@ class TextFormatConfigurationTest extends WebTestBase {
     $this->drupalGet('admin/config/content/formats/manage/plain_text');
 
     // Setup the filter to have an editor.
-    $this->drupalPostForm(NULL, [
-      'editor[editor]' => 'ckeditor',
-    ], t('Save configuration'));
-    $this->drupalPostAjaxForm(NULL, [], 'editor_configure');
-    $this->drupalPostForm(NULL, [], t('Save configuration'));
+    $this->setFieldValue('editor[editor]', 'ckeditor');
+    $this->getSession()->getPage()->find('css', 'input[name="editor_configure"]')->click();
+    $this->submitForm([], t('Save configuration'));
   }
 
   /**
@@ -48,22 +46,25 @@ class TextFormatConfigurationTest extends WebTestBase {
    */
   public function testFormatConfiguration() {
     // Save the settings with the filter enabled, but with no button.
-    $this->drupalPostForm('admin/config/content/formats/manage/plain_text', [
+    $this->drupalGet('admin/config/content/formats/manage/plain_text');
+    $this->submitForm([
       'filters[video_embed_wysiwyg][status]' => TRUE,
       'editor[settings][toolbar][button_groups]' => '[]',
-    ], 'Save configuration');
+    ], t('Save configuration'));
     $this->assertText('To embed videos, make sure you have enabled the "Video Embed WYSIWYG" filter and dragged the video icon into the WYSIWYG toolbar.');
 
-    $this->drupalPostForm('admin/config/content/formats/manage/plain_text', [
+    $this->drupalGet('admin/config/content/formats/manage/plain_text');
+    $this->submitForm([
       'filters[video_embed_wysiwyg][status]' => FALSE,
       'editor[settings][toolbar][button_groups]' => '[[{"name":"Group","items":["video_embed"]}]]',
-    ], 'Save configuration');
+    ], t('Save configuration'));
     $this->assertText('To embed videos, make sure you have enabled the "Video Embed WYSIWYG" filter and dragged the video icon into the WYSIWYG toolbar.');
 
-    $this->drupalPostForm('admin/config/content/formats/manage/plain_text', [
+    $this->drupalGet('admin/config/content/formats/manage/plain_text');
+    $this->submitForm([
       'filters[video_embed_wysiwyg][status]' => TRUE,
       'editor[settings][toolbar][button_groups]' => '[[{"name":"Group","items":["video_embed"]}]]',
-    ], 'Save configuration');
+    ], t('Save configuration'));
     $this->assertText('The text format Plain text has been updated.');
   }
 
@@ -80,21 +81,21 @@ class TextFormatConfigurationTest extends WebTestBase {
     $this->assertText('Width');
     $this->assertText('Height');
 
-    $this->drupalPostForm(NULL, [
+    $this->submitForm([
       'filters[video_embed_wysiwyg][status]' => TRUE,
       'editor[settings][toolbar][button_groups]' => '[[{"name":"Group","items":["video_embed"]}]]',
       'editor[settings][plugins][video_embed][defaults][children][width]' => '123',
       'editor[settings][plugins][video_embed][defaults][children][height]' => '456',
       'editor[settings][plugins][video_embed][defaults][children][responsive]' => FALSE,
       'editor[settings][plugins][video_embed][defaults][children][autoplay]' => FALSE,
-    ], 'Save configuration');
+    ], t('Save configuration'));
 
     // Ensure the configured defaults show up on the modal window.
     $this->drupalGet('video-embed-wysiwyg/dialog/plain_text');
-    $this->assertFieldByXPath('//input[@name="width"]', '123');
-    $this->assertFieldByXPath('//input[@name="height"]', '456');
-    $this->assertFieldByXPath('//input[@name="autoplay"]', FALSE);
-    $this->assertFieldByXPath('//input[@name="responsive"]', FALSE);
+    $this->assertFieldByXpath('//input[@name="width"]', '123');
+    $this->assertFieldByXpath('//input[@name="height"]', '456');
+    $this->assertFieldByXpath('//input[@name="autoplay"]', FALSE);
+    $this->assertFieldByXpath('//input[@name="responsive"]', FALSE);
   }
 
 }

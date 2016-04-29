@@ -1,15 +1,21 @@
 <?php
 
-namespace Drupal\video_embed_field\Tests;
+namespace Drupal\Tests\video_embed_field\Functional;
 
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\simpletest\WebTestBase as CoreWebTestBase;
+use Drupal\simpletest\ContentTypeCreationTrait;
+use Drupal\simpletest\NodeCreationTrait;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Test the video embed field widget.
  */
-abstract class WebTestBase extends CoreWebTestBase {
+abstract class FunctionalTestBase extends BrowserTestBase {
+
+  use ContentTypeCreationTrait;
+  use NodeCreationTrait;
+  use AssertionsTrait;
 
   /**
    * A user with permission to administer content types, node fields, etc.
@@ -65,7 +71,7 @@ abstract class WebTestBase extends CoreWebTestBase {
     parent::setUp();
     $this->fieldName = strtolower($this->randomMachineName());
     $this->contentTypeName = strtolower($this->randomMachineName());
-    $this->drupalCreateContentType(['type' => $this->contentTypeName]);
+    $this->createContentType(['type' => $this->contentTypeName]);
     $this->adminUser = $this->drupalCreateUser(array_keys($this->container->get('user.permissions')->getPermissions()));
     $field_storage = FieldStorageConfig::create([
       'field_name' => $this->fieldName,
@@ -84,6 +90,31 @@ abstract class WebTestBase extends CoreWebTestBase {
     $this->entityDisplay = entity_get_display('node', $this->contentTypeName, 'default');
     $this->entityFormDisplay = entity_get_form_display('node', $this->contentTypeName, 'default');
     $this->resetAll();
+  }
+
+  /**
+   * Set a field value.
+   *
+   * @param string $field
+   *   The name of the field to set.
+   * @param string $value
+   *   The value to set.
+   */
+  protected function setFieldValue($field, $value) {
+    $this->find('[name="' . $field . '"]')->setValue($value);
+  }
+
+  /**
+   * Find an element based on a CSS selector.
+   *
+   * @param string $css_selector
+   *   A css selector to find an element for.
+   *
+   * @return \Behat\Mink\Element\NodeElement|null
+   *   The found element or null.
+   */
+  protected function find($css_selector) {
+    return $this->getSession()->getPage()->find('css', $css_selector);
   }
 
 }

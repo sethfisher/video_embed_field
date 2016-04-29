@@ -1,8 +1,6 @@
 <?php
 
-namespace Drupal\video_embed_field\Tests\Kernel;
-
-use Drupal\video_embed_field\Tests\KernelTestBase;
+namespace Drupal\Tests\video_embed_field\Kernel;
 
 /**
  * Test that the iframe element works.

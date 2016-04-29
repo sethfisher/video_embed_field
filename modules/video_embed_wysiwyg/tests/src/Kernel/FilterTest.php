@@ -1,10 +1,9 @@
 <?php
 
-namespace Drupal\video_embed_wysiwyg\Tests;
+namespace Drupal\Tests\video_embed_wysiwyg\Kernel;
 
 use Drupal\filter\Entity\FilterFormat;
-use Drupal\video_embed_field\Tests\KernelTestBase;
-use Drupal\video_embed_field\Tests\StripWhitespaceTrait;
+use Drupal\Tests\video_embed_field\Kernel\KernelTestBase;
 
 /**
  * A test for the filter.
@@ -12,8 +11,6 @@ use Drupal\video_embed_field\Tests\StripWhitespaceTrait;
  * @group video_embed_wysiwyg
  */
 class FilterTest extends KernelTestBase {
-
-  use StripWhitespaceTrait;
 
   /**
    * Modules to enable.
@@ -107,6 +104,21 @@ class FilterTest extends KernelTestBase {
     ]);
     $this->filter->setFilterConfig('video_embed_wysiwyg', ['status' => 1]);
     $this->filter->save();
+  }
+
+  /**
+   * Remove HTML whitespace from a string.
+   *
+   * @param string $string
+   *   The input string.
+   *
+   * @return string
+   *   The whitespace cleaned string.
+   */
+  protected function stripWhitespace($string) {
+    $no_whitespace = preg_replace('/\s{2,}/', '', $string);
+    $no_whitespace = str_replace("\n", '', $no_whitespace);
+    return $no_whitespace;
   }
 
 }
