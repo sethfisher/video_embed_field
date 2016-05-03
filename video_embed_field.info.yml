@@ -10,3 +10,4 @@ dependencies:
 test_dependencies:
   - media_entity
   - media_entity_embeddable_video
+  - colorbox
