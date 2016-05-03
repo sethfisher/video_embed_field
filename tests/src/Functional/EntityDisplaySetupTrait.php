@@ -1,28 +1,18 @@
 <?php
 
 namespace Drupal\Tests\video_embed_field\Functional;
-
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\simpletest\ContentTypeCreationTrait;
 use Drupal\simpletest\NodeCreationTrait;
-use Drupal\Tests\BrowserTestBase;
 
 /**
- * Test the video embed field widget.
+ * A trait for manipulating entity display
  */
-abstract class FunctionalTestBase extends BrowserTestBase {
+trait EntityDisplaySetupTrait {
 
   use ContentTypeCreationTrait;
   use NodeCreationTrait;
-  use AssertionsTrait;
-
-  /**
-   * A user with permission to administer content types, node fields, etc.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $adminUser;
 
   /**
    * The field name.
@@ -53,26 +43,12 @@ abstract class FunctionalTestBase extends BrowserTestBase {
   protected $entityFormDisplay;
 
   /**
-   * Modules to install.
-   *
-   * @var array
+   * Setup the entity displays with required fields
    */
-  public static $modules = [
-    'video_embed_field',
-    'field_ui',
-    'node',
-    'image',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-    $this->fieldName = strtolower($this->randomMachineName());
-    $this->contentTypeName = strtolower($this->randomMachineName());
+  protected function setupEntityDisplays() {
+    $this->fieldName = 'field_test_video_field';
+    $this->contentTypeName = 'test_content_type_name';
     $this->createContentType(['type' => $this->contentTypeName]);
-    $this->adminUser = $this->drupalCreateUser(array_keys($this->container->get('user.permissions')->getPermissions()));
     $field_storage = FieldStorageConfig::create([
       'field_name' => $this->fieldName,
       'entity_type' => 'node',
@@ -89,32 +65,44 @@ abstract class FunctionalTestBase extends BrowserTestBase {
     ])->save();
     $this->entityDisplay = entity_get_display('node', $this->contentTypeName, 'default');
     $this->entityFormDisplay = entity_get_form_display('node', $this->contentTypeName, 'default');
-    $this->resetAll();
   }
 
   /**
-   * Set a field value.
-   *
-   * @param string $field
-   *   The name of the field to set.
-   * @param string $value
-   *   The value to set.
+   * @param $type
+   * @param array $settings
    */
-  protected function setFieldValue($field, $value) {
-    $this->find('[name="' . $field . '"]')->setValue($value);
+  protected function setDisplayComponentSettings($type, $settings = []) {
+    $this->entityDisplay->setComponent($this->fieldName, [
+      'type' => $type,
+      'settings' => $settings,
+    ])->save();
   }
 
   /**
-   * Find an element based on a CSS selector.
-   *
-   * @param string $css_selector
-   *   A css selector to find an element for.
-   *
-   * @return \Behat\Mink\Element\NodeElement|null
-   *   The found element or null.
+   * @param $type
+   * @param array $settings
    */
-  protected function find($css_selector) {
-    return $this->getSession()->getPage()->find('css', $css_selector);
+  protected function setFormComponentSettings($type, $settings = []) {
+    $this->entityFormDisplay
+      ->setComponent($this->fieldName, [
+        'type' => $type,
+        'settings' => $settings
+      ])
+      ->save();
+  }
+
+  /**
+   * @param $value
+   *
+   * @return \Drupal\node\NodeInterface
+   */
+  protected function createVideoNode($value) {
+    return $this->createNode([
+      'type' => $this->contentTypeName,
+      $this->fieldName => [
+        ['value' => $value],
+      ],
+    ]);
   }
 
 }

@@ -2,14 +2,19 @@
 
 namespace Drupal\Tests\video_embed_media\Functional;
 
-use Drupal\Tests\video_embed_field\Functional\FunctionalTestBase;
+use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\video_embed_field\Functional\AdminUserTrait;
+use Drupal\Tests\video_embed_field\Functional\AssertionsTrait;
 
 /**
  * Test the video_embed_field media integration.
  *
  * @group video_embed_media
  */
-class BundleTest extends FunctionalTestBase {
+class BundleTest extends BrowserTestBase {
+
+  use AdminUserTrait;
+  use AssertionsTrait;
 
   /**
    * Modules to install.
@@ -29,7 +34,7 @@ class BundleTest extends FunctionalTestBase {
    * Test the dialog form.
    */
   public function testMediaBundleCreation() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->createAdminUser());
 
     // Create a new media bundle.
     $this->drupalGet('admin/structure/media/add');

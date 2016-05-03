@@ -3,23 +3,36 @@
 namespace Drupal\Tests\video_embed_field\Functional;
 
 use Drupal\Core\Url;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Test the video embed field widget.
  *
  * @group video_embed_field
  */
-class WidgetTest extends FunctionalTestBase {
+class WidgetTest extends BrowserTestBase {
+
+  use EntityDisplaySetupTrait;
+  use AdminUserTrait;
+  use AssertionsTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static $modules = [
+    'field_ui',
+    'node',
+    'video_embed_field',
+  ];
 
   /**
    * Test the input widget.
    */
   public function testVideoEmbedFieldDefaultWidget() {
-    $this->entityFormDisplay
-      ->setComponent($this->fieldName, ['type' => 'video_embed_field_textfield'])
-      ->save();
+    $this->setupEntityDisplays();
+    $this->setFormComponentSettings('video_embed_field_textfield');
 
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->createAdminUser());
     $node_title = $this->randomMachineName();
 
     // Test an invalid input.

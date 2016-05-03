@@ -2,19 +2,22 @@
 
 namespace Drupal\Tests\video_embed_wysiwyg\Functional;
 
-use Drupal\Tests\video_embed_field\Functional\FunctionalTestBase;
+use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\video_embed_field\Functional\AdminUserTrait;
+use Drupal\Tests\video_embed_field\Functional\AssertionsTrait;
 
 /**
  * Test the format configuration form.
  *
  * @group video_embed_wysiwyg
  */
-class TextFormatConfigurationTest extends FunctionalTestBase {
+class TextFormatConfigurationTest extends BrowserTestBase {
+
+  use AdminUserTrait;
+  use AssertionsTrait;
 
   /**
-   * Modules to install.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   public static $modules = [
     'video_embed_field',
@@ -32,7 +35,7 @@ class TextFormatConfigurationTest extends FunctionalTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->createAdminUser());
     $this->drupalGet('admin/config/content/formats/manage/plain_text');
 
     // Setup the filter to have an editor.
@@ -96,6 +99,18 @@ class TextFormatConfigurationTest extends FunctionalTestBase {
     $this->assertFieldByXpath('//input[@name="height"]', '456');
     $this->assertFieldByXpath('//input[@name="autoplay"]', FALSE);
     $this->assertFieldByXpath('//input[@name="responsive"]', FALSE);
+  }
+
+  /**
+   * Set a field value.
+   *
+   * @param string $field
+   *   The name of the field to set.
+   * @param string $value
+   *   The value to set.
+   */
+  protected function setFieldValue($field, $value) {
+    $this->getSession()->getPage()->find('css', '[name="' . $field . '"]')->setValue($value);
   }
 
 }

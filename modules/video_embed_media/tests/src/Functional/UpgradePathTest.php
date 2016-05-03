@@ -2,21 +2,19 @@
 
 namespace Drupal\Tests\video_embed_media\Functional;
 
-use Drupal\Tests\video_embed_field\Functional\FunctionalTestBase;
+use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\video_embed_field\Functional\AdminUserTrait;
+use Drupal\Tests\video_embed_field\Functional\AssertionsTrait;
 
 /**
  * Test the upgrade path from media_entity_embedded_video.
  *
  * @group video_embed_media
  */
-class UpgradePathTest extends FunctionalTestBase {
+class UpgradePathTest extends BrowserTestBase {
 
-  /**
-   * Disable strict checking for media_entity_embeddable_video.
-   *
-   * @var bool
-   */
-  protected $strictConfigSchema = FALSE;
+  use AdminUserTrait;
+  use AssertionsTrait;
 
   /**
    * Modules to install.
@@ -37,7 +35,7 @@ class UpgradePathTest extends FunctionalTestBase {
    * Test the upgrade path.
    */
   public function testMediaBundleCreation() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->createAdminUser());
 
     // Create a media_entity_embeddable_video bundle and field.
     $this->drupalGet('admin/structure/media/add');

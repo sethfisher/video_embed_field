@@ -2,25 +2,33 @@
 
 namespace Drupal\Tests\video_embed_field\Functional;
 use Drupal\simpletest\ContentTypeCreationTrait;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Integration test for the field configuration form.
  *
  * @group video_embed_form
  */
-class FieldConfigurationTest extends FunctionalTestBase {
+class FieldConfigurationTest extends BrowserTestBase {
 
-  use ContentTypeCreationTrait;
+  use EntityDisplaySetupTrait;
+  use AdminUserTrait;
+  use AssertionsTrait;
 
+  /**
+   * {@inheritdoc}
+   */
   public static $modules = [
     'field_ui',
+    'node',
+    'video_embed_field',
   ];
 
   /**
    * Test the field configuration form.
    */
   public function testFieldConfiguration() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->createAdminUser());
     $this->createContentType(['type' => 'page', 'name' => 'Page']);
     drupal_flush_all_caches();
     $this->drupalGet('admin/structure/types/manage/page/fields/add-field');

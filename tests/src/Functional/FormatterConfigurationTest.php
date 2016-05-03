@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\video_embed_field\Functional;
 
+use Drupal\Tests\BrowserTestBase;
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
 
 /**
@@ -9,7 +10,20 @@ use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
  *
  * @group video_embed_field
  */
-class FormatterConfigurationTest extends FunctionalTestBase {
+class FormatterConfigurationTest extends BrowserTestBase {
+
+  use AdminUserTrait;
+  use EntityDisplaySetupTrait;
+  use AssertionsTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static $modules = [
+    'video_embed_field',
+    'node',
+    'field_ui',
+  ];
 
   /**
    * The URL to the manage display interface.
@@ -23,8 +37,9 @@ class FormatterConfigurationTest extends FunctionalTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->drupalLogin($this->adminUser);
-    $this->manageDisplay = 'admin/structure/types/manage/' . $this->contentTypeName . '/display/teaser';
+    $this->drupalLogin($this->createAdminUser());
+    $this->setupEntityDisplays();
+    $this->manageDisplay = 'admin/structure/types/manage/test_content_type_name/display/teaser';
   }
 
   /**
@@ -87,6 +102,19 @@ class FormatterConfigurationTest extends FunctionalTestBase {
     $this->find('input[name="' . $this->fieldName . '_settings_edit"]')->click();
     $this->submitForm($edit, $this->fieldName . '_plugin_settings_update');
     $this->submitForm([], t('Save'));
+  }
+
+  /**
+   * Find an element based on a CSS selector.
+   *
+   * @param string $css_selector
+   *   A css selector to find an element for.
+   *
+   * @return \Behat\Mink\Element\NodeElement|null
+   *   The found element or null.
+   */
+  protected function find($css_selector) {
+    return $this->getSession()->getPage()->find('css', $css_selector);
   }
 
 }
