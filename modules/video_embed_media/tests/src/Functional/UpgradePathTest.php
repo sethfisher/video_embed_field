@@ -62,10 +62,7 @@ class UpgradePathTest extends BrowserTestBase {
     ], t('Save'));
 
     // Install video_embed_field.
-    $this->drupalGet('admin/modules');
-    $this->submitForm([
-      'modules[Video Embed Field][video_embed_media][enable]' => '1',
-    ], t('Install'));
+    $this->container->get('module_installer')->install(['video_embed_media'], TRUE);
 
     $this->assertUpgradeComplete();
 
