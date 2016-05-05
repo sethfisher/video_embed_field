@@ -36,8 +36,8 @@ class FieldOutputTest extends KernelTestBase {
         [
           'type' => 'video_embed_field_video',
           'settings' => [
-            'width' => '100%',
-            'height' => '100%',
+            'width' => 100,
+            'height' => 100,
             'autoplay' => TRUE,
             'responsive' => FALSE,
           ],
@@ -52,8 +52,8 @@ class FieldOutputTest extends KernelTestBase {
             'rel' => '0',
           ],
           '#attributes' => [
-            'width' => '100%',
-            'height' => '100%',
+            'width' => '100',
+            'height' => '100',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
           ],
@@ -69,8 +69,8 @@ class FieldOutputTest extends KernelTestBase {
         [
           'type' => 'video_embed_field_video',
           'settings' => [
-            'width' => '100%',
-            'height' => '100%',
+            'width' => 100,
+            'height' => 100,
             'autoplay' => TRUE,
             'responsive' => FALSE,
           ],
@@ -85,8 +85,8 @@ class FieldOutputTest extends KernelTestBase {
             'rel' => '0',
           ],
           '#attributes' => [
-            'width' => '100%',
-            'height' => '100%',
+            'width' => '100',
+            'height' => '100',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
           ],
@@ -113,8 +113,8 @@ class FieldOutputTest extends KernelTestBase {
         [
           'type' => 'video_embed_field_video',
           'settings' => [
-            'width' => '100%',
-            'height' => '100%',
+            'width' => 100,
+            'height' => 100,
             'autoplay' => TRUE,
             'responsive' => FALSE,
           ],
@@ -127,8 +127,8 @@ class FieldOutputTest extends KernelTestBase {
             'autoplay' => '1',
           ],
           '#attributes' => [
-            'width' => '100%',
-            'height' => '100%',
+            'width' => '100',
+            'height' => '100',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
           ],
@@ -245,8 +245,8 @@ class FieldOutputTest extends KernelTestBase {
         [
           'type' => 'video_embed_field_video',
           'settings' => [
-            'width' => '100px',
-            'height' => '100px',
+            'width' => 100,
+            'height' => 100,
             'autoplay' => TRUE,
             'responsive' => TRUE,
           ],
@@ -267,8 +267,8 @@ class FieldOutputTest extends KernelTestBase {
               'autoplay' => '1',
             ],
             '#attributes' => [
-              'width' => '100px',
-              'height' => '100px',
+              'width' => '100',
+              'height' => '100',
               'frameborder' => '0',
               'allowfullscreen' => 'allowfullscreen',
             ],
@@ -285,8 +285,8 @@ class FieldOutputTest extends KernelTestBase {
         [
           'type' => 'video_embed_field_video',
           'settings' => [
-            'width' => '100%',
-            'height' => '100%',
+            'width' => 100,
+            'height' => 100,
             'autoplay' => TRUE,
             'responsive' => FALSE,
           ],
@@ -299,8 +299,8 @@ class FieldOutputTest extends KernelTestBase {
             'list' => 'PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB',
           ],
           '#attributes' => [
-            'width' => '100%',
-            'height' => '100%',
+            'width' => '100',
+            'height' => '100',
             'frameborder' => '0',
             'allowfullscreen' => 'allowfullscreen',
           ],

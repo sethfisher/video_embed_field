@@ -104,7 +104,8 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
     ];
     $elements['width'] = [
       '#title' => t('Width'),
-      '#type' => 'textfield',
+      '#type' => 'number',
+      '#field_suffix' => 'px',
       '#default_value' => $this->getSetting('width'),
       '#required' => TRUE,
       '#size' => 20,
@@ -112,7 +113,8 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
     ];
     $elements['height'] = [
       '#title' => t('Height'),
-      '#type' => 'textfield',
+      '#type' => 'number',
+      '#field_suffix' => 'px',
       '#default_value' => $this->getSetting('height'),
       '#required' => TRUE,
       '#size' => 20,

@@ -20,10 +20,10 @@ field.formatter.settings.video_embed_field_video:
       type: boolean
       label: 'Responsive'
     width:
-      type: string
+      type: integer
       label: 'Width'
     height:
-      type: string
+      type: integer
       label: 'Height'
 
 field.formatter.settings.video_embed_field_colorbox:
@@ -37,10 +37,10 @@ field.formatter.settings.video_embed_field_colorbox:
       type: boolean
       label: 'Responsive'
     width:
-      type: string
+      type: integer
       label: 'Width'
     height:
-      type: string
+      type: integer
       label: 'Height'
     image_style:
       type: string
