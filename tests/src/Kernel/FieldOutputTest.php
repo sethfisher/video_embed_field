@@ -13,6 +13,8 @@ use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Thumbnail;
  */
 class FieldOutputTest extends KernelTestBase {
 
+  use StripWhitespaceTrait;
+
   /**
    * The test cases.
    */
@@ -185,7 +187,43 @@ class FieldOutputTest extends KernelTestBase {
             'data-video-embed-field-modal' => '<iframe width="500" height="500" frameborder="0" allowfullscreen="allowfullscreen" src="https://player.vimeo.com/video/80896303?autoplay=1"></iframe>',
             'class' => ['video-embed-field-launch-modal'],
           ],
-          '#attached' => ['library' => ['video_embed_field/colorbox']],
+          '#attached' => ['library' => [
+            'video_embed_field/colorbox',
+            'video_embed_field/responsive-video',
+          ]],
+          'children' => [
+            '#type' => 'link',
+            '#title' => [
+              '#theme' => 'image',
+              '#uri' => 'public://video_thumbnails/80896303.jpg',
+            ],
+            '#url' => 'https://vimeo.com/80896303',
+          ],
+        ],
+      ],
+      'Colorbox Modal: Responsive' => [
+        'https://vimeo.com/80896303',
+        [
+          'type' => 'video_embed_field_colorbox',
+          'settings' => [
+            'link_image_to' => Thumbnail::LINK_PROVIDER,
+            'autoplay' => TRUE,
+            'width' => 900,
+            'height' => 450,
+            'responsive' => TRUE,
+            'modal_max_width' => 999,
+          ],
+        ],
+        [
+          '#type' => 'container',
+          '#attributes' => [
+            'data-video-embed-field-modal' => '<div class="video-embed-field-responsive-video video-embed-field-responsive-modal" style="width:999px;"><iframe width="900" height="450" frameborder="0" allowfullscreen="allowfullscreen" src="https://player.vimeo.com/video/80896303?autoplay=1"></iframe></div>',
+            'class' => ['video-embed-field-launch-modal'],
+          ],
+          '#attached' => ['library' => [
+            'video_embed_field/colorbox',
+            'video_embed_field/responsive-video',
+          ]],
           'children' => [
             '#type' => 'link',
             '#title' => [
@@ -312,7 +350,7 @@ class FieldOutputTest extends KernelTestBase {
       }
       // Trim to prevent stray whitespace for the colorbox formatters with
       // early rendering.
-      $value = trim($value);
+      $value = $this->stripWhitespace($value);
     });
 
     return $field_output;

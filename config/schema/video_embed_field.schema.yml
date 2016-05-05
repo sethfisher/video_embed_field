@@ -48,6 +48,9 @@ field.formatter.settings.video_embed_field_colorbox:
     link_image_to:
       type: string
       label: 'Link image to'
+    modal_max_width:
+      type: integer
+      label: 'Modal max width'
 
 field.field_settings.video_embed_field:
   type: mapping

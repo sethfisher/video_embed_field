@@ -60,6 +60,11 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
     $thumbnails = $this->thumbnailFormatter->viewElements($items, $langcode);
     $videos = $this->videoFormatter->viewElements($items, $langcode);
     foreach ($items as $delta => $item) {
+      // Support responsive videos within the colorbox modal.
+      if ($this->getSetting('responsive')) {
+        $videos[$delta]['#attributes']['class'][] = 'video-embed-field-responsive-modal';
+        $videos[$delta]['#attributes']['style'] = sprintf('width:%dpx;', $this->getSetting('modal_max_width'));
+      }
       $element[$delta] = [
         '#type' => 'container',
         '#attributes' => [
@@ -67,7 +72,10 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
           'class' => ['video-embed-field-launch-modal'],
         ],
         '#attached' => [
-          'library' => ['video_embed_field/colorbox'],
+          'library' => [
+            'video_embed_field/colorbox',
+            'video_embed_field/responsive-video',
+          ],
         ],
         'children' => $thumbnails[$delta],
       ];
@@ -80,7 +88,9 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return Thumbnail::defaultSettings() + Video::defaultSettings();
+    return Thumbnail::defaultSettings() + Video::defaultSettings() + [
+      'modal_max_width' => '854',
+    ];
   }
 
   /**
@@ -89,6 +99,16 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $form += $this->thumbnailFormatter->settingsForm([], $form_state);
     $form += $this->videoFormatter->settingsForm([], $form_state);
+    $form['modal_max_width'] = [
+      '#title' => $this->t('Maximum Width'),
+      '#type' => 'number',
+      '#description' => $this->t('The maximum size of the video opened in the Colorbox window in pixels. For smaller screen sizes, the video will scale.'),
+      '#required' => TRUE,
+      '#field_suffix' => 'px',
+      '#size' => 20,
+      '#states' => ['visible' => [[':input[name*="responsive"]' => ['checked' => TRUE]]]],
+      '#default_value' => $this->getSetting('modal_max_width'),
+    ];
     return $form;
   }
 
