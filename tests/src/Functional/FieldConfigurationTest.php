@@ -13,7 +13,6 @@ class FieldConfigurationTest extends BrowserTestBase {
 
   use EntityDisplaySetupTrait;
   use AdminUserTrait;
-  use AssertionsTrait;
 
   /**
    * {@inheritdoc}
@@ -47,11 +46,11 @@ class FieldConfigurationTest extends BrowserTestBase {
       'settings[allowed_providers][youtube]' => 'youtube',
       'settings[allowed_providers][youtube_playlist]' => 'youtube_playlist',
     ], t('Save settings'));
-    $this->assertText('Could not find a video provider to handle the given URL.');
+    $this->assertSession()->pageTextContains('Could not find a video provider to handle the given URL.');
     $this->submitForm([
       'default_value_input[field_video_embed][0][value]' => 'https://www.youtube.com/watch?v=XgYu7-DQjDQ',
     ], t('Save settings'));
-    $this->assertText('Saved Video Embed configuration.');
+    $this->assertSession()->pageTextContains('Saved Video Embed configuration.');
   }
 
 }

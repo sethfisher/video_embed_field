@@ -4,7 +4,6 @@ namespace Drupal\Tests\video_embed_wysiwyg\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\JavascriptTestBase;
 use Drupal\simpletest\ContentTypeCreationTrait;
-use Drupal\Tests\video_embed_field\Functional\AssertionsTrait;
 
 /**
  * Test the dialog form.
@@ -13,7 +12,6 @@ use Drupal\Tests\video_embed_field\Functional\AssertionsTrait;
  */
 class EmbedDialogTest extends JavascriptTestBase {
 
-  use AssertionsTrait;
   use ContentTypeCreationTrait;
 
   /**
@@ -76,24 +74,24 @@ class EmbedDialogTest extends JavascriptTestBase {
     $this->wait();
 
     // Assert all the form fields appear on the modal.
-    $this->assertText('Autoplay');
-    $this->assertText('Responsive Video');
-    $this->assertText('Width');
-    $this->assertText('Height');
-    $this->assertText('Video URL');
+    $this->assertSession()->pageTextContains('Autoplay');
+    $this->assertSession()->pageTextContains('Responsive Video');
+    $this->assertSession()->pageTextContains('Width');
+    $this->assertSession()->pageTextContains('Height');
+    $this->assertSession()->pageTextContains('Video URL');
 
     // Attempt to submit the modal with no values.
     $this->find('input[name="video_url"]')->setValue('');
     $this->find('button.form-submit')->click();
     $this->wait();
-    $this->assertText('Video URL field is required.');
+    $this->assertSession()->pageTextContains('Video URL field is required.');
 
     // Submit the form with an invalid video URL.
     $this->find('input[name="video_url"]')->setValue('http://example.com/');
     $this->find('button.form-submit')->click();
     $this->wait();
-    $this->assertText('Could not find a video provider to handle the given URL.');
-    $this->assertRaw('http://example.com/');
+    $this->assertSession()->pageTextContains('Could not find a video provider to handle the given URL.');
+    $this->assertContains('http://example.com/', $this->getSession()->getPage()->getHtml());
 
     // Submit a valid URL.
     $this->find('input[name="video_url"]')->setValue('https://www.youtube.com/watch?v=iaf3Sl2r3jE&t=1553s');
@@ -102,7 +100,6 @@ class EmbedDialogTest extends JavascriptTestBase {
     // render the video.
     $this->wait();
     $this->getSession()->wait(500);
-
     // View the source of the ckeditor and find the output.
     $this->find('.cke_button__source_label')->click();
     $base_path = \Drupal::request()->getBasePath();

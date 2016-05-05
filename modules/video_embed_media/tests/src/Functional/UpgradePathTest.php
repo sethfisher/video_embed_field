@@ -14,7 +14,6 @@ use Drupal\Tests\video_embed_field\Functional\AssertionsTrait;
 class UpgradePathTest extends BrowserTestBase {
 
   use AdminUserTrait;
-  use AssertionsTrait;
 
   /**
    * Modules to install.
@@ -44,7 +43,7 @@ class UpgradePathTest extends BrowserTestBase {
       'id' => 'embeddable_bundle',
       'type' => 'embeddable_video',
     ], 'Save media bundle');
-    $this->assertText('The media bundle embeddable Video Bundle has been added.');
+    $this->assertSession()->pageTextContains('The media bundle embeddable Video Bundle has been added.');
     $this->drupalGet('admin/structure/media/manage/embeddable_bundle/fields/add-field');
     $this->submitForm([
       'new_storage_type' => 'string',

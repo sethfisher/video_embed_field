@@ -14,7 +14,6 @@ class FormatterConfigurationTest extends BrowserTestBase {
 
   use AdminUserTrait;
   use EntityDisplaySetupTrait;
-  use AssertionsTrait;
 
   /**
    * {@inheritdoc}
@@ -48,28 +47,28 @@ class FormatterConfigurationTest extends BrowserTestBase {
   public function testVideoConfirmationForm() {
     // Test the settings form and summaries for the video formatter.
     $this->setFormatter('video_embed_field_video');
-    $this->assertText('Embedded Video (Responsive, autoplaying).');
+    $this->assertSession()->pageTextContains('Embedded Video (Responsive, autoplaying).');
     $this->updateFormatterSettings([
       'autoplay' => FALSE,
       'responsive' => FALSE,
       'width' => '100%',
       'height' => '100%',
     ]);
-    $this->assertText('Embedded Video (100%x100%).');
+    $this->assertSession()->pageTextContains('Embedded Video (100%x100%).');
 
     // Test the image formatter.
     $this->setFormatter('video_embed_field_thumbnail');
-    $this->assertText('Video thumbnail (no image style).');
+    $this->assertSession()->pageTextContains('Video thumbnail (no image style).');
     $this->updateFormatterSettings([
       'image_style' => 'thumbnail',
       'link_image_to' => Thumbnail::LINK_CONTENT,
     ]);
-    $this->assertText('Video thumbnail (thumbnail, linked to content).');
+    $this->assertSession()->pageTextContains('Video thumbnail (thumbnail, linked to content).');
     $this->updateFormatterSettings([
       'image_style' => 'medium',
       'link_image_to' => Thumbnail::LINK_PROVIDER,
     ]);
-    $this->assertText('Video thumbnail (medium, linked to provider).');
+    $this->assertSession()->pageTextContains('Video thumbnail (medium, linked to provider).');
   }
 
   /**

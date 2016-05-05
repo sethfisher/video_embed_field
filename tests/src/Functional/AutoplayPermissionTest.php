@@ -20,7 +20,7 @@ class AutoplayPermissionTest extends BrowserTestBase {
   /**
    * Test the autoplay permission works.
    */
-  public function testVideoEmbedFieldDefaultWidget() {
+  public function testAutoplay() {
     $this->setupEntityDisplays();
     $node = $this->createVideoNode('https://vimeo.com/80896303');
     $this->setDisplayComponentSettings('video_embed_field_video', [

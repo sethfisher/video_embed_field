@@ -4,7 +4,6 @@ namespace Drupal\Tests\video_embed_media\Functional;
 
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\video_embed_field\Functional\AdminUserTrait;
-use Drupal\Tests\video_embed_field\Functional\AssertionsTrait;
 
 /**
  * Test the video_embed_field media integration.
@@ -14,7 +13,6 @@ use Drupal\Tests\video_embed_field\Functional\AssertionsTrait;
 class BundleTest extends BrowserTestBase {
 
   use AdminUserTrait;
-  use AssertionsTrait;
 
   /**
    * Modules to install.
@@ -43,12 +41,12 @@ class BundleTest extends BrowserTestBase {
       'id' => 'video_bundle',
       'type' => 'video_embed_field',
     ], t('Save media bundle'));
-    $this->assertText('The media bundle Video Bundle has been added.');
+    $this->assertSession()->pageTextContains('The media bundle Video Bundle has been added.');
 
     // Ensure the video field is added to the media entity.
     $this->drupalGet('admin/structure/media/manage/video_bundle/fields');
-    $this->assertText('field_media_video_embed_field');
-    $this->assertText('Video URL');
+    $this->assertSession()->pageTextContains('field_media_video_embed_field');
+    $this->assertSession()->pageTextContains('Video URL');
 
     // Add a media entity with the new field.
     $this->drupalGet('media/add/video_bundle');
@@ -57,7 +55,7 @@ class BundleTest extends BrowserTestBase {
       'field_media_video_embed_field[0][value]' => 'https://www.youtube.com/watch?v=XgYu7-DQjDQ',
     ], 'Save');
     // We should see the video thumbnail on the media page.
-    $this->assertRaw('video_thumbnails/XgYu7-DQjDQ.jpg');
+    $this->assertContains('video_thumbnails/XgYu7-DQjDQ.jpg', $this->getSession()->getPage()->getHtml());
 
     // Add another field and change the configured media field.
     $this->drupalGet('admin/structure/media/manage/video_bundle/fields/add-field');
@@ -84,8 +82,8 @@ class BundleTest extends BrowserTestBase {
     ], t('Save'));
 
     // We should see the newly configured video thumbnail, but not the original.
-    $this->assertRaw('video_thumbnails/gnERPdAiuSo.jpg');
-    $this->assertNoRaw('video_thumbnails/XgYu7-DQjDQ.jpg');
+    $this->assertContains('video_thumbnails/gnERPdAiuSo.jpg', $this->getSession()->getPage()->getHtml());
+    $this->assertNotContains('video_thumbnails/XgYu7-DQjDQ.jpg', $this->getSession()->getPage()->getHtml());
   }
 
 }
