@@ -22,6 +22,7 @@ class FormatterConfigurationTest extends BrowserTestBase {
     'video_embed_field',
     'node',
     'field_ui',
+    'colorbox',
   ];
 
   /**
@@ -51,10 +52,10 @@ class FormatterConfigurationTest extends BrowserTestBase {
     $this->updateFormatterSettings([
       'autoplay' => FALSE,
       'responsive' => FALSE,
-      'width' => '100%',
-      'height' => '100%',
+      'width' => 100,
+      'height' => 100,
     ]);
-    $this->assertSession()->pageTextContains('Embedded Video (100%x100%).');
+    $this->assertSession()->pageTextContains('Embedded Video (100x100).');
 
     // Test the image formatter.
     $this->setFormatter('video_embed_field_thumbnail');
@@ -68,6 +69,22 @@ class FormatterConfigurationTest extends BrowserTestBase {
       'image_style' => 'medium',
       'link_image_to' => Thumbnail::LINK_PROVIDER,
     ]);
+    $this->assertSession()->pageTextContains('Video thumbnail (medium, linked to provider).');
+
+    $this->setFormatter('video_embed_field_colorbox');
+    $this->assertSession()->pageTextContains('Thumbnail that launches a modal window.');
+    $this->assertSession()->pageTextContains('Embedded Video (Responsive, autoplaying).');
+    $this->assertSession()->pageTextContains('Video thumbnail (medium, linked to provider).');
+    $this->updateFormatterSettings([
+      'autoplay' => FALSE,
+      'responsive' => FALSE,
+      'width' => 100,
+      'height' => 100,
+      'image_style' => 'medium',
+      'link_image_to' => Thumbnail::LINK_PROVIDER,
+    ]);
+    $this->assertSession()->pageTextContains('Thumbnail that launches a modal window.');
+    $this->assertSession()->pageTextContains('Embedded Video (100x100).');
     $this->assertSession()->pageTextContains('Video thumbnail (medium, linked to provider).');
   }
 

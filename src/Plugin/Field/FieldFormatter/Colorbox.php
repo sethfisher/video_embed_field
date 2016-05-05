@@ -97,9 +97,10 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    $form += $this->thumbnailFormatter->settingsForm([], $form_state);
-    $form += $this->videoFormatter->settingsForm([], $form_state);
-    $form['modal_max_width'] = [
+    $element = parent::settingsForm($form, $form_state);
+    $element += $this->thumbnailFormatter->settingsForm([], $form_state);
+    $element += $this->videoFormatter->settingsForm([], $form_state);
+    $element['modal_max_width'] = [
       '#title' => $this->t('Maximum Width'),
       '#type' => 'number',
       '#description' => $this->t('The maximum size of the video opened in the Colorbox window in pixels. For smaller screen sizes, the video will scale.'),
@@ -109,7 +110,7 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
       '#states' => ['visible' => [[':input[name*="responsive"]' => ['checked' => TRUE]]]],
       '#default_value' => $this->getSetting('modal_max_width'),
     ];
-    return $form;
+    return $element;
   }
 
   /**
@@ -117,6 +118,8 @@ class Colorbox extends FormatterBase implements ContainerFactoryPluginInterface 
    */
   public function settingsSummary() {
     $summary[] = $this->t('Thumbnail that launches a modal window.');
+    $summary[] = implode(',', $this->videoFormatter->settingsSummary());
+    $summary[] = implode(',', $this->thumbnailFormatter->settingsSummary());
     return $summary;
   }
 
