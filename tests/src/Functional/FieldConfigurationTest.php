@@ -1,7 +1,7 @@
 <?php
 
 namespace Drupal\Tests\video_embed_field\Functional;
-use Drupal\simpletest\ContentTypeCreationTrait;
+
 use Drupal\Tests\BrowserTestBase;
 
 /**

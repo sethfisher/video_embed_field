@@ -6,6 +6,7 @@ namespace Drupal\Tests\video_embed_field\Kernel;
  * Strip whitespace.
  */
 trait StripWhitespaceTrait {
+
   /**
    * Remove HTML whitespace from a string.
    *
@@ -20,4 +21,5 @@ trait StripWhitespaceTrait {
     $no_whitespace = str_replace("\n", '', $no_whitespace);
     return $no_whitespace;
   }
+
 }

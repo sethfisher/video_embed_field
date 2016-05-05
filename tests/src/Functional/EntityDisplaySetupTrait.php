@@ -7,7 +7,7 @@ use Drupal\simpletest\ContentTypeCreationTrait;
 use Drupal\simpletest\NodeCreationTrait;
 
 /**
- * A trait for manipulating entity display
+ * A trait for manipulating entity display.
  */
 trait EntityDisplaySetupTrait {
 
@@ -43,7 +43,7 @@ trait EntityDisplaySetupTrait {
   protected $entityFormDisplay;
 
   /**
-   * Setup the entity displays with required fields
+   * Setup the entity displays with required fields.
    */
   protected function setupEntityDisplays() {
     $this->fieldName = 'field_test_video_field';
@@ -68,8 +68,12 @@ trait EntityDisplaySetupTrait {
   }
 
   /**
-   * @param $type
+   * Set component settings for the display.
+   *
+   * @param string $type
+   *   The component to change settings for.
    * @param array $settings
+   *   The settings to use.
    */
   protected function setDisplayComponentSettings($type, $settings = []) {
     $this->entityDisplay->setComponent($this->fieldName, [
@@ -79,22 +83,30 @@ trait EntityDisplaySetupTrait {
   }
 
   /**
-   * @param $type
+   * Set component settings for the form.
+   *
+   * @param string $type
+   *   The component to change settings for.
    * @param array $settings
+   *   The settings to use.
    */
   protected function setFormComponentSettings($type, $settings = []) {
     $this->entityFormDisplay
       ->setComponent($this->fieldName, [
         'type' => $type,
-        'settings' => $settings
+        'settings' => $settings,
       ])
       ->save();
   }
 
   /**
-   * @param $value
+   * Create a video node using the video field.
+   *
+   * @param string $value
+   *   The video URL to use for the field value.
    *
    * @return \Drupal\node\NodeInterface
+   *   A node.
    */
   protected function createVideoNode($value) {
     return $this->createNode([

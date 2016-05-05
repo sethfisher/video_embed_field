@@ -14,7 +14,8 @@ trait AdminUserTrait {
   /**
    * Create an admin user.
    *
-   * @return \Drupal\user\UserInterface;
+   * @return \Drupal\user\UserInterface
+   *   A user with all permissions.
    */
   protected function createAdminUser() {
     return $this->drupalCreateUser(array_keys($this->container->get('user.permissions')->getPermissions()));
