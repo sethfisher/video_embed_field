@@ -61,6 +61,10 @@ class FilterTest extends KernelTestBase {
         '<p>Content.</p><p>{"settings_summary":["Embedded Video (854x480, autoplaying)."],"settings":{"responsive":1,"width":"854","height":"480","autoplay":1},"video_url":"https://vimeo.com/18352872","preview_thumbnail":"/thumbnail.jpg"}</p><p>More content.</p>',
         '<p>Content.</p><div class="video-embed-field-responsive-video"><iframe width="854" height="480" frameborder="0" allowfullscreen="allowfullscreen" src="https://player.vimeo.com/video/18352872?autoplay=1"></iframe></div><p>More content.</p>',
       ],
+      'No wrapping paragraphs tags' => [
+        '{"settings_summary":["Embedded Video (854x480, autoplaying)."],"settings":{"responsive":1,"width":"854","height":"480","autoplay":1},"video_url":"https://vimeo.com/18352872","preview_thumbnail":"/thumbnail.jpg"}',
+        '<div class="video-embed-field-responsive-video"><iframe width="854" height="480" frameborder="0" allowfullscreen="allowfullscreen" src="https://player.vimeo.com/video/18352872?autoplay=1"></iframe></div>',
+      ],
       'Invalid URL' => [
         '<p>Content.</p><p>{"preview_thumbnail":"http://example.com/thumbnail.jpg","video_url":"https://example.com/InvalidUrl","settings":{"responsive":1,"width":"854","height":"480","autoplay":1},"settings_summary":["Embedded Video (854x480, autoplaying)."]}</p><p>More content.</p>',
         FALSE,

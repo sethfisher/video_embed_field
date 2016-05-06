@@ -51,7 +51,7 @@ class VideoEmbedWysiwyg extends FilterBase implements ContainerFactoryPluginInte
     $response = new FilterProcessResult($text);
 
     // Use a look ahead to match the capture groups in any order.
-    if (preg_match_all('/<p>(?<json>{(?=.*preview_thumbnail\b)(?=.*settings\b)(?=.*video_url\b)(?=.*settings_summary)(.*)})<\/p>/', $text, $matches)) {
+    if (preg_match_all('/(<p>)?(?<json>{(?=.*preview_thumbnail\b)(?=.*settings\b)(?=.*video_url\b)(?=.*settings_summary)(.*)})(<\/p>)?/', $text, $matches)) {
       foreach ($matches['json'] as $delta => $match) {
         // Ensure the JSON string is valid.
         $embed_data = json_decode($match, TRUE);
