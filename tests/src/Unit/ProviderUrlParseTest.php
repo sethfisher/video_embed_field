@@ -116,6 +116,11 @@ class ProviderUrlParseTest extends UnitTestCase {
         'https://youtube.com/watch?v=xoJH3qZwsHc&list=PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB',
         'PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB',
       ],
+      'Youtube Playlist: Hyphens' => [
+        'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTubePlaylist',
+        'https://www.youtube.com/watch?list=PLg7vT2Yor-Q72v4NPNlWXWmT6iJ4t___k&v=5gdSMPaJOf4',
+        'PLg7vT2Yor-Q72v4NPNlWXWmT6iJ4t___k',
+      ],
       // Youtube Playlists failing cases.
       'YouTube Playlist: Invalid ID' => [
         'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTubePlaylist',
