@@ -47,7 +47,7 @@ class YouTube extends ProviderPluginBase {
    *   The time index where the video should start based on the URL.
    */
   protected function getTimeIndex() {
-    preg_match('/[&\?]t=(?<timeindex>\d*)/', $this->getInput(), $matches);
+    preg_match('/[&\?]t=(?<timeindex>\d+)/', $this->getInput(), $matches);
     return isset($matches['timeindex']) ? $matches['timeindex'] : 0;
   }
 

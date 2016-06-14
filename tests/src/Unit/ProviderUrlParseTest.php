@@ -220,4 +220,40 @@ class ProviderUrlParseTest extends UnitTestCase {
     ];
   }
 
+  /**
+   * Test the YouTube time index parsing.
+   *
+   * @dataProvider timeIndexParseTestCases
+   */
+  public function testYouTubeTimeIndex($url, $expected) {
+    $provider = new YouTube([
+      'input' => $url,
+    ], new MockHttpClient());
+    $embed = $provider->renderEmbedCode(100, 100, TRUE);
+    $this->assertEquals($expected, $embed['#query']['start']);
+  }
+
+  /**
+   * A data provider for testYouTubeTimeIndex.
+   *
+   * @return array
+   *   An array of test cases.
+   */
+  public function timeIndexParseTestCases() {
+    return [
+      'Simple Timeindex' => [
+        'https://www.youtube.com/watch?v=fdbFVWupSsw&t=15',
+        '15',
+      ],
+      'No Timeindex' => [
+        'https://www.youtube.com/watch?v=fdbFVWupSsw',
+        '0',
+      ],
+      'Invalid Timeindex' => [
+        'https://www.youtube.com/watch?v=fdbFVWupSsw&t=time',
+        '0',
+      ],
+    ];
+  }
+
 }
