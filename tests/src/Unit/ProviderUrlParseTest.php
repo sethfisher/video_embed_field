@@ -3,6 +3,8 @@
 namespace Drupal\Tests\video_embed_field\Unit;
 
 use Drupal\Tests\UnitTestCase;
+use Drupal\Tests\video_embed_field\Kernel\MockHttpClient;
+use Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTube;
 
 /**
  * Test that URL parsing for various providers is functioning.
@@ -53,6 +55,11 @@ class ProviderUrlParseTest extends UnitTestCase {
         'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTube',
         'https://youtu.be/fdbFVWupSsw',
         'fdbFVWupSsw',
+      ],
+      'YouTube: With Language Preference' => [
+        'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTube',
+        'https://youtube.com/watch?v=fdbFV_Wup-Ssw&hl=fr-ca',
+        'fdbFV_Wup-Ssw',
       ],
       'YouTube: Added Query String' => [
         'Drupal\video_embed_field\Plugin\video_embed_field\Provider\YouTube',
@@ -168,6 +175,47 @@ class ProviderUrlParseTest extends UnitTestCase {
         'Drupal\video_embed_field\Plugin\video_embed_field\Provider\Vimeo',
         'https://vimeo.com/channels/staffpicks/some-page',
         FALSE,
+      ],
+    ];
+  }
+
+  /**
+   * Test the langauge parsing feature.
+   *
+   * @dataProvider languageParseTestCases
+   */
+  public function testYouTubeLanguageParsing($url, $expected) {
+    $provider = new YouTube([
+      'input' => $url,
+    ], new MockHttpClient());
+    $embed = $provider->renderEmbedCode(100, 100, TRUE);
+    $language = isset($embed['#query']['cc_lang_pref']) ? $embed['#query']['cc_lang_pref'] : FALSE;
+    $this->assertEquals($expected, $language);
+  }
+
+  /**
+   * A data provider for testYouTubeLanguageParsing.
+   *
+   * @return array
+   *   An array of test cases.
+   */
+  public function languageParseTestCases() {
+    return [
+      'Simple Preference' => [
+        'https://youtube.com/watch?v=fdbFV_Wup-Ssw&hl=fr',
+        'fr',
+      ],
+      'Preference with Hyphen' => [
+        'https://youtube.com/watch?v=fdbFV_Wup-Ssw&hl=fr-ca',
+        'fr-ca',
+      ],
+      'Invalid Language' => [
+        'https://youtube.com/watch?v=fdbFV_Wup-Ssw&hl=<test>',
+        FALSE,
+      ],
+      'Multiple Parameters' => [
+        'https://youtube.com/watch?v=fdbFV_Wup-Ssw&hl=au&anotherparam=1',
+        'au',
       ],
     ];
   }

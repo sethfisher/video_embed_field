@@ -98,6 +98,40 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
       ],
+      'YouTube: Language Specified Embed Code' => [
+        'https://www.youtube.com/watch?v=fdbFVWupSsw&hl=fr',
+        [
+          'type' => 'video_embed_field_video',
+          'settings' => [
+            'width' => 100,
+            'height' => 100,
+            'autoplay' => TRUE,
+            'responsive' => FALSE,
+          ],
+        ],
+        [
+          '#type' => 'video_embed_iframe',
+          '#provider' => 'youtube',
+          '#url' => 'https://www.youtube.com/embed/fdbFVWupSsw',
+          '#query' => [
+            'autoplay' => '1',
+            'start' => '0',
+            'rel' => '0',
+            'cc_lang_pref' => 'fr',
+          ],
+          '#attributes' => [
+            'width' => '100',
+            'height' => '100',
+            'frameborder' => '0',
+            'allowfullscreen' => 'allowfullscreen',
+          ],
+          '#cache' => [
+            'contexts' => [
+              'user.permissions',
+            ],
+          ],
+        ],
+      ],
       'Vimeo: Thumbnail' => [
         'https://vimeo.com/80896303',
         [
