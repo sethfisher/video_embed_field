@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\video_embed_field\Kernel;
 
-use Drupal\node\Entity\Node;
 use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
 
 /**
@@ -11,6 +10,8 @@ use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
  * @group video_embed_field
  */
 class Drupal7MigrationTest extends MigrateDrupal7TestBase {
+
+  use EntityLoadTrait;
 
   /**
    * {@inheritdoc}
@@ -60,24 +61,10 @@ class Drupal7MigrationTest extends MigrateDrupal7TestBase {
    * Test the emfield migration.
    */
   public function testMigration() {
-    $migrated_vimeo = $this->loadNodeByTitle('Vimeo Example');
-    $migrated_youtube = $this->loadNodeByTitle('YouTube Example');
+    $migrated_vimeo = $this->loadEntityByLabel('Vimeo Example');
+    $migrated_youtube = $this->loadEntityByLabel('YouTube Example');
     $this->assertEquals('https://vimeo.com/21681203', $migrated_vimeo->field_video->value);
     $this->assertEquals('https://www.youtube.com/watch?v=XgYu7-DQjDQ', $migrated_youtube->field_video->value);
-  }
-
-  /**
-   * Load a node by it's title.
-   *
-   * @param string $title
-   *   The title to load.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *   A loaded node.
-   */
-  protected function loadNodeByTitle($title) {
-    $nodes = \Drupal::entityQuery('node')->condition('title', $title, '=')->execute();
-    return Node::load(array_shift($nodes));
   }
 
 }
