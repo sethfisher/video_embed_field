@@ -10,11 +10,11 @@ use Drupal\migrate_drupal\Plugin\migrate\cckfield\CckFieldPluginBase;
  * Plugin to migrate from the Drupal 6 emfield module.
  *
  * @MigrateCckField(
- *   id = "emvideo",
- *   core = {6}
+ *   id = "video_embed_field",
+ *   core = {7}
  * )
  */
-class EmvideoField extends CckFieldPluginBase {
+class VideoEmbedField extends CckFieldPluginBase {
 
   /**
    * {@inheritdoc}
@@ -29,8 +29,8 @@ class EmvideoField extends CckFieldPluginBase {
   public function getFieldFormatterMap() {
     return [
       'default' => 'video_embed_field_video',
-      'video' => 'video_embed_field_video',
-      'thumbnail' => 'video_embed_field_thumbnail',
+      'video_embed_field' => 'video_embed_field_video',
+      'video_embed_field_thumbnail' => 'video_embed_field_thumbnail',
     ];
   }
 
@@ -39,7 +39,7 @@ class EmvideoField extends CckFieldPluginBase {
    */
   public function getFieldWidgetMap() {
     return [
-      'emvideo_textfields' => 'video_embed_field_textfield',
+      'video_embed_field_video' => 'video_embed_field_textfield',
     ];
   }
 
@@ -51,7 +51,7 @@ class EmvideoField extends CckFieldPluginBase {
       'plugin' => 'iterator',
       'source' => $field_name,
       'process' => [
-        'value' => 'embed',
+        'value' => 'video_url',
       ],
     ];
     $migration->mergeProcessOfProperty($field_name, $process);
