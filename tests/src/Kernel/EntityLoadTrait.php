@@ -19,9 +19,10 @@ trait EntityLoadTrait {
    *   A loaded entity.
    */
   protected function loadEntityByLabel($label, $entity_type = 'node') {
-    $label_key = \Drupal::entityTypeManager()->getDefinition($entity_type)->getKey('label');
+    $type_manager = \Drupal::entityTypeManager();
+    $label_key = $type_manager->getDefinition($entity_type)->getKey('label');
     $entities = \Drupal::entityQuery($entity_type)->condition($label_key, $label, '=')->execute();
-    return \Drupal::entityTypeManager()->getStorage($entity_type)->load(array_shift($entities));
+    return $type_manager->getStorage($entity_type)->load(array_shift($entities));
   }
 
 }
