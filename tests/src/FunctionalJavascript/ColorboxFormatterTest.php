@@ -45,7 +45,7 @@ class ColorboxFormatterTest extends JavascriptTestBase {
       'autoplay' => FALSE,
       'responsive' => TRUE,
     ]);
-    $node = $this->createVideoNode('https://www.youtube.com/watch?v=fdbFVWupSsw');
+    $node = $this->createVideoNode('https://vimeo.com/21681203');
     $this->drupalGet('node/' . $node->id());
     $this->getSession()->wait(50);
     $this->click('img');
