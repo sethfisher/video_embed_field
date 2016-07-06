@@ -21,7 +21,7 @@ class ColorboxFormatterTest extends JavascriptTestBase {
     'node',
     'colorbox',
     'video_embed_field',
-    'video_embed_field_colorbox_test',
+    'colorbox_library_test',
     'video_embed_field_mock_provider',
   ];
 
