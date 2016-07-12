@@ -165,6 +165,11 @@ class ProviderUrlParseTest extends UnitTestCase {
         'https://vimeo.com/channels/staffpicks/138627894',
         '138627894',
       ],
+      'Vimeo: Private Video' => [
+        'Drupal\video_embed_field\Plugin\video_embed_field\Provider\Vimeo',
+        'https://vimeo.com/173101914/aab5894fec',
+        '173101914',
+      ],
       // Vimeo failing cases.
       'Vimeo: Malformed String' => [
         'Drupal\video_embed_field\Plugin\video_embed_field\Provider\Vimeo',
