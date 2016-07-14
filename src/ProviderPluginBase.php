@@ -3,7 +3,6 @@
 namespace Drupal\video_embed_field;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\image\Entity\ImageStyle;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -93,8 +92,14 @@ abstract class ProviderPluginBase implements ProviderPluginInterface, ContainerF
   public function renderThumbnail($image_style, $link_url) {
     $output = [
       '#theme' => 'image',
-      '#uri' => !empty($image_style) ? ImageStyle::load($image_style)->buildUrl($this->getLocalThumbnailUri()) : $this->getLocalThumbnailUri(),
+      '#uri' => $this->getLocalThumbnailUri(),
     ];
+
+    if (!empty($image_style)) {
+      $output['#theme'] = 'image_style';
+      $output['#style_name'] = $image_style;
+    }
+
     if ($link_url) {
       $output = [
         '#type' => 'link',
