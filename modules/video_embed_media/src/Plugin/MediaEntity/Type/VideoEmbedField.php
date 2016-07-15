@@ -118,6 +118,21 @@ class VideoEmbedField extends MediaTypeBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getDefaultName(MediaInterface $media) {
+    $video_url = $this->getVideoUrl($media);
+    $provider_definition = $this->providerManager->loadDefinitionFromInput($video_url);
+    $provider = $this->loadProvider($media);
+
+    if (method_exists($provider, 'getVideoName')) {
+      return $provider->getVideoName();
+    }
+
+    return $this->t('@provider Video (@id)', ['@provider' => $provider_definition['title'], '@id' => $provider->getIdFromInput($video_url)]);
+  }
+
+  /**
    * Load a video provider given a media entity.
    *
    * @param \Drupal\media_entity\MediaInterface $media
