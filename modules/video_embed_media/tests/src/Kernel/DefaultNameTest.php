@@ -42,9 +42,9 @@ class DefaultNameTest extends KernelTestBase {
         'https://www.youtube.com/watch?v=gnERPdAiuSo',
         'YouTube Video (gnERPdAiuSo)',
       ],
-      'YouTube Playlist' => [
-        'https://www.youtube.com/watch?v=gnERPdAiuSo',
-        'YouTube Video (gnERPdAiuSo)',
+      'Vimeo' => [
+        'https://vimeo.com/21681203',
+        'Drupal Commerce at DrupalCon Chicago',
       ],
     ];
   }

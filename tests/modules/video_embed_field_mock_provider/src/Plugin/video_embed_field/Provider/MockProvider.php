@@ -67,4 +67,11 @@ class MockProvider implements ProviderPluginInterface {
     return $input;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getName() {
+    return 'Video Name';
+  }
+
 }
