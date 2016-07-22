@@ -45,12 +45,7 @@ class EmbedDialogTest extends JavascriptTestBase {
     $this->drupalLogin($this->adminUser);
     $this->createContentType(['type' => 'page']);
     \Drupal::configFactory()->getEditable('image.settings')->set('suppress_itok_output', TRUE)->save();
-  }
 
-  /**
-   * Test the WYSIWYG embed modal.
-   */
-  public function testEmbedDialog() {
     // Assert access is denied without enabling the filter.
     $this->drupalGet('video-embed-wysiwyg/dialog/plain_text');
     $this->assertEquals(403, $this->getSession()->getStatusCode());
@@ -61,13 +56,19 @@ class EmbedDialogTest extends JavascriptTestBase {
     $this->wait();
     $this->submitForm([
       'filters[video_embed_wysiwyg][status]' => TRUE,
+      'filters[filter_html_escape][status]' => FALSE,
       'editor[settings][toolbar][button_groups]' => '[[{"name":"Group","items":["video_embed","Source"]}]]',
     ], t('Save configuration'));
 
     // Visit the modal again.
     $this->drupalGet('video-embed-wysiwyg/dialog/plain_text');
     $this->assertEquals(200, $this->getSession()->getStatusCode());
+  }
 
+  /**
+   * Test the WYSIWYG embed modal.
+   */
+  public function testEmbedDialog() {
     // Use the modal to embed into a page.
     $this->drupalGet('node/add/page');
     $this->find('.cke_button__video_embed')->click();
@@ -104,6 +105,22 @@ class EmbedDialogTest extends JavascriptTestBase {
     $this->find('.cke_button__source_label')->click();
     $base_path = \Drupal::request()->getBasePath();
     $this->assertEquals('<p>{"preview_thumbnail":"' . rtrim($base_path, '/') . '/' . $this->publicFilesDirectory . '/styles/video_embed_wysiwyg_preview/public/video_thumbnails/iaf3Sl2r3jE.jpg","video_url":"https://www.youtube.com/watch?v=iaf3Sl2r3jE&amp;t=1553s","settings":{"responsive":1,"width":"854","height":"480","autoplay":1},"settings_summary":["Embedded Video (Responsive, autoplaying)."]}</p>', trim($this->getSession()->getPage()->find('css', '.cke_source')->getValue()));
+  }
+
+  /**
+   * Test the WYSIWYG integration works with nested markup.
+   */
+  public function testNestedMarkup() {
+    $nested_content = '<div class="nested-content">
+<p>{"preview_thumbnail":"/thumb.jpg","video_url":"https://www.youtube.com/watch?v=iaf3Sl2r3jE","settings":{"responsive":1,"width":"854","height":"480","autoplay":1},"settings_summary":["Embedded Video (Responsive, autoplaying)."]}</p>
+</div>';
+    $node = $this->createNode([
+      'type' => 'page',
+      'body' => ['value' => $nested_content],
+    ]);
+    $this->drupalGet('node/' . $node->id() . '/edit');
+    $this->find('.cke_button__source_label')->click();
+    $this->assertEquals($nested_content, trim($this->getSession()->getPage()->find('css', '.cke_source')->getValue()));
   }
 
   /**
