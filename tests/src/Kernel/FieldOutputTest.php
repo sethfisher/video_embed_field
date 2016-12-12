@@ -188,6 +188,38 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
       ],
+      'Vimeo: Autoplaying Embed Code' => [
+        'https://vimeo.com/80896303#t=150s',
+        [
+          'type' => 'video_embed_field_video',
+          'settings' => [
+            'width' => 100,
+            'height' => 100,
+            'autoplay' => TRUE,
+            'responsive' => FALSE,
+          ],
+        ],
+        [
+          '#type' => 'video_embed_iframe',
+          '#provider' => 'vimeo',
+          '#url' => 'https://player.vimeo.com/video/80896303',
+          '#query' => [
+            'autoplay' => '1',
+          ],
+          '#fragment' => 't=150s',
+          '#attributes' => [
+            'width' => '100',
+            'height' => '100',
+            'frameborder' => '0',
+            'allowfullscreen' => 'allowfullscreen',
+          ],
+          '#cache' => [
+            'contexts' => [
+              'user.permissions',
+            ],
+          ],
+        ],
+      ],
       'Linked Thumbnail: Content' => [
         'https://vimeo.com/80896303',
         [
