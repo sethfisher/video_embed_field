@@ -21,6 +21,9 @@ function video_embed_field_theme() {
         'fragment' => '',
       ],
     ],
+    'video_embed_field_missing_provider' => [
+      'variables' => [],
+    ],
   ];
 }
 

@@ -47,19 +47,25 @@ class Video extends FormatterBase implements ContainerFactoryPluginInterface {
     foreach ($items as $delta => $item) {
       $provider = $this->providerManager->loadProviderFromInput($item->value);
 
-      $autoplay = $this->currentUser->hasPermission('never autoplay videos') ? FALSE : $this->getSetting('autoplay');
-      $element[$delta] = $provider->renderEmbedCode($this->getSetting('width'), $this->getSetting('height'), $autoplay);
-      $element[$delta]['#cache']['contexts'][] = 'user.permissions';
-
-      // For responsive videos, wrap each field item in it's own container.
-      if ($this->getSetting('responsive')) {
-        $element[$delta] = [
-          '#type' => 'container',
-          '#attached' => ['library' => ['video_embed_field/responsive-video']],
-          '#attributes' => ['class' => ['video-embed-field-responsive-video']],
-          'children' => $element[$delta],
-        ];
+      if (!$provider) {
+        $element[$delta] = ['#theme' => 'video_embed_field_missing_provider'];
       }
+      else {
+        $autoplay = $this->currentUser->hasPermission('never autoplay videos') ? FALSE : $this->getSetting('autoplay');
+        $element[$delta] = $provider->renderEmbedCode($this->getSetting('width'), $this->getSetting('height'), $autoplay);
+        $element[$delta]['#cache']['contexts'][] = 'user.permissions';
+
+        // For responsive videos, wrap each field item in it's own container.
+        if ($this->getSetting('responsive')) {
+          $element[$delta] = [
+            '#type' => 'container',
+            '#attached' => ['library' => ['video_embed_field/responsive-video']],
+            '#attributes' => ['class' => ['video-embed-field-responsive-video']],
+            'children' => $element[$delta],
+          ];
+        }
+      }
+
     }
     return $element;
   }
