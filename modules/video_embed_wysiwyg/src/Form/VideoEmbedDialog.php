@@ -15,7 +15,6 @@ use Drupal\editor\Entity\Editor;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\video_embed_field\Plugin\Field\FieldFormatter\Video;
-use Drupal\video_embed_field\Plugin\Field\FieldWidget\VideoTextfield;
 use Drupal\video_embed_field\ProviderManager;
 use Drupal\video_embed_field\ProviderPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -143,7 +142,7 @@ class VideoEmbedDialog extends FormBase {
     $provider = $this->getProvider($form_state->getValue('video_url'));
     // Display an error if no provider can be loaded for this video.
     if (FALSE == $provider) {
-      $form_state->setError($form['video_url'], VideoTextfield::getProviderErrorMessage());
+      $form_state->setError($form['video_url'], $this->t('Could not find a video provider to handle the given URL.'));
       return;
     }
   }
