@@ -39,6 +39,26 @@ class VideoEmbedDialog extends FormBase {
   protected $renderer;
 
   /**
+   * VideoEmbedDialog constructor.
+   *
+   * @param \Drupal\video_embed_field\ProviderManager $provider_manager
+   *   The video provider plugin manager.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
+   */
+  public function __construct(ProviderManager $provider_manager, RendererInterface $renderer) {
+    $this->providerManager = $provider_manager;
+    $this->render = $renderer;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static($container->get('video_embed_field.provider_manager'), $container->get('renderer'));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, FilterFormat $filter_format = NULL) {
@@ -195,26 +215,6 @@ class VideoEmbedDialog extends FormBase {
    */
   public function getFormId() {
     return 'video_embed_dialog';
-  }
-
-  /**
-   * VideoEmbedDialog constructor.
-   *
-   * @param \Drupal\video_embed_field\ProviderManager $provider_manager
-   *   The video provider plugin manager.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer.
-   */
-  public function __construct(ProviderManager $provider_manager, RendererInterface $renderer) {
-    $this->providerManager = $provider_manager;
-    $this->render = $renderer;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static($container->get('video_embed_field.provider_manager'), $container->get('renderer'));
   }
 
 }

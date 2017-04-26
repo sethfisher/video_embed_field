@@ -21,15 +21,6 @@ class VideoEmbedConstraintValidator extends ConstraintValidator implements Conta
   protected $providerManager;
 
   /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('video_embed_field.provider_manager')
-    );
-  }
-
-  /**
    * Create an instance of the validator.
    *
    * @param \Drupal\video_embed_field\ProviderManagerInterface $provider_manager
@@ -37,6 +28,15 @@ class VideoEmbedConstraintValidator extends ConstraintValidator implements Conta
    */
   public function __construct(ProviderManagerInterface $provider_manager) {
     $this->providerManager = $provider_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('video_embed_field.provider_manager')
+    );
   }
 
   /**
