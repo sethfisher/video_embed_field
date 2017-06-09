@@ -58,23 +58,31 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'video_embed_iframe',
-          '#provider' => 'youtube',
-          '#url' => 'https://www.youtube.com/embed/fdbFVWupSsw',
-          '#query' => [
-            'autoplay' => '1',
-            'start' => '0',
-            'rel' => '0',
-          ],
+          '#type' => 'container',
           '#attributes' => [
-            'width' => '100',
-            'height' => '100',
-            'frameborder' => '0',
-            'allowfullscreen' => 'allowfullscreen',
+            'class' => [
+              'video-embed-field-provider-youtube',
+            ],
           ],
-          '#cache' => [
-            'contexts' => [
-              'user.permissions',
+          'children' => [
+            '#type' => 'video_embed_iframe',
+            '#provider' => 'youtube',
+            '#url' => 'https://www.youtube.com/embed/fdbFVWupSsw',
+            '#query' => [
+              'autoplay' => '1',
+              'start' => '0',
+              'rel' => '0',
+            ],
+            '#attributes' => [
+              'width' => '100',
+              'height' => '100',
+              'frameborder' => '0',
+              'allowfullscreen' => 'allowfullscreen',
+            ],
+            '#cache' => [
+              'contexts' => [
+                'user.permissions',
+              ],
             ],
           ],
         ],
@@ -91,23 +99,31 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'video_embed_iframe',
-          '#provider' => 'youtube',
-          '#url' => 'https://www.youtube.com/embed/fdbFVWupSsw',
-          '#query' => [
-            'autoplay' => '1',
-            'start' => '100',
-            'rel' => '0',
-          ],
+          '#type' => 'container',
           '#attributes' => [
-            'width' => '100',
-            'height' => '100',
-            'frameborder' => '0',
-            'allowfullscreen' => 'allowfullscreen',
+            'class' => [
+              'video-embed-field-provider-youtube',
+            ],
           ],
-          '#cache' => [
-            'contexts' => [
-              'user.permissions',
+          'children' => [
+            '#type' => 'video_embed_iframe',
+            '#provider' => 'youtube',
+            '#url' => 'https://www.youtube.com/embed/fdbFVWupSsw',
+            '#query' => [
+              'autoplay' => '1',
+              'start' => '100',
+              'rel' => '0',
+            ],
+            '#attributes' => [
+              'width' => '100',
+              'height' => '100',
+              'frameborder' => '0',
+              'allowfullscreen' => 'allowfullscreen',
+            ],
+            '#cache' => [
+              'contexts' => [
+                'user.permissions',
+              ],
             ],
           ],
         ],
@@ -124,24 +140,32 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'video_embed_iframe',
-          '#provider' => 'youtube',
-          '#url' => 'https://www.youtube.com/embed/fdbFVWupSsw',
-          '#query' => [
-            'autoplay' => '1',
-            'start' => '0',
-            'rel' => '0',
-            'cc_lang_pref' => 'fr',
-          ],
+          '#type' => 'container',
           '#attributes' => [
-            'width' => '100',
-            'height' => '100',
-            'frameborder' => '0',
-            'allowfullscreen' => 'allowfullscreen',
+            'class' => [
+              'video-embed-field-provider-youtube',
+            ],
           ],
-          '#cache' => [
-            'contexts' => [
-              'user.permissions',
+          'children' => [
+            '#type' => 'video_embed_iframe',
+            '#provider' => 'youtube',
+            '#url' => 'https://www.youtube.com/embed/fdbFVWupSsw',
+            '#query' => [
+              'autoplay' => '1',
+              'start' => '0',
+              'rel' => '0',
+              'cc_lang_pref' => 'fr',
+            ],
+            '#attributes' => [
+              'width' => '100',
+              'height' => '100',
+              'frameborder' => '0',
+              'allowfullscreen' => 'allowfullscreen',
+            ],
+            '#cache' => [
+              'contexts' => [
+                'user.permissions',
+              ],
             ],
           ],
         ],
@@ -169,21 +193,29 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'video_embed_iframe',
-          '#provider' => 'vimeo',
-          '#url' => 'https://player.vimeo.com/video/80896303',
-          '#query' => [
-            'autoplay' => '1',
-          ],
+          '#type' => 'container',
           '#attributes' => [
-            'width' => '100',
-            'height' => '100',
-            'frameborder' => '0',
-            'allowfullscreen' => 'allowfullscreen',
+            'class' => [
+              'video-embed-field-provider-vimeo',
+            ],
           ],
-          '#cache' => [
-            'contexts' => [
-              'user.permissions',
+          'children' => [
+            '#type' => 'video_embed_iframe',
+            '#provider' => 'vimeo',
+            '#url' => 'https://player.vimeo.com/video/80896303',
+            '#query' => [
+              'autoplay' => '1',
+            ],
+            '#attributes' => [
+              'width' => '100',
+              'height' => '100',
+              'frameborder' => '0',
+              'allowfullscreen' => 'allowfullscreen',
+            ],
+            '#cache' => [
+              'contexts' => [
+                'user.permissions',
+              ],
             ],
           ],
         ],
@@ -200,22 +232,30 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'video_embed_iframe',
-          '#provider' => 'vimeo',
-          '#url' => 'https://player.vimeo.com/video/80896303',
-          '#query' => [
-            'autoplay' => '1',
-          ],
-          '#fragment' => 't=150s',
+          '#type' => 'container',
           '#attributes' => [
-            'width' => '100',
-            'height' => '100',
-            'frameborder' => '0',
-            'allowfullscreen' => 'allowfullscreen',
+            'class' => [
+              'video-embed-field-provider-vimeo',
+            ],
           ],
-          '#cache' => [
-            'contexts' => [
-              'user.permissions',
+          'children' => [
+            '#type' => 'video_embed_iframe',
+            '#provider' => 'vimeo',
+            '#url' => 'https://player.vimeo.com/video/80896303',
+            '#query' => [
+              'autoplay' => '1',
+            ],
+            '#fragment' => 't=150s',
+            '#attributes' => [
+              'width' => '100',
+              'height' => '100',
+              'frameborder' => '0',
+              'allowfullscreen' => 'allowfullscreen',
+            ],
+            '#cache' => [
+              'contexts' => [
+                'user.permissions',
+              ],
             ],
           ],
         ],
@@ -265,7 +305,7 @@ class FieldOutputTest extends KernelTestBase {
         [
           '#type' => 'container',
           '#attributes' => [
-            'data-video-embed-field-modal' => '<iframe width="500" height="500" frameborder="0" allowfullscreen="allowfullscreen" src="https://player.vimeo.com/video/80896303?autoplay=1"></iframe>',
+            'data-video-embed-field-modal' => '<div class="video-embed-field-provider-vimeo"><iframe width="500" height="500" frameborder="0" allowfullscreen="allowfullscreen" src="https://player.vimeo.com/video/80896303?autoplay=1"></iframe></div>',
             'class' => ['video-embed-field-launch-modal'],
           ],
           '#attached' => [
@@ -305,7 +345,7 @@ class FieldOutputTest extends KernelTestBase {
         [
           '#type' => 'container',
           '#attributes' => [
-            'data-video-embed-field-modal' => '<div class="video-embed-field-responsive-video video-embed-field-responsive-modal" style="width:999px;"><iframe width="900" height="450" frameborder="0" allowfullscreen="allowfullscreen" src="https://player.vimeo.com/video/80896303?autoplay=1"></iframe></div>',
+            'data-video-embed-field-modal' => '<div class="video-embed-field-provider-vimeo video-embed-field-responsive-video video-embed-field-responsive-modal" style="width:999px;"><iframe width="900" height="450" frameborder="0" allowfullscreen="allowfullscreen" src="https://player.vimeo.com/video/80896303?autoplay=1"></iframe></div>',
             'class' => [
               'video-embed-field-launch-modal',
             ],
@@ -348,7 +388,10 @@ class FieldOutputTest extends KernelTestBase {
             'library' => ['video_embed_field/responsive-video'],
           ],
           '#attributes' => [
-            'class' => ['video-embed-field-responsive-video'],
+            'class' => [
+              'video-embed-field-provider-vimeo',
+              'video-embed-field-responsive-video'
+            ],
           ],
           'children' => [
             '#type' => 'video_embed_iframe',
@@ -383,21 +426,29 @@ class FieldOutputTest extends KernelTestBase {
           ],
         ],
         [
-          '#type' => 'video_embed_iframe',
-          '#provider' => 'youtube_playlist',
-          '#url' => 'https://www.youtube.com/embed/videoseries',
-          '#query' => [
-            'list' => 'PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB',
-          ],
+          '#type' => 'container',
           '#attributes' => [
-            'width' => '100',
-            'height' => '100',
-            'frameborder' => '0',
-            'allowfullscreen' => 'allowfullscreen',
+            'class' => [
+              'video-embed-field-provider-youtube-playlist',
+            ],
           ],
-          '#cache' => [
-            'contexts' => [
-              'user.permissions',
+          'children' => [
+            '#type' => 'video_embed_iframe',
+            '#provider' => 'youtube_playlist',
+            '#url' => 'https://www.youtube.com/embed/videoseries',
+            '#query' => [
+              'list' => 'PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB',
+            ],
+            '#attributes' => [
+              'width' => '100',
+              'height' => '100',
+              'frameborder' => '0',
+              'allowfullscreen' => 'allowfullscreen',
+            ],
+            '#cache' => [
+              'contexts' => [
+                'user.permissions',
+              ],
             ],
           ],
         ],
@@ -482,9 +533,10 @@ class FieldOutputTest extends KernelTestBase {
     $entity->{$this->fieldName}->value = $url;
     $entity->save();
 
-    $field_output = $this->container->get('renderer')->executeInRenderContext(new RenderContext(), function() use ($entity, $settings) {
-      return $entity->{$this->fieldName}->view($settings);
-    });
+    $field_output = $this->container->get('renderer')
+      ->executeInRenderContext(new RenderContext(), function () use ($entity, $settings) {
+        return $entity->{$this->fieldName}->view($settings);
+      });
 
     // Prepare the field output to make it easier to compare our test data
     // values against.
