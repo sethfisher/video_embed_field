@@ -3,7 +3,6 @@
 namespace Drupal\Tests\video_embed_field\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\JavascriptTestBase;
-use Drupal\local_testing\LocalTestingTrait;
 use Drupal\Tests\video_embed_field\Functional\EntityDisplaySetupTrait;
 
 /**
@@ -14,7 +13,6 @@ use Drupal\Tests\video_embed_field\Functional\EntityDisplaySetupTrait;
 class ColorboxFormatterTest extends JavascriptTestBase {
 
   use EntityDisplaySetupTrait;
-  use LocalTestingTrait;
 
   /**
    * {@inheritdoc}
