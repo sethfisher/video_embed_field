@@ -490,6 +490,93 @@ class FieldOutputTest extends KernelTestBase {
             '#url' => 'https://www.youtube.com/embed/videoseries',
             '#query' => [
               'list' => 'PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB',
+              'autoplay' => '1',
+              'start' => '0',
+              'index' => '0',
+            ],
+            '#attributes' => [
+              'width' => '100',
+              'height' => '100',
+              'frameborder' => '0',
+              'allowfullscreen' => 'allowfullscreen',
+            ],
+            '#cache' => [
+              'contexts' => [
+                'user.permissions',
+              ],
+            ],
+          ],
+        ],
+      ],
+      'YouTube Playlist: Time-index Embed Code' => [
+        'https://www.youtube.com/watch?v=xoJH3qZwsHc&list=PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB&t=100',
+        [
+          'type' => 'video_embed_field_video',
+          'settings' => [
+            'width' => 100,
+            'height' => 100,
+            'autoplay' => TRUE,
+            'responsive' => FALSE,
+          ],
+        ],
+        [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => [
+              'video-embed-field-provider-youtube-playlist',
+            ],
+          ],
+          'children' => [
+            '#type' => 'video_embed_iframe',
+            '#provider' => 'youtube_playlist',
+            '#url' => 'https://www.youtube.com/embed/videoseries',
+            '#query' => [
+              'list' => 'PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB',
+              'autoplay' => '1',
+              'start' => '100',
+              'index' => '0',
+            ],
+            '#attributes' => [
+              'width' => '100',
+              'height' => '100',
+              'frameborder' => '0',
+              'allowfullscreen' => 'allowfullscreen',
+            ],
+            '#cache' => [
+              'contexts' => [
+                'user.permissions',
+              ],
+            ],
+          ],
+        ],
+      ],
+      'YouTube Playlist: Position-index Embed Code' => [
+        'https://www.youtube.com/watch?v=xoJH3qZwsHc&list=PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB&index=5',
+        [
+          'type' => 'video_embed_field_video',
+          'settings' => [
+            'width' => 100,
+            'height' => 100,
+            'autoplay' => TRUE,
+            'responsive' => FALSE,
+          ],
+        ],
+        [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => [
+              'video-embed-field-provider-youtube-playlist',
+            ],
+          ],
+          'children' => [
+            '#type' => 'video_embed_iframe',
+            '#provider' => 'youtube_playlist',
+            '#url' => 'https://www.youtube.com/embed/videoseries',
+            '#query' => [
+              'list' => 'PLpeDXSh4nHjQCIZmkxg3VSdpR5e87X5eB',
+              'autoplay' => '1',
+              'start' => '0',
+              'index' => '5',
             ],
             '#attributes' => [
               'width' => '100',
